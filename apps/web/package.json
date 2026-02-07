@@ -8,18 +8,20 @@
     "start": "next start"
   },
   "dependencies": {
+    "@ai-digest/db": "workspace:*",
+    "@ai-digest/email": "workspace:*",
+    "@ai-digest/shared": "workspace:*",
+    "@t3-oss/env-nextjs": "^0.11.0",
+    "autoprefixer": "^10.0.0",
+    "bullmq": "^5.0.0",
+    "drizzle-orm": "^0.38.0",
     "next": "^15.0.0",
+    "postcss": "^8.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^3.4.0",
-    "postcss": "^8.0.0",
-    "autoprefixer": "^10.0.0",
-    "zustand": "^5.0.0",
-    "@ai-digest/db": "workspace:*",
-    "@ai-digest/shared": "workspace:*",
-    "@ai-digest/email": "workspace:*",
-    "@t3-oss/env-nextjs": "^0.11.0",
-    "zod": "^3.23.0"
+    "zod": "^3.23.0",
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

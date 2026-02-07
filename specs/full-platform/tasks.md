@@ -805,7 +805,7 @@ Focus: Build all admin pages -- source management, pipeline monitoring, config, 
   - _Requirements: FR-32, AC-41.1, AC-41.4_
   - _Design: Admin layout, AdminLogin_
 
-- [ ] 7.2 Build admin API routes
+- [x] 7.2 Build admin API routes
   - **Do**:
     1. Create `apps/web/src/app/api/admin/sources/route.ts` -- GET list sources, POST create source
     2. Create `apps/web/src/app/api/admin/sources/[id]/route.ts` -- PUT update, DELETE remove
