@@ -175,7 +175,7 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
   - _Requirements: FR-1, AC-1.2, AC-1.3, AC-1.5_
   - _Design: fetchers/rss.ts_
 
-- [ ] 2.3 Implement GitHub trending repos fetcher
+- [x] 2.3 Implement GitHub trending repos fetcher
   - **Do**:
     1. Create `packages/agents/src/fetchers/github.ts`
     2. Use fetch to query GitHub Search API: `GET /search/repositories?q=topic:ai+created:>{date}&sort=stars`
