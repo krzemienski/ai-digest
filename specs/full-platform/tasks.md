@@ -664,7 +664,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: FR-21, FR-22_
   - _Design: Public API routes table_
 
-- [ ] 6.4 Build digest feed page with card-based layout
+- [x] 6.4 Build digest feed page with card-based layout
   - **Do**:
     1. Create `apps/web/src/components/digest/source-badge.tsx` -- colored badge per source type
     2. Create `apps/web/src/components/digest/score-indicator.tsx` -- visual 0-1 score bar
