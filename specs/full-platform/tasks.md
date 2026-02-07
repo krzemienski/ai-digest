@@ -391,7 +391,7 @@ Focus: Wire Claude Agent SDK for the 4 AI stages. Each stage gets a prompt templ
   - _Requirements: FR-13, AC-16.1, AC-16.2, AC-17.1, AC-17.4_
   - _Design: stages/output.ts_
 
-- [ ] 3.7 Wire coordinator to run full analysis pipeline
+- [x] 3.7 Wire coordinator to run full analysis pipeline
   - **Do**:
     1. Create `packages/agents/src/coordinator.ts`
     2. Implement `runPipeline(config, triggerType)` that:
