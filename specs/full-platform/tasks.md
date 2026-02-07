@@ -900,7 +900,7 @@ Focus: Build all admin pages -- source management, pipeline monitoring, config, 
   - _Requirements: FR-30, AC-21.1, AC-21.2, AC-21.3, AC-21.4, AC-39.1, AC-39.2, AC-39.3, AC-39.4_
   - _Design: VoiceConfig_
 
-- [ ] 7.9 Build schedule config and subscriber dashboard pages
+- [x] 7.9 Build schedule config and subscriber dashboard pages
   - **Do**:
     1. Create `apps/web/src/components/admin/cron-editor.tsx` -- cron expression input with human-readable preview of next run times
     2. Create `apps/web/src/app/admin/schedule/page.tsx` -- schedule page showing current cron, next run time, editor to change
