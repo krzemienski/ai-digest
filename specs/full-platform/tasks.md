@@ -589,7 +589,7 @@ Focus: Build cyberpunk email template, wire Resend sending, subscriber managemen
   - _Requirements: FR-19, AC-23.1, AC-23.2, AC-23.3_
   - _Design: Newsletter Stage in Pipeline Data Flow_
 
-- [ ] 5.4 [VERIFY] Quality checkpoint: email + worker type-check
+- [x] 5.4 [VERIFY] Quality checkpoint: email + worker type-check
   - **Do**: Type-check email package and worker
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p packages/email/tsconfig.json && pnpm exec tsc --noEmit -p apps/worker/tsconfig.json`
   - **Done when**: Zero type errors
@@ -601,7 +601,7 @@ Focus: Build cyberpunk email template, wire Resend sending, subscriber managemen
 
 Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-player, transcript, search, archive. All with cyberpunk theme.
 
-- [ ] 6.1 Scaffold Next.js app with cyberpunk Tailwind config
+- [x] 6.1 Scaffold Next.js app with cyberpunk Tailwind config
   - **Do**:
     1. Create `apps/web/package.json` with deps: `next`, `react`, `react-dom`, `tailwindcss`, `postcss`, `autoprefixer`, `zustand`, `@ai-digest/db`, `@ai-digest/shared`, `@t3-oss/env-nextjs`, `zod`
     2. Create `apps/web/tsconfig.json` extending base
