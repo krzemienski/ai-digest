@@ -160,7 +160,7 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
   - _Requirements: FR-39, AC-14.1, AC-14.2_
   - _Design: packages/agents section_
 
-- [ ] 2.2 Implement RSS feed fetcher
+- [x] 2.2 Implement RSS feed fetcher
   - **Do**:
     1. Create `packages/agents/src/fetchers/rss.ts`
     2. Use `rss-parser` to fetch and parse RSS feed URLs
