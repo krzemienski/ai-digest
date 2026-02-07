@@ -218,13 +218,13 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
   - _Requirements: FR-2, AC-4.1, AC-4.2, AC-4.3_
   - _Design: fetchers/hackernews.ts_
 
-- [ ] 2.6 [VERIFY] Quality checkpoint: type-check agents package
+- [x] 2.6 [VERIFY] Quality checkpoint: type-check agents package
   - **Do**: Run TypeScript across agents package
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p packages/agents/tsconfig.json`
   - **Done when**: Zero type errors
   - **Commit**: `chore(agents): pass quality checkpoint` (only if fixes needed)
 
-- [ ] 2.7 Implement HuggingFace, Reddit RSS, and Product Hunt fetchers
+- [x] 2.7 Implement HuggingFace, Reddit RSS, and Product Hunt fetchers
   - **Do**:
     1. Create `packages/agents/src/fetchers/huggingface.ts` -- query HF Hub API for recently modified models, filter by task
     2. Create `packages/agents/src/fetchers/reddit.ts` -- fetch subreddit RSS feeds (reuses rss-parser), extract post title, score, author, URL
