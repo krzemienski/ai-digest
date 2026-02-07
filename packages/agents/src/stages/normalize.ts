@@ -1,6 +1,5 @@
 import type { Database } from "@ai-digest/db";
-import { normalizedItems } from "@ai-digest/db";
-import { eq } from "drizzle-orm";
+import { normalizedItems, eq } from "@ai-digest/db";
 import { deterministicId } from "@ai-digest/shared";
 import type { RawFetchResult } from "../fetchers/types";
 

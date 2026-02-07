@@ -1,6 +1,5 @@
 import type { Database } from "@ai-digest/db";
-import { sources } from "@ai-digest/db";
-import { eq } from "drizzle-orm";
+import { sources, eq } from "@ai-digest/db";
 import type { RawFetchResult } from "../fetchers/types";
 import { fetchRss } from "../fetchers/rss";
 import { fetchGithub } from "../fetchers/github";

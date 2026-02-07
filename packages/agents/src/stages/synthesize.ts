@@ -1,7 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { eq, and, isNull, gte, desc } from "drizzle-orm";
 import type { Database } from "@ai-digest/db";
-import { normalizedItems } from "@ai-digest/db";
+import { normalizedItems, eq, and, isNull, gte, desc } from "@ai-digest/db";
 import type { SynthesisConfig, ScoringConfig } from "@ai-digest/shared";
 import { formatDigestDate } from "@ai-digest/shared";
 import { BudgetTracker } from "../budget";

@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { db, queries } from "@ai-digest/db";
-import { transcripts, normalizedItems } from "@ai-digest/db";
+import { transcripts, normalizedItems, eq, and, isNull, gte, desc } from "@ai-digest/db";
 import type { VoiceConfig, TranscriptSegment } from "@ai-digest/shared";
 import { formatDigestDate } from "@ai-digest/shared";
 import {
@@ -17,7 +17,6 @@ import {
   uploadToR2,
   buildEpisodeKey,
 } from "@ai-digest/podcast";
-import { eq, and, isNull, gte, desc } from "drizzle-orm";
 
 // Default voice config
 const DEFAULT_VOICE_CONFIG: VoiceConfig = {

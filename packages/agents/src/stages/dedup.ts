@@ -1,7 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { eq, isNull, and } from "drizzle-orm";
 import type { Database } from "@ai-digest/db";
-import { normalizedItems } from "@ai-digest/db";
+import { normalizedItems, eq, isNull, and } from "@ai-digest/db";
 import { BudgetTracker } from "../budget";
 import {
   DEDUP_SYSTEM_PROMPT,

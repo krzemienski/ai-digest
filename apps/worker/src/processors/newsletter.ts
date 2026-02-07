@@ -1,7 +1,6 @@
-import { db, queries, digestItems, normalizedItems } from "@ai-digest/db";
+import { db, queries, digestItems, normalizedItems, eq, asc } from "@ai-digest/db";
 import { sendDigestNewsletter } from "@ai-digest/email";
 import type { DigestEmailSection, DigestEmailItem } from "@ai-digest/email";
-import { eq, asc } from "drizzle-orm";
 
 export async function processNewsletter(
   digestId: string

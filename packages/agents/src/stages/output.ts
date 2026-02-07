@@ -1,6 +1,5 @@
-import { eq, and, isNull, gte, desc } from "drizzle-orm";
 import type { Database } from "@ai-digest/db";
-import { normalizedItems, digests, digestItems } from "@ai-digest/db";
+import { normalizedItems, digests, digestItems, eq, and, isNull, gte, desc } from "@ai-digest/db";
 import type { ScoringConfig, SynthesisConfig, SynthesisStyle, DigestMetadata } from "@ai-digest/shared";
 import { formatDigestDate } from "@ai-digest/shared";
 
