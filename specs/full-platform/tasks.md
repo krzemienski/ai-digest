@@ -274,7 +274,7 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
   - _Requirements: FR-34, AC-15.1, AC-15.2, AC-15.3, AC-48.1, AC-48.2, AC-48.3_
   - _Design: Worker Process, BullMQ Pipeline Architecture_
 
-- [ ] 2.10 End-to-end ingestion test: run pipeline, verify items in DB
+- [x] 2.10 End-to-end ingestion test: run pipeline, verify items in DB
   - **Do**:
     1. Seed a few test sources in the sources table (1 RSS feed, 1 HN query)
     2. Create a simple runner script that triggers the ingest + normalize stages directly (bypass BullMQ for this test)
@@ -288,7 +288,7 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
   - _Requirements: FR-1, FR-2, FR-8_
   - _Design: Pipeline Data Flow_
 
-- [ ] 2.11 [VERIFY] Quality checkpoint: full monorepo type-check
+- [x] 2.11 [VERIFY] Quality checkpoint: full monorepo type-check
   - **Do**: Type-check all packages and apps
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p packages/shared/tsconfig.json && pnpm exec tsc --noEmit -p packages/db/tsconfig.json && pnpm exec tsc --noEmit -p packages/agents/tsconfig.json && pnpm exec tsc --noEmit -p apps/worker/tsconfig.json`
   - **Done when**: Zero type errors across all packages
@@ -300,7 +300,7 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
 
 Focus: Wire Claude Agent SDK for the 4 AI stages. Each stage gets a prompt template and structured output.
 
-- [ ] 3.1 Create Claude Agent SDK prompt templates
+- [x] 3.1 Create Claude Agent SDK prompt templates
   - **Do**:
     1. Create `packages/agents/src/prompts/categorize.ts` -- system prompt for topic classification, JSON output schema (array of {itemId, topics[]})
     2. Create `packages/agents/src/prompts/score.ts` -- scoring rubric prompt (relevance 0-1, novelty 0-1, impact 0-1), JSON output schema
