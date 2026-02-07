@@ -205,7 +205,7 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
   - _Requirements: FR-3, AC-3.1, AC-3.2, AC-3.3, AC-3.4_
   - _Design: fetchers/arxiv.ts_
 
-- [ ] 2.5 Implement Hacker News fetcher
+- [x] 2.5 Implement Hacker News fetcher
   - **Do**:
     1. Create `packages/agents/src/fetchers/hackernews.ts`
     2. Use fetch to query HN Algolia API: `https://hn.algolia.com/api/v1/search?query=AI&tags=story&numericFilters=points>50`
