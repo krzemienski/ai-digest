@@ -236,7 +236,7 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
   - _Requirements: FR-5, FR-6, FR-7, AC-5.1, AC-5.2, AC-5.3, AC-6.1, AC-6.3, AC-7.1, AC-7.2_
   - _Design: fetchers/huggingface.ts, fetchers/reddit.ts, fetchers/producthunt.ts_
 
-- [ ] 2.8 Implement ingestion stage dispatcher and normalization stage
+- [x] 2.8 Implement ingestion stage dispatcher and normalization stage
   - **Do**:
     1. Create `packages/agents/src/stages/ingest.ts`:
        - Read enabled sources from DB
@@ -255,7 +255,7 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
   - _Requirements: FR-1 through FR-8, AC-8.1, AC-8.2, AC-8.3, AC-1.4_
   - _Design: stages/ingest.ts, stages/normalize.ts_
 
-- [ ] 2.9 Create apps/worker with BullMQ pipeline orchestration
+- [x] 2.9 Create apps/worker with BullMQ pipeline orchestration
   - **Do**:
     1. Create `apps/worker/package.json` with deps: `bullmq`, `ioredis`, `@ai-digest/agents`, `@ai-digest/db`, `@ai-digest/shared`
     2. Create `apps/worker/tsconfig.json` extending base

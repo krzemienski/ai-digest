@@ -1,5 +1,19 @@
 {
   "name": "@ai-digest/worker",
   "version": "0.0.1",
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "bullmq": "^5.0.0",
+    "ioredis": "^5.4.0",
+    "drizzle-orm": "^0.38.0",
+    "@ai-digest/agents": "workspace:*",
+    "@ai-digest/db": "workspace:*",
+    "@ai-digest/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0"
+  }
 }
