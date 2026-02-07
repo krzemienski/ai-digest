@@ -102,7 +102,7 @@ Focus: Scaffold the monorepo, define all shared types, create DB schema, get Tur
   - _Requirements: FR-36, AC-45.1, AC-45.2, AC-45.4_
   - _Design: Database Schema, Drizzle Schema section_
 
-- [ ] 1.4 Create DB query helpers for all domains
+- [x] 1.4 Create DB query helpers for all domains
   - **Do**:
     1. Create `packages/db/src/queries/digests.ts` -- getDigests (paginated), getDigestById, getLatestDigest, createDigest, addDigestItems
     2. Create `packages/db/src/queries/items.ts` -- getItemsByPipelineRun, getItemsByScore, updateItemScores, markDuplicate
