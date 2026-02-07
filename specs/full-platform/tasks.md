@@ -958,7 +958,7 @@ Focus: Admin middleware, rate limiting, env validation. Security hardening.
   - _Requirements: FR-33, AC-42.1, AC-42.2, AC-42.3_
   - _Design: Rate Limiting_
 
-- [ ] 8.3 Harden env validation and input validation
+- [x] 8.3 Harden env validation and input validation
   - **Do**:
     1. Ensure `apps/web/src/lib/env.ts` validates ALL required env vars using @t3-oss/env-nextjs + Zod:
        - Server: DATABASE_URL, REDIS_URL, ADMIN_API_KEY, ANTHROPIC_API_KEY, ELEVENLABS_API_KEY, RESEND_API_KEY, R2_*, UPSTASH_*
