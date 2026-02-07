@@ -313,7 +313,7 @@ Focus: Wire Claude Agent SDK for the 4 AI stages. Each stage gets a prompt templ
   - _Requirements: FR-9, FR-10, FR-11, FR-12_
   - _Design: prompts/ directory, Agent Model Routing table_
 
-- [ ] 3.2 Implement categorization stage (Claude Sonnet)
+- [x] 3.2 Implement categorization stage (Claude Sonnet)
   - **Do**:
     1. Create `packages/agents/src/stages/categorize.ts`
     2. Fetch uncategorized items from current pipeline run

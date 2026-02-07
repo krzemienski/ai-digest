@@ -8,10 +8,11 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "rss-parser": "^3.13.0",
-    "fast-xml-parser": "^4.5.0",
-    "drizzle-orm": "^0.38.0",
+    "@ai-digest/db": "workspace:*",
     "@ai-digest/shared": "workspace:*",
-    "@ai-digest/db": "workspace:*"
+    "@anthropic-ai/sdk": "^0.74.0",
+    "drizzle-orm": "^0.38.0",
+    "fast-xml-parser": "^4.5.0",
+    "rss-parser": "^3.13.0"
   }
 }
