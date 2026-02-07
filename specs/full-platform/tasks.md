@@ -435,7 +435,7 @@ Focus: Generate podcast from digest -- script generation via Claude, TTS via Ele
   - _Requirements: FR-14, AC-18.1, AC-18.2, AC-18.3, AC-18.4_
   - _Design: prompts/podcast-script.ts_
 
-- [ ] 4.2 Create packages/podcast with script parser
+- [x] 4.2 Create packages/podcast with script parser
   - **Do**:
     1. Create `packages/podcast/package.json` with deps: `elevenlabs`, `fluent-ffmpeg`, `@ffmpeg-installer/ffmpeg`, `@aws-sdk/client-s3`, `@ai-digest/shared`
     2. Create `packages/podcast/tsconfig.json`
