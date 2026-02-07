@@ -1,0 +1,29 @@
+specs/.current-spec
+**/.progress.md
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Next.js
+.next/
+
+# Build outputs
+dist/
+
+# Turborepo
+.turbo/
+
+# TypeScript
+*.tsbuildinfo
+
+# OS
+.DS_Store
+
+# Lock files for parallel execution
+.tasks.lock
+.git-commit.lock
