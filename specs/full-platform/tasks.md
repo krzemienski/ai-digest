@@ -714,7 +714,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: FR-22, AC-28.1, AC-28.2, AC-28.3, AC-28.4, AC-28.5, AC-28.6, AC-29.5_
   - _Design: Zustand Audio Player Store, podcast/ components_
 
-- [ ] 6.8 Build mini player and episode library
+- [x] 6.8 Build mini player and episode library
   - **Do**:
     1. Create `apps/web/src/components/podcast/mini-player.tsx`:
        - Fixed bottom bar (56-64px height)
