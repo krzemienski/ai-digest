@@ -134,7 +134,7 @@ Focus: Scaffold the monorepo, define all shared types, create DB schema, get Tur
   - _Requirements: FR-36, AC-45.3_
   - _Design: Full-Text Search SQL section_
 
-- [ ] 1.6 [VERIFY] Quality checkpoint: type-check all packages
+- [x] 1.6 [VERIFY] Quality checkpoint: type-check all packages
   - **Do**: Run TypeScript compilation across entire monorepo
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p packages/shared/tsconfig.json && pnpm exec tsc --noEmit -p packages/db/tsconfig.json`
   - **Done when**: Zero type errors across shared and db packages
@@ -146,7 +146,7 @@ Focus: Scaffold the monorepo, define all shared types, create DB schema, get Tur
 
 Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No AI yet -- pure TypeScript data pipeline.
 
-- [ ] 2.1 Create packages/agents skeleton with fetcher interfaces
+- [x] 2.1 Create packages/agents skeleton with fetcher interfaces
   - **Do**:
     1. Create `packages/agents/package.json` with deps: `rss-parser`, `fast-xml-parser`, `@ai-digest/shared`, `@ai-digest/db`
     2. Create `packages/agents/tsconfig.json` extending base
