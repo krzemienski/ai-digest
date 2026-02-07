@@ -680,7 +680,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: FR-21, AC-26.1, AC-26.2, AC-26.3, AC-26.4, AC-26.5_
   - _Design: digest/ components_
 
-- [ ] 6.5 Build digest detail page
+- [x] 6.5 Build digest detail page
   - **Do**:
     1. Create `apps/web/src/components/digest/digest-detail.tsx` -- full digest view with synthesis, all items, scores, source links
     2. Create `apps/web/src/app/digests/[id]/page.tsx` -- Server Component fetching digest by ID, rendering detail view
