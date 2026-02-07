@@ -881,7 +881,7 @@ Focus: Build all admin pages -- source management, pipeline monitoring, config, 
   - _Requirements: FR-28, AC-37.1, AC-37.2, AC-37.3, AC-37.4, AC-10.2, AC-11.3_
   - _Design: AnalysisConfig_
 
-- [ ] 7.8 Build podcast voice settings page
+- [x] 7.8 Build podcast voice settings page
   - **Do**:
     1. Create `apps/web/src/components/admin/voice-selector.tsx` -- dropdown to pick ElevenLabs voice IDs for each speaker
     2. Create `apps/web/src/components/admin/voice-preview.tsx` -- play short TTS sample via API route
