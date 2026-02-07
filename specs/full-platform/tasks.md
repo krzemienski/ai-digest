@@ -330,7 +330,7 @@ Focus: Wire Claude Agent SDK for the 4 AI stages. Each stage gets a prompt templ
   - _Requirements: FR-9, AC-10.1, AC-10.3, AC-10.4_
   - _Design: stages/categorize.ts, Agent Model Routing_
 
-- [ ] 3.3 Implement scoring stage (Claude Sonnet)
+- [x] 3.3 Implement scoring stage (Claude Sonnet)
   - **Do**:
     1. Create `packages/agents/src/stages/score.ts`
     2. Fetch categorized items from current pipeline run
