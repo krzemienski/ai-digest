@@ -20,8 +20,8 @@ export interface DigestItem {
 
 export interface DigestMetadata {
   topTopics: string[];
-  sourceBreakdown: Record<SourceType, number>;
-  dateRange: { from: string; to: string };
+  sourceBreakdown: Record<string, number>;
+  dateRange: { start: string; end: string };
 }
 
 export type SynthesisStyle = "brief" | "detailed" | "editorial";

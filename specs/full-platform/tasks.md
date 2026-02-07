@@ -376,7 +376,7 @@ Focus: Wire Claude Agent SDK for the 4 AI stages. Each stage gets a prompt templ
   - _Requirements: FR-12, AC-13.1, AC-13.2, AC-13.3, AC-13.4_
   - _Design: stages/synthesize.ts_
 
-- [ ] 3.6 Implement digest output assembly stage
+- [x] 3.6 Implement digest output assembly stage
   - **Do**:
     1. Create `packages/agents/src/stages/output.ts`
     2. Gather top scored, non-duplicate items
