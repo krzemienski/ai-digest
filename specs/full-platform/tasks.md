@@ -451,7 +451,7 @@ Focus: Generate podcast from digest -- script generation via Claude, TTS via Ele
   - _Requirements: AC-19.1_
   - _Design: packages/podcast, script-parser.ts_
 
-- [ ] 4.3 Implement ElevenLabs TTS segment generation
+- [x] 4.3 Implement ElevenLabs TTS segment generation
   - **Do**:
     1. Create `packages/podcast/src/tts.ts`
     2. Initialize ElevenLabs client with ELEVENLABS_API_KEY
