@@ -119,7 +119,7 @@ Focus: Scaffold the monorepo, define all shared types, create DB schema, get Tur
   - _Requirements: FR-36_
   - _Design: packages/db queries section_
 
-- [ ] 1.5 Push DB schema to local PostgreSQL and verify tables
+- [x] 1.5 Push DB schema to local PostgreSQL and verify tables
   - **Do**:
     1. Ensure local PostgreSQL is running (use `pg_isready` or start via brew services)
     2. Create database `ai_digest_dev` if not exists
