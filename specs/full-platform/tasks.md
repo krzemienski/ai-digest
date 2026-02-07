@@ -913,7 +913,7 @@ Focus: Build all admin pages -- source management, pipeline monitoring, config, 
   - _Requirements: FR-29, FR-31, AC-38.1, AC-38.2, AC-38.3, AC-40.1, AC-40.2, AC-40.3_
   - _Design: ScheduleConfig, SubscriberDashboard_
 
-- [ ] 7.10 [VERIFY] Quality checkpoint: full admin type-check + page renders
+- [x] 7.10 [VERIFY] Quality checkpoint: full admin type-check + page renders
   - **Do**: Type-check web app, verify all admin pages render
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p apps/web/tsconfig.json`
   - **Done when**: Zero type errors, all admin pages render at all breakpoints
@@ -925,7 +925,7 @@ Focus: Build all admin pages -- source management, pipeline monitoring, config, 
 
 Focus: Admin middleware, rate limiting, env validation. Security hardening.
 
-- [ ] 8.1 Implement Next.js middleware for admin auth
+- [x] 8.1 Implement Next.js middleware for admin auth
   - **Do**:
     1. Create `apps/web/src/middleware.ts`:
        - Match paths: `/admin/*`, `/api/admin/*`
