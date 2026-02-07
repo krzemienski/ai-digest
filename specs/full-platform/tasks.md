@@ -190,7 +190,7 @@ Focus: Build all 7 source fetchers, normalization, and BullMQ orchestration. No 
   - _Requirements: FR-4, AC-2.1, AC-2.2, AC-2.3, AC-2.4_
   - _Design: fetchers/github.ts_
 
-- [ ] 2.4 Implement ArXiv paper fetcher
+- [x] 2.4 Implement ArXiv paper fetcher
   - **Do**:
     1. Create `packages/agents/src/fetchers/arxiv.ts`
     2. Use fetch to query ArXiv API: `http://export.arxiv.org/api/query?search_query=cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL`
