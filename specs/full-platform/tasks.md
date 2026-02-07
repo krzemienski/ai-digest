@@ -941,7 +941,7 @@ Focus: Admin middleware, rate limiting, env validation. Security hardening.
   - _Requirements: FR-32, AC-41.1, AC-41.2, AC-41.3_
   - _Design: Auth Middleware_
 
-- [ ] 8.2 Implement API rate limiting
+- [x] 8.2 Implement API rate limiting
   - **Do**:
     1. Create `apps/web/src/lib/rate-limit.ts`:
        - Initialize Upstash Redis with UPSTASH_REDIS_REST_URL/TOKEN

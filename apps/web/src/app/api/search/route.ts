@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, queries } from "@ai-digest/db";
+import { applyRateLimit } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
+  const rateLimited = applyRateLimit(request, 60, 60_000);
+  if (rateLimited) return rateLimited;
+
   const q = request.nextUrl.searchParams.get("q");
 
   if (!q || q.trim().length === 0) {

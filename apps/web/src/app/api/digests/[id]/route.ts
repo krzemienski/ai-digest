@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, queries } from "@ai-digest/db";
+import { applyRateLimit } from "@/lib/rate-limit";
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const rateLimited = applyRateLimit(request, 60, 60_000);
+  if (rateLimited) return rateLimited;
+
   const { id } = await params;
   const result = await queries.getDigestWithItems(db, id);
 
