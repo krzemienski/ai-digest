@@ -1,5 +1,19 @@
 {
   "name": "@ai-digest/email",
   "version": "0.0.1",
-  "private": true
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "resend": "^4.0.0",
+    "@react-email/components": "^0.0.30",
+    "react": "^19.0.0",
+    "@ai-digest/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0"
+  }
 }

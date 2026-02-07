@@ -534,7 +534,7 @@ Focus: Generate podcast from digest -- script generation via Claude, TTS via Ele
 
 Focus: Build cyberpunk email template, wire Resend sending, subscriber management.
 
-- [ ] 5.1 Create packages/email with cyberpunk digest template
+- [x] 5.1 Create packages/email with cyberpunk digest template
   - **Do**:
     1. Create `packages/email/package.json` with deps: `resend`, `@react-email/components`, `react`, `@ai-digest/shared`
     2. Create `packages/email/tsconfig.json`
