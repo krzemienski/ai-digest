@@ -1,4 +1,4 @@
-import type { NormalizedItem, SourceType } from "./normalized-item";
+import type { NormalizedItem } from "./normalized-item";
 
 export interface Digest {
   id: string;

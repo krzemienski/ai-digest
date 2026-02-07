@@ -9,8 +9,10 @@
     "bullmq": "^5.0.0",
     "ioredis": "^5.4.0",
     "drizzle-orm": "^0.38.0",
+    "@anthropic-ai/sdk": "^0.39.0",
     "@ai-digest/agents": "workspace:*",
     "@ai-digest/db": "workspace:*",
+    "@ai-digest/podcast": "workspace:*",
     "@ai-digest/shared": "workspace:*"
   },
   "devDependencies": {

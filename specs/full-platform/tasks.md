@@ -502,13 +502,13 @@ Focus: Generate podcast from digest -- script generation via Claude, TTS via Ele
   - _Requirements: FR-17, FR-37, AC-20.3, AC-46.1, AC-46.2, AC-46.3, AC-46.4_
   - _Design: r2-upload.ts_
 
-- [ ] 4.6 [VERIFY] Quality checkpoint: podcast package type-check
+- [x] 4.6 [VERIFY] Quality checkpoint: podcast package type-check
   - **Do**: Type-check podcast package
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p packages/podcast/tsconfig.json`
   - **Done when**: Zero type errors
   - **Commit**: `chore(podcast): pass quality checkpoint` (only if fixes needed)
 
-- [ ] 4.7 Wire podcast generation into pipeline worker
+- [x] 4.7 Wire podcast generation into pipeline worker
   - **Do**:
     1. Create `apps/worker/src/processors/podcast.ts`:
        - Accept digest data from pipeline
