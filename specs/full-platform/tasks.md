@@ -732,7 +732,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: AC-29.1, AC-29.2, AC-29.3, AC-29.4, AC-29.5, AC-31.1, AC-31.2, AC-31.3_
   - _Design: mini-player.tsx, episode-card.tsx_
 
-- [ ] 6.9 Build transcript viewer
+- [x] 6.9 Build transcript viewer
   - **Do**:
     1. Create `apps/web/src/components/podcast/transcript-view.tsx`:
        - Display speaker-labeled segments with timestamps

@@ -1,7 +1,7 @@
 import { db, queries } from "@ai-digest/db";
 import { Container } from "@/components/layout/container";
 import { EpisodePlayerLoader } from "@/components/podcast/episode-player-loader";
-import type { Episode } from "@ai-digest/shared";
+import type { Episode, TranscriptSegment } from "@ai-digest/shared";
 
 export default async function EpisodePage({
   params,
@@ -37,9 +37,12 @@ export default async function EpisodePage({
     createdAt: String(result.createdAt),
   };
 
+  const transcriptSegments: TranscriptSegment[] | null =
+    result.transcript?.segments ?? null;
+
   return (
     <Container className="py-8">
-      <EpisodePlayerLoader episode={episode} />
+      <EpisodePlayerLoader episode={episode} transcript={transcriptSegments} />
     </Container>
   );
 }
