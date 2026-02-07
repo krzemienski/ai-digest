@@ -360,7 +360,7 @@ Focus: Wire Claude Agent SDK for the 4 AI stages. Each stage gets a prompt templ
   - _Requirements: FR-11, AC-12.1, AC-12.2, AC-12.3_
   - _Design: stages/dedup.ts_
 
-- [ ] 3.5 Implement editorial synthesis stage (Claude Opus)
+- [x] 3.5 Implement editorial synthesis stage (Claude Opus)
   - **Do**:
     1. Create `packages/agents/src/stages/synthesize.ts`
     2. Select top N items (configurable, default 15) above minScore threshold
