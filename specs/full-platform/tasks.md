@@ -847,7 +847,7 @@ Focus: Build all admin pages -- source management, pipeline monitoring, config, 
   - _Requirements: FR-26, AC-35.1, AC-35.2, AC-35.3, AC-35.4_
   - _Design: SourceManager_
 
-- [ ] 7.5 Build pipeline monitoring page
+- [x] 7.5 Build pipeline monitoring page
   - **Do**:
     1. Create `apps/web/src/components/admin/pipeline-status.tsx` -- current status badge (idle/running/failed/completed)
     2. Create `apps/web/src/components/admin/pipeline-history.tsx` -- table of recent runs with date, duration, items, status
