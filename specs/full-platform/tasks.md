@@ -860,13 +860,13 @@ Focus: Build all admin pages -- source management, pipeline monitoring, config, 
   - _Requirements: FR-27, AC-36.1, AC-36.2, AC-36.3, AC-36.4, AC-36.5_
   - _Design: PipelineMonitor_
 
-- [ ] 7.6 [VERIFY] Quality checkpoint: admin pages type-check
+- [x] 7.6 [VERIFY] Quality checkpoint: admin pages type-check
   - **Do**: Type-check web app with admin pages
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p apps/web/tsconfig.json`
   - **Done when**: Zero type errors
   - **Commit**: `chore(web): pass phase 7a quality checkpoint` (only if fixes needed)
 
-- [ ] 7.7 Build analysis config page
+- [x] 7.7 Build analysis config page
   - **Do**:
     1. Create `apps/web/src/components/admin/config-form.tsx` -- form with:
        - Topic categories: add/edit/remove (name, keywords, weight)
