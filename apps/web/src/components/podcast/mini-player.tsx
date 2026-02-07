@@ -35,7 +35,7 @@ export function MiniPlayer() {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-cyber-surface border-t border-cyber-overlay">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-cyber-surface border-t border-cyber-overlay pb-[env(safe-area-inset-bottom)]">
       {/* Thin progress bar at top */}
       <div className="h-1 w-full bg-cyber-overlay">
         <div

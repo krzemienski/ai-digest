@@ -312,7 +312,8 @@ export function ConfigForm() {
                 step={0.05}
                 value={scoring[key]}
                 onChange={(e) => handleScoringChange(key, parseFloat(e.target.value))}
-                className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-cyber-overlay accent-cyber-cyan"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-cyber-overlay accent-cyber-cyan touch-action-none"
+                style={{ minHeight: "44px", padding: "16px 0" }}
               />
             </div>
           ))}

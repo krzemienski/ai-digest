@@ -974,7 +974,7 @@ Focus: Admin middleware, rate limiting, env validation. Security hardening.
   - _Requirements: FR-43, AC-43.1, AC-43.2, AC-43.3, AC-43.4_
   - _Design: Security Considerations_
 
-- [ ] 8.4 [VERIFY] Quality checkpoint: security verification
+- [x] 8.4 [VERIFY] Quality checkpoint: security verification
   - **Do**: Verify all security measures
   - **Verify**: Run all three checks:
     1. `curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/admin/sources` returns 401
@@ -989,7 +989,7 @@ Focus: Admin middleware, rate limiting, env validation. Security hardening.
 
 Focus: Responsive refinement, cyberpunk effects, full end-to-end pipeline run, final quality.
 
-- [ ] 9.1 Polish responsive layout across all pages
+- [x] 9.1 Polish responsive layout across all pages
   - **Do**:
     1. Review all consumer pages at 375px, 768px, 1440px breakpoints
     2. Fix any layout issues: single-column mobile, multi-column desktop at 768px

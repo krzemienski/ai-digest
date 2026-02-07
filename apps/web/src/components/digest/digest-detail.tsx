@@ -50,7 +50,7 @@ export function DigestDetail({ digestDate, synthesis, items }: DigestDetailProps
 
       {/* Date header */}
       <div className="mb-6">
-        <h1 className="font-mono text-3xl font-bold text-cyber-cyan tracking-wider">
+        <h1 className="font-mono text-2xl md:text-3xl font-bold text-cyber-cyan tracking-wider">
           {digestDate}
         </h1>
       </div>

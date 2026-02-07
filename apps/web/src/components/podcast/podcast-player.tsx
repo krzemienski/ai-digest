@@ -130,7 +130,7 @@ export function PodcastPlayer() {
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-lg mx-auto p-6">
+    <div className="flex flex-col items-center w-full max-w-lg mx-auto px-4 py-6 md:px-6">
       {/* Episode info */}
       <div className="text-center mb-4 w-full">
         <h2 className="font-mono text-cyber-cyan text-lg leading-tight truncate shadow-neon-cyan">

@@ -54,8 +54,8 @@ export function SubscriberTable({ subscribers }: SubscriberTableProps) {
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm font-mono">
+      <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+        <table className="w-full text-sm font-mono min-w-[400px]">
           <thead>
             <tr className="border-b border-cyber-overlay">
               <th className="text-left py-3 px-4 text-cyber-text-secondary uppercase text-xs">
