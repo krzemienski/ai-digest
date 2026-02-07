@@ -765,7 +765,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: FR-24, AC-32.1, AC-32.2, AC-32.3, AC-32.4_
   - _Design: search/ components, Search API route_
 
-- [ ] 6.11 Build newsletter archive and subscribe form
+- [x] 6.11 Build newsletter archive and subscribe form
   - **Do**:
     1. Create `apps/web/src/app/archive/page.tsx` -- list past digests by date, each renders content in web cyberpunk theme (not email HTML)
     2. Create `apps/web/src/app/api/subscribe/route.ts` -- POST with email validation (Zod), creates subscriber in DB + Resend audience
