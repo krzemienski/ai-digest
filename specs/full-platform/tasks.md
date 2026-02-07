@@ -780,7 +780,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: FR-20, FR-25, AC-24.1, AC-24.3, AC-33.1, AC-33.2, AC-33.3_
   - _Design: archive page, subscribe components_
 
-- [ ] 6.12 [VERIFY] Quality checkpoint: full web app type-check + all consumer pages
+- [x] 6.12 [VERIFY] Quality checkpoint: full web app type-check + all consumer pages
   - **Do**: Type-check web app, verify all consumer pages render
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p apps/web/tsconfig.json`
   - **Done when**: Zero type errors, all consumer pages (digests, detail, podcasts, player, search, archive) render at all breakpoints
@@ -792,7 +792,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
 
 Focus: Build all admin pages -- source management, pipeline monitoring, config, voice settings, subscribers.
 
-- [ ] 7.1 Build admin layout with sidebar and auth gate
+- [x] 7.1 Build admin layout with sidebar and auth gate
   - **Do**:
     1. Create `apps/web/src/components/layout/sidebar.tsx` -- admin sidebar nav with links: Dashboard, Sources, Pipeline, Config, Podcast, Schedule, Subscribers
     2. Create `apps/web/src/app/admin/layout.tsx` -- admin layout wrapping sidebar + content area
