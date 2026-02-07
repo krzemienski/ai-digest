@@ -835,7 +835,7 @@ Focus: Build all admin pages -- source management, pipeline monitoring, config, 
   - _Requirements: FR-27_
   - _Design: AdminDashboard_
 
-- [ ] 7.4 Build source management page
+- [x] 7.4 Build source management page
   - **Do**:
     1. Create `apps/web/src/components/admin/source-table.tsx` -- table listing sources with type, name, config, enabled toggle, edit/delete actions
     2. Create `apps/web/src/components/admin/source-form.tsx` -- dialog form for add/edit source (type selector, config fields per type, name, enabled)
