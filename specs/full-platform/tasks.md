@@ -1004,7 +1004,7 @@ Focus: Responsive refinement, cyberpunk effects, full end-to-end pipeline run, f
   - _Requirements: FR-40, AC-34.1, AC-34.2, AC-34.3_
   - _Design: Performance Considerations_
 
-- [ ] 9.2 Enhance cyberpunk effects with reduced-motion support
+- [x] 9.2 Enhance cyberpunk effects with reduced-motion support
   - **Do**:
     1. Add neon glow effects to active player controls
     2. Add scanline overlay option to card surfaces

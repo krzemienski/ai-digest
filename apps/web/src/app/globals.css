@@ -30,10 +30,26 @@ body {
   }
 }
 
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes glitch {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: none; }
+  20% { clip-path: inset(10% 0 60% 0); transform: translate(-2px, 2px); }
+  40% { clip-path: inset(40% 0 20% 0); transform: translate(2px, -2px); }
+  60% { clip-path: inset(60% 0 10% 0); transform: translate(-1px, 1px); }
+  80% { clip-path: inset(20% 0 50% 0); transform: translate(1px, -1px); }
+}
+
+@keyframes neon-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
