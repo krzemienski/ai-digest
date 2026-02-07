@@ -693,13 +693,13 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: AC-27.1, AC-27.2, AC-27.3_
   - _Design: digest-detail.tsx_
 
-- [ ] 6.6 [VERIFY] Quality checkpoint: web app type-check + visual
+- [x] 6.6 [VERIFY] Quality checkpoint: web app type-check + visual
   - **Do**: Type-check web app, verify pages render
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p apps/web/tsconfig.json`
   - **Done when**: Zero type errors, digest pages render at all breakpoints
   - **Commit**: `chore(web): pass phase 6a quality checkpoint` (only if fixes needed)
 
-- [ ] 6.7 Build Zustand audio store and podcast player
+- [x] 6.7 Build Zustand audio store and podcast player
   - **Do**:
     1. Create `apps/web/src/stores/audio-store.ts` -- Zustand store with all state and actions from design.md
     2. Create `apps/web/src/components/podcast/player-controls.tsx` -- play/pause, skip forward 30s, skip back 15s
