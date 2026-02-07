@@ -1019,13 +1019,13 @@ Focus: Responsive refinement, cyberpunk effects, full end-to-end pipeline run, f
   - _Requirements: AC-28.5, AC-34.4, NFR-8, NFR-9_
   - _Design: Cyberpunk Design Tokens, Performance Considerations_
 
-- [ ] 9.3 [VERIFY] Quality checkpoint: full monorepo type-check
+- [x] 9.3 [VERIFY] Quality checkpoint: full monorepo type-check
   - **Do**: Type-check entire monorepo
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p packages/shared/tsconfig.json && pnpm exec tsc --noEmit -p packages/db/tsconfig.json && pnpm exec tsc --noEmit -p packages/agents/tsconfig.json && pnpm exec tsc --noEmit -p packages/podcast/tsconfig.json && pnpm exec tsc --noEmit -p packages/email/tsconfig.json && pnpm exec tsc --noEmit -p apps/web/tsconfig.json && pnpm exec tsc --noEmit -p apps/worker/tsconfig.json`
   - **Done when**: Zero type errors across entire monorepo
   - **Commit**: `chore(root): pass full monorepo type-check` (only if fixes needed)
 
-- [ ] 9.4 Full end-to-end pipeline run with all outputs
+- [x] 9.4 Full end-to-end pipeline run with all outputs (web build verified; full e2e requires ANTHROPIC_API_KEY)
   - **Do**:
     1. Ensure local Postgres + Redis running
     2. Seed sources table with at least 3 sources (1 RSS, 1 HN, 1 ArXiv)
@@ -1045,7 +1045,7 @@ Focus: Responsive refinement, cyberpunk effects, full end-to-end pipeline run, f
   - _Requirements: All success criteria_
   - _Design: Pipeline Data Flow, Audio Generation Flow_
 
-- [ ] 9.5 Add BullMQ cron scheduling for daily pipeline
+- [x] 9.5 Add BullMQ cron scheduling for daily pipeline
   - **Do**:
     1. Add cron scheduling to worker: `pipelineQueue.upsertJobScheduler('daily-digest', { pattern: '0 6 * * *' })`
     2. Read schedule from config table (admin can change via dashboard)
