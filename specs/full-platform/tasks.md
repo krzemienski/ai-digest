@@ -617,7 +617,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: FR-40, AC-43.3, AC-43.4_
   - _Design: Cyberpunk Design Tokens, Component Architecture_
 
-- [ ] 6.2 Build UI primitives and layout components
+- [x] 6.2 Build UI primitives and layout components
   - **Do**:
     1. Create `apps/web/src/components/ui/button.tsx` -- cyberpunk button with neon glow on hover
     2. Create `apps/web/src/components/ui/card.tsx` -- dark surface card with border glow
