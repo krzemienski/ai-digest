@@ -470,7 +470,7 @@ Focus: Generate podcast from digest -- script generation via Claude, TTS via Ele
   - _Requirements: FR-15, AC-19.2, AC-19.3, AC-19.4_
   - _Design: tts.ts_
 
-- [ ] 4.4 Implement ffmpeg audio assembly
+- [x] 4.4 Implement ffmpeg audio assembly
   - **Do**:
     1. Create `packages/podcast/src/assembler.ts`
     2. Write segment audio buffers to temp files
