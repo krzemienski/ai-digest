@@ -52,7 +52,7 @@ Focus: Scaffold the monorepo, define all shared types, create DB schema, get Tur
   - _Requirements: FR-38, AC-44.1, AC-44.3, AC-44.4_
   - _Design: Turborepo Package Structure, Implementation Step 1_
 
-- [ ] 1.2 Create packages/shared with all TypeScript types
+- [x] 1.2 Create packages/shared with all TypeScript types
   - **Do**:
     1. Create `packages/shared/package.json` with name `@ai-digest/shared`, main `./src/index.ts`
     2. Create `packages/shared/tsconfig.json` extending base
@@ -79,7 +79,7 @@ Focus: Scaffold the monorepo, define all shared types, create DB schema, get Tur
   - _Requirements: FR-8, AC-8.1, AC-8.2_
   - _Design: packages/shared section_
 
-- [ ] 1.3 Create packages/db with Drizzle schema for all 10 tables
+- [x] 1.3 Create packages/db with Drizzle schema for all 10 tables
   - **Do**:
     1. Create `packages/db/package.json` with deps: `drizzle-orm`, `postgres`, `drizzle-kit`, `@ai-digest/shared`
     2. Create `packages/db/tsconfig.json` extending base
