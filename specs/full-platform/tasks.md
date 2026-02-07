@@ -486,7 +486,7 @@ Focus: Generate podcast from digest -- script generation via Claude, TTS via Ele
   - _Requirements: FR-16, AC-20.1, AC-20.2_
   - _Design: assembler.ts_
 
-- [ ] 4.5 Implement Cloudflare R2 upload
+- [x] 4.5 Implement Cloudflare R2 upload
   - **Do**:
     1. Create `packages/podcast/src/r2-upload.ts`
     2. Initialize S3 client with R2 credentials (R2_ENDPOINT, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY)
