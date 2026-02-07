@@ -750,7 +750,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: FR-23, AC-30.1, AC-30.2, AC-30.3, AC-30.4, AC-30.5_
   - _Design: transcript-view.tsx, transcript-search.tsx_
 
-- [ ] 6.10 Build search page and API
+- [x] 6.10 Build search page and API
   - **Do**:
     1. Create `apps/web/src/app/api/search/route.ts` -- GET with query param `q`, uses PostgreSQL FTS on normalized_items + transcripts
     2. Create `apps/web/src/components/search/search-input.tsx` -- search bar with debounce (300ms)
