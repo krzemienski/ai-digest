@@ -824,7 +824,7 @@ Focus: Build all admin pages -- source management, pipeline monitoring, config, 
   - _Requirements: FR-26, FR-27, FR-28, FR-29, FR-30, FR-31_
   - _Design: Admin API routes table_
 
-- [ ] 7.3 Build admin dashboard overview page
+- [x] 7.3 Build admin dashboard overview page
   - **Do**:
     1. Create `apps/web/src/components/admin/dashboard-stats.tsx` -- overview cards: total items, total runs, subscriber count, last run status, next scheduled run
     2. Create `apps/web/src/app/admin/page.tsx` -- dashboard page combining stats, recent run summary, quick actions (trigger pipeline)
