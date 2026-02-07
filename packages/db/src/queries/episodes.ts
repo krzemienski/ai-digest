@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import type { Database } from "../client";
-import { episodes } from "../schema";
+import { episodes, transcripts } from "../schema";
 
 export async function getEpisodes(db: Database, opts: { limit?: number; offset?: number } = {}) {
   const { limit = 20, offset = 0 } = opts;
@@ -25,4 +25,18 @@ export async function createEpisode(db: Database, data: typeof episodes.$inferIn
 export async function updateEpisodeStatus(db: Database, id: string, status: string, updates: Partial<typeof episodes.$inferInsert> = {}) {
   const rows = await db.update(episodes).set({ ...updates, status }).where(eq(episodes.id, id)).returning();
   return rows[0]!;
+}
+
+export async function getEpisodeWithTranscript(db: Database, id: string) {
+  const episode = await db.query.episodes.findFirst({
+    where: eq(episodes.id, id),
+  });
+
+  if (!episode) return null;
+
+  const transcript = await db.query.transcripts.findFirst({
+    where: eq(transcripts.episodeId, id),
+  });
+
+  return { ...episode, transcript: transcript ?? null };
 }
