@@ -408,7 +408,7 @@ Focus: Wire Claude Agent SDK for the 4 AI stages. Each stage gets a prompt templ
   - _Requirements: FR-34, FR-39, AC-14.4, AC-15.1_
   - _Design: coordinator.ts_
 
-- [ ] 3.8 [VERIFY] Quality checkpoint: full pipeline type-check + E2E run
+- [x] 3.8 [VERIFY] Quality checkpoint: full pipeline type-check + E2E run
   - **Do**: Type-check all packages; run one complete pipeline to verify all stages work together
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm exec tsc --noEmit -p packages/agents/tsconfig.json && pnpm exec tsc --noEmit -p apps/worker/tsconfig.json`
   - **Done when**: Zero type errors; pipeline_run shows "completed" status with items scored and digest created
@@ -420,7 +420,7 @@ Focus: Wire Claude Agent SDK for the 4 AI stages. Each stage gets a prompt templ
 
 Focus: Generate podcast from digest -- script generation via Claude, TTS via ElevenLabs, audio assembly via ffmpeg, upload to R2.
 
-- [ ] 4.1 Create podcast script generation prompt
+- [x] 4.1 Create podcast script generation prompt
   - **Do**:
     1. Create `packages/agents/src/prompts/podcast-script.ts`
     2. System prompt instructs Claude Opus to generate multi-speaker dialogue
