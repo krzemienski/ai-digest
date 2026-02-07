@@ -5,3 +5,4 @@ export * from "./subscribers";
 export * from "./pipeline";
 export * from "./config";
 export * from "./search";
+export * from "./sources";
