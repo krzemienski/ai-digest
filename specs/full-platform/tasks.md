@@ -573,7 +573,7 @@ Focus: Build cyberpunk email template, wire Resend sending, subscriber managemen
   - _Requirements: FR-19, FR-20, AC-22.6, AC-23.1, AC-23.4, AC-24.2, AC-24.4_
   - _Design: send.ts, subscribers.ts_
 
-- [ ] 5.3 Wire newsletter sending into pipeline worker
+- [x] 5.3 Wire newsletter sending into pipeline worker
   - **Do**:
     1. Create `apps/worker/src/processors/newsletter.ts`:
        - Read active subscribers from DB

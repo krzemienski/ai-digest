@@ -3,10 +3,12 @@ import { db, queries } from "@ai-digest/db";
 import { runPipeline, defaultConfig, BudgetTracker } from "@ai-digest/agents";
 import type { StageCallback } from "@ai-digest/agents";
 import { processPodcast } from "./podcast";
+import { processNewsletter } from "./newsletter";
 
 interface PipelineJobData {
   triggerType: "scheduled" | "manual";
   enablePodcast?: boolean;
+  enableNewsletter?: boolean;
 }
 
 export async function processPipeline(job: Job<PipelineJobData>): Promise<void> {
@@ -55,6 +57,25 @@ export async function processPipeline(job: Job<PipelineJobData>): Promise<void> 
     } catch (error) {
       console.error("[Pipeline] Podcast generation failed (non-fatal):", error);
       // Podcast failure is non-fatal -- the pipeline itself succeeded
+    }
+  }
+
+  // Newsletter stage: send after pipeline completes
+  const enableNewsletter = job.data.enableNewsletter ?? true;
+  if (enableNewsletter && result.digestId) {
+    console.log("[Pipeline] Starting newsletter delivery...");
+    try {
+      const newsletterResult = await processNewsletter(result.digestId);
+      if (newsletterResult) {
+        console.log(
+          `[Pipeline] Newsletter delivered: ${newsletterResult.sent} sent, ${newsletterResult.failed} failed`
+        );
+      } else {
+        console.log("[Pipeline] Newsletter skipped (no subscribers or digest not found)");
+      }
+    } catch (error) {
+      console.error("[Pipeline] Newsletter delivery failed (non-fatal):", error);
+      // Newsletter failure is non-fatal -- the pipeline itself succeeded
     }
   }
 }

@@ -13,7 +13,8 @@
     "@ai-digest/agents": "workspace:*",
     "@ai-digest/db": "workspace:*",
     "@ai-digest/podcast": "workspace:*",
-    "@ai-digest/shared": "workspace:*"
+    "@ai-digest/shared": "workspace:*",
+    "@ai-digest/email": "workspace:*"
   },
   "devDependencies": {
     "tsx": "^4.0.0"
