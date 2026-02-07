@@ -346,7 +346,7 @@ Focus: Wire Claude Agent SDK for the 4 AI stages. Each stage gets a prompt templ
   - _Requirements: FR-10, AC-11.1, AC-11.2, AC-11.5_
   - _Design: stages/score.ts_
 
-- [ ] 3.4 Implement deduplication stage (Claude Haiku)
+- [x] 3.4 Implement deduplication stage (Claude Haiku)
   - **Do**:
     1. Create `packages/agents/src/stages/dedup.ts`
     2. Group scored items by topic cluster
