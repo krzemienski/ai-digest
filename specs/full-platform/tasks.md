@@ -554,7 +554,7 @@ Focus: Build cyberpunk email template, wire Resend sending, subscriber managemen
   - _Requirements: FR-18, AC-22.1, AC-22.2, AC-22.3, AC-22.4, AC-22.5_
   - _Design: packages/email, digest-email.tsx_
 
-- [ ] 5.2 Implement Resend send wrapper and subscriber management
+- [x] 5.2 Implement Resend send wrapper and subscriber management
   - **Do**:
     1. Create `packages/email/src/send.ts`:
        - Initialize Resend client with RESEND_API_KEY
