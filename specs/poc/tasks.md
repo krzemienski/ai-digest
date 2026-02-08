@@ -479,13 +479,13 @@ created: 2026-02-08
   - _Requirements: FR-8, AC-13.1 through AC-14.5_
   - _Design: Screen Inventory (screens 11-12)_
 
-- [ ] 5.7 [VERIFY] Quality checkpoint: P1 screens batch 1
+- [x] 5.7 [VERIFY] Quality checkpoint: P1 screens batch 1
   - **Do**: Run type check
   - **Verify**: `pnpm --filter @ai-digest/mobile check-types 2>&1 | tail -5` exits 0
   - **Done when**: Zero type errors
   - **Commit**: `chore(mobile): pass P1 batch 1 quality checkpoint` (only if fixes needed)
 
-- [ ] 5.8 Implement Profile screen
+- [x] 5.8 Implement Profile screen
   - **Do**:
     1. Create `src/features/profile/ProfileView.tsx`: Profile section (avatar placeholder, display name, email from authStore). Topic preferences editor reusing TopicChip grid. Notification toggles (push, email, frequency). Appearance section (dark theme indicator). App info (version from app.json, privacy/terms links). Sign out with confirmation Alert.
     2. Create `src/features/profile/TopicEditor.tsx`: Reusable topic chip selector (same as onboarding but edit mode)
@@ -497,7 +497,7 @@ created: 2026-02-08
   - _Requirements: FR-14, AC-20.1 through AC-20.6_
   - _Design: Screen Inventory (screen 14)_
 
-- [ ] 5.9 Implement Admin screens (Config, Sources, Pipeline Monitor, Session Detail)
+- [x] 5.9 Implement Admin screens (Config, Sources, Pipeline Monitor, Session Detail)
   - **Do**:
     1. Create `src/app/admin/_layout.tsx`: Stack layout with admin auth guard (check authStore.isAdmin, redirect if not)
     2. Create `src/features/admin/ConfigDashboard.tsx`: Grouped settings using SettingsGroup. Sections: Sources, Processing, Delivery, Schedule. Toggle switches, text inputs with glow focus. Save action with green flash feedback. Reset to defaults with confirmation.
@@ -512,7 +512,7 @@ created: 2026-02-08
   - _Requirements: FR-10, FR-11, AC-15.1 through AC-18.5_
   - _Design: Screen Inventory (screens 15-18)_
 
-- [ ] 5.10 Implement Notifications, Error screen, and Empty states
+- [x] 5.10 Implement Notifications, Error screen, and Empty states
   - **Do**:
     1. Create `src/features/shared/NotificationCenter.tsx`: Chronological FlatList with icon, title, message, timestamp. Unread indicator (cyan dot Badge). Tap navigates to relevant content. "Mark all read" action. Swipe-to-dismiss. Developer notifications distinguished by magenta accent.
     2. Create `src/app/notifications.tsx` route
@@ -526,7 +526,7 @@ created: 2026-02-08
   - _Requirements: FR-13, FR-17, FR-18, AC-21.1 through AC-22.5, AC-23.1 through AC-23.6_
   - _Design: Screen Inventory (screens 19-24)_
 
-- [ ] 5.11 [VERIFY] Quality checkpoint: all P1 screens
+- [x] 5.11 [VERIFY] Quality checkpoint: all P1 screens
   - **Do**: Run full type check on mobile and web packages
   - **Verify**: `pnpm check-types 2>&1 | tail -10` exits 0
   - **Done when**: Zero type errors across entire project
@@ -536,7 +536,7 @@ created: 2026-02-08
 
 ## Phase 6: P2 Screens (Summary + Desktop Responsive + Email Template)
 
-- [ ] 6.1 Implement Weekly/Monthly Summary screen
+- [x] 6.1 Implement Weekly/Monthly Summary screen
   - **Do**:
     1. Create `src/features/digest/DigestSummary.tsx`: Top articles ranked list. Stats section: articles read, podcasts listened, time spent (placeholder data for now). Topic trend visualization using colored bars (NativeWind styled View bars). Toggle between weekly/monthly views. Share summary action.
     2. Create `src/app/summary.tsx` route
@@ -547,7 +547,7 @@ created: 2026-02-08
   - _Requirements: FR-16, AC-25.1 through AC-25.5_
   - _Design: Screen Inventory (screen 26)_
 
-- [ ] 6.2 Implement desktop responsive layouts (1024px+ breakpoints)
+- [x] 6.2 Implement desktop responsive layouts (1024px+ breakpoints)
   - **Do**:
     1. Use `useWindowDimensions` to detect 1024px+ breakpoint
     2. Create responsive variants: Home becomes master-detail (feed left, detail right). Tab bar becomes sidebar nav. Podcast player becomes sidebar widget instead of overlay.
@@ -560,7 +560,7 @@ created: 2026-02-08
   - _Requirements: FR-20, FR-21, AC-27.1 through AC-28.6, NFR-14_
   - _Design: Screen Inventory (screens 30-31)_
 
-- [ ] 6.3 Implement cyberpunk email newsletter template
+- [x] 6.3 Implement cyberpunk email newsletter template
   - **Do**:
     1. Create `apps/mobile/src/email-template/newsletter.html`: 600px max width, inline CSS, dark-first design. Off-black #0D0D14 (not #000000), off-white #F0F0F5 (not #FFFFFF). Meta tags: color-scheme, supported-color-schemes. Neon accents for headings, CTAs, dividers. System fonts only. Light-mode fallback via `@media (prefers-color-scheme: light)`.
     2. Structure: header with logo, digest title, content sections with article summaries, CTA buttons (cyan), footer with unsubscribe link
@@ -572,7 +572,7 @@ created: 2026-02-08
   - _Requirements: FR-19, AC-26.1 through AC-26.8_
   - _Design: Email Newsletter Design_
 
-- [ ] 6.4 [VERIFY] Quality checkpoint: P2 screens + web export
+- [x] 6.4 [VERIFY] Quality checkpoint: P2 screens + web export
   - **Do**: Run type check and verify web export builds
   - **Verify**: `pnpm --filter @ai-digest/mobile check-types 2>&1 | tail -5` exits 0 && `cd apps/mobile && npx expo export:web 2>&1 | tail -5`
   - **Done when**: Types pass; web export succeeds
@@ -582,7 +582,7 @@ created: 2026-02-08
 
 ## Phase 7: Stitch Design Generation
 
-- [ ] 7.1 Create Stitch project and generate 3 anchor screens (Pro model)
+- [x] 7.1 Create Stitch project and generate 3 anchor screens (Pro model)
   - **Do**:
     1. Call `create_project({ title: "AI Digest Cyberpunk Mobile" })` via Stitch MCP
     2. Store returned project name/ID
@@ -598,7 +598,7 @@ created: 2026-02-08
   - _Requirements: FR-1, AC-1.1, AC-1.2, AC-1.4_
   - _Design: Stitch MCP Workflow, Generation Order_
 
-- [ ] 7.2 Generate P0 + core screens (Flash model, 5 screens)
+- [x] 7.2 Generate P0 + core screens (Flash model, 5 screens)
   - **Do**: Generate with GEMINI_3_FLASH + design system prefix:
     1. Digest Detail: Article detail view with full content, code blocks, back nav, share/bookmark
     2. Mini Player: Persistent 64px bar above tab bar with episode art, truncated title, play/pause
@@ -612,7 +612,7 @@ created: 2026-02-08
   - _Requirements: FR-1, AC-1.3_
   - _Design: Generation Order Phase 2_
 
-- [ ] 7.3 Generate P1 feature screens (Flash model, 8 screens)
+- [x] 7.3 Generate P1 feature screens (Flash model, 8 screens)
   - **Do**: Generate with GEMINI_3_FLASH + design system prefix:
     1. Onboarding Welcome: Hero graphic, tagline, Get Started CTA, Skip, pagination dots
     2. Onboarding Topics: Grid of selectable topic chips with neon glow on selected
@@ -629,7 +629,7 @@ created: 2026-02-08
   - _Requirements: FR-1, AC-1.3_
   - _Design: Generation Order Phase 3_
 
-- [ ] 7.4 Generate admin + edge case + desktop + email screens (Flash model, 10 screens)
+- [x] 7.4 Generate admin + edge case + desktop + email screens (Flash model, 10 screens)
   - **Do**: Generate with GEMINI_3_FLASH + design system prefix:
     1. Config Dashboard: Grouped settings with toggles and inputs
     2. Source Management: Source list with status indicators, add form

@@ -1,0 +1,17 @@
+{
+  "source": "spec",
+  "name": "poc",
+  "basePath": "./specs/poc",
+  "phase": "execution",
+  "taskIndex": 46,
+  "totalTasks": 52,
+  "taskIteration": 1,
+  "maxTaskIterations": 5,
+  "globalIteration": 2,
+  "maxGlobalIterations": 100,
+  "awaitingApproval": false,
+  "recoveryMode": false,
+  "maxFixTasksPerOriginal": 3,
+  "maxFixTaskDepth": 3,
+  "fixTaskMap": {}
+}
