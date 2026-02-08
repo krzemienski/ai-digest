@@ -1,7 +1,7 @@
 import type { Job } from "bullmq";
 import { db, queries } from "@ai-digest/db";
 import { runPipeline, defaultConfig, BudgetTracker } from "@ai-digest/agents";
-import type { StageCallback } from "@ai-digest/agents";
+import type { StageCallbackFactory, StageTrackingData } from "@ai-digest/agents";
 import { processPodcast } from "./podcast";
 import { processNewsletter } from "./newsletter";
 
@@ -11,25 +11,57 @@ interface PipelineJobData {
   enableNewsletter?: boolean;
 }
 
+const stageCallbackFactory: StageCallbackFactory = (pipelineRunId: string) => {
+  const stageIds = new Map<string, string>();
+
+  return {
+    onStageStart: async (stageName: string) => {
+      console.log(`[Pipeline] Stage ${stageName}: running`);
+      const stage = await queries.createPipelineStage(db, {
+        pipelineRunId,
+        stageName,
+        status: "running",
+        startedAt: new Date(),
+      });
+      stageIds.set(stageName, stage.id);
+    },
+    onStageComplete: async (stageName: string, data: StageTrackingData) => {
+      console.log(`[Pipeline] Stage ${stageName}: completed (${data.itemsProcessed} items)`);
+      const stageId = stageIds.get(stageName);
+      if (stageId) {
+        await queries.updatePipelineStage(db, stageId, {
+          status: "completed",
+          completedAt: new Date(),
+          itemsProcessed: data.itemsProcessed,
+          modelUsed: data.modelUsed ?? null,
+          tokensInput: data.tokensInput ?? null,
+          tokensOutput: data.tokensOutput ?? null,
+          costUsd: data.costUsd ?? null,
+        });
+      }
+    },
+    onStageFail: async (stageName: string, error: unknown) => {
+      console.error(`[Pipeline] Stage ${stageName}: failed`, error);
+      const stageId = stageIds.get(stageName);
+      if (stageId) {
+        await queries.updatePipelineStage(db, stageId, {
+          status: "failed",
+          completedAt: new Date(),
+          errorDetails: error instanceof Error
+            ? { message: error.message, stack: error.stack }
+            : { message: String(error) },
+        });
+      }
+    },
+  };
+};
+
 export async function processPipeline(job: Job<PipelineJobData>): Promise<void> {
   const { triggerType, enablePodcast = true } = job.data;
 
   console.log(`[Pipeline] Starting ${triggerType} pipeline run`);
 
-  // Create stage tracking callbacks
-  const callbacks: StageCallback = {
-    onStageStart: async (stageName: string) => {
-      console.log(`[Pipeline] Stage ${stageName}: running`);
-    },
-    onStageComplete: async (stageName: string, itemsProcessed: number) => {
-      console.log(`[Pipeline] Stage ${stageName}: completed (${itemsProcessed} items)`);
-    },
-    onStageFail: async (stageName: string, error: unknown) => {
-      console.error(`[Pipeline] Stage ${stageName}: failed`, error);
-    },
-  };
-
-  const result = await runPipeline(db, defaultConfig, triggerType, callbacks);
+  const result = await runPipeline(db, defaultConfig, triggerType, stageCallbackFactory);
 
   if (result.error) {
     throw new Error(`Pipeline failed: ${result.error}`);

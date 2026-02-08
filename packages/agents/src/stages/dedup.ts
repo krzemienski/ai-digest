@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type { Database } from "@ai-digest/db";
 import { normalizedItems, eq, isNull, and } from "@ai-digest/db";
 import { BudgetTracker } from "../budget";
@@ -6,12 +7,15 @@ import {
   DEDUP_SYSTEM_PROMPT,
   buildDedupPrompt,
   type DedupInput,
-  type DedupOutput,
 } from "../prompts/dedup";
+import { DedupResultSchema } from "../schemas/dedup.schema";
 
 interface DedupResult {
   duplicatesFound: number;
   costUsd: number;
+  modelUsed: string;
+  tokensInput: number;
+  tokensOutput: number;
 }
 
 export async function runDedup(
@@ -32,8 +36,10 @@ export async function runDedup(
   // Only dedup items that have been scored
   const scored = items.filter(item => item.compositeScore !== null);
 
+  const MODEL = "claude-haiku-4-5-20251001";
+
   if (scored.length < 2) {
-    return { duplicatesFound: 0, costUsd: 0 };
+    return { duplicatesFound: 0, costUsd: 0, modelUsed: MODEL, tokensInput: 0, tokensOutput: 0 };
   }
 
   // Group by primary topic (first category)
@@ -46,6 +52,8 @@ export async function runDedup(
 
   let totalDuplicates = 0;
   let totalCost = 0;
+  let totalInputTokens = 0;
+  let totalOutputTokens = 0;
 
   for (const [topic, clusterItems] of Object.entries(clusters)) {
     // Skip clusters with only 1 item - no possible duplicates
@@ -68,10 +76,11 @@ export async function runDedup(
 
     try {
       const response = await client.messages.create({
-        model: "claude-haiku-4-5-20251001",
+        model: MODEL,
         max_tokens: 2048,
-        system: DEDUP_SYSTEM_PROMPT,
+        system: [{ type: "text", text: DEDUP_SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
         messages: [{ role: "user", content: userPrompt }],
+        output_config: { format: zodOutputFormat(DedupResultSchema) },
       });
 
       const textBlock = response.content.find(block => block.type === "text");
@@ -80,9 +89,8 @@ export async function runDedup(
         continue;
       }
 
-      const jsonStr = textBlock.text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-      const parsed = JSON.parse(jsonStr) as { results: DedupOutput[] } | DedupOutput[];
-      const results = Array.isArray(parsed) ? parsed : parsed.results;
+      const parsed = DedupResultSchema.parse(JSON.parse(textBlock.text));
+      const results = parsed.results;
 
       for (const result of results) {
         if (result.confidence >= 0.7) {
@@ -93,9 +101,13 @@ export async function runDedup(
         }
       }
 
-      // Haiku pricing: $1/M input, $5/M output
-      const cost = (response.usage.input_tokens * 1 + response.usage.output_tokens * 5) / 1_000_000;
+      // Haiku 4.5 pricing: $1/M input, $5/M output
+      const inputTokens = response.usage.input_tokens;
+      const outputTokens = response.usage.output_tokens;
+      const cost = (inputTokens * 1 + outputTokens * 5) / 1_000_000;
       totalCost = totalCost + cost;
+      totalInputTokens = totalInputTokens + inputTokens;
+      totalOutputTokens = totalOutputTokens + outputTokens;
       budget.addCost(cost);
 
       console.log(`Dedup cluster "${topic}": ${results.length} pairs found, ${totalDuplicates} marked, cost: $${cost.toFixed(4)}`);
@@ -104,5 +116,5 @@ export async function runDedup(
     }
   }
 
-  return { duplicatesFound: totalDuplicates, costUsd: totalCost };
+  return { duplicatesFound: totalDuplicates, costUsd: totalCost, modelUsed: MODEL, tokensInput: totalInputTokens, tokensOutput: totalOutputTokens };
 }

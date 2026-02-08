@@ -17,17 +17,27 @@ export interface PipelineResult {
   error: string | null;
 }
 
+export interface StageTrackingData {
+  itemsProcessed: number;
+  modelUsed?: string;
+  tokensInput?: number;
+  tokensOutput?: number;
+  costUsd?: number;
+}
+
 export interface StageCallback {
   onStageStart: (stageName: string) => Promise<void>;
-  onStageComplete: (stageName: string, itemsProcessed: number) => Promise<void>;
+  onStageComplete: (stageName: string, data: StageTrackingData) => Promise<void>;
   onStageFail: (stageName: string, error: unknown) => Promise<void>;
 }
+
+export type StageCallbackFactory = (pipelineRunId: string) => StageCallback;
 
 export async function runPipeline(
   db: Database,
   config: DigestConfig,
   triggerType: "scheduled" | "manual",
-  callbacks?: StageCallback
+  callbackFactory?: StageCallbackFactory
 ): Promise<PipelineResult> {
   const budget = new BudgetTracker(config.pipeline.maxBudgetUsd);
 
@@ -37,13 +47,15 @@ export async function runPipeline(
     status: "running",
   });
 
+  const callbacks = callbackFactory?.(run.id);
+
   let digestId: string | null = null;
 
   try {
     // Stage 1: Ingest
     await callbacks?.onStageStart("ingest");
     const rawItems = await runIngestion(db);
-    await callbacks?.onStageComplete("ingest", rawItems.length);
+    await callbacks?.onStageComplete("ingest", { itemsProcessed: rawItems.length });
 
     if (rawItems.length === 0) {
       await queries.updatePipelineRun(db, run.id, {
@@ -62,29 +74,53 @@ export async function runPipeline(
     // Stage 2: Normalize
     await callbacks?.onStageStart("normalize");
     const { inserted } = await runNormalization(db, rawItems, run.id);
-    await callbacks?.onStageComplete("normalize", inserted);
+    await callbacks?.onStageComplete("normalize", { itemsProcessed: inserted });
 
     // Stage 3: Categorize
     await callbacks?.onStageStart("categorize");
     const categorizeResult = await runCategorize(db, run.id, config.topics, budget);
-    await callbacks?.onStageComplete("categorize", categorizeResult.categorized);
+    await callbacks?.onStageComplete("categorize", {
+      itemsProcessed: categorizeResult.categorized,
+      modelUsed: categorizeResult.modelUsed,
+      tokensInput: categorizeResult.tokensInput,
+      tokensOutput: categorizeResult.tokensOutput,
+      costUsd: categorizeResult.costUsd,
+    });
 
     // Stage 4: Score
     await callbacks?.onStageStart("score");
     const scoreResult = await runScore(db, run.id, config.scoring, budget);
-    await callbacks?.onStageComplete("score", scoreResult.scored);
+    await callbacks?.onStageComplete("score", {
+      itemsProcessed: scoreResult.scored,
+      modelUsed: scoreResult.modelUsed,
+      tokensInput: scoreResult.tokensInput,
+      tokensOutput: scoreResult.tokensOutput,
+      costUsd: scoreResult.costUsd,
+    });
 
     // Stage 5: Dedup
     await callbacks?.onStageStart("dedup");
     const dedupResult = await runDedup(db, run.id, budget);
-    await callbacks?.onStageComplete("dedup", dedupResult.duplicatesFound);
+    await callbacks?.onStageComplete("dedup", {
+      itemsProcessed: dedupResult.duplicatesFound,
+      modelUsed: dedupResult.modelUsed,
+      tokensInput: dedupResult.tokensInput,
+      tokensOutput: dedupResult.tokensOutput,
+      costUsd: dedupResult.costUsd,
+    });
 
     // Stage 6: Synthesize
     await callbacks?.onStageStart("synthesize");
     const synthesizeResult = await runSynthesize(
       db, run.id, config.synthesis, config.scoring, budget
     );
-    await callbacks?.onStageComplete("synthesize", synthesizeResult.itemCount);
+    await callbacks?.onStageComplete("synthesize", {
+      itemsProcessed: synthesizeResult.itemCount,
+      modelUsed: synthesizeResult.modelUsed,
+      tokensInput: synthesizeResult.tokensInput,
+      tokensOutput: synthesizeResult.tokensOutput,
+      costUsd: synthesizeResult.costUsd,
+    });
 
     // Stage 7: Output (create digest)
     await callbacks?.onStageStart("output");
@@ -92,7 +128,7 @@ export async function runPipeline(
       db, run.id, synthesizeResult.synthesis, config.synthesis.style, config.scoring, config.synthesis
     );
     digestId = outputResult.digestId;
-    await callbacks?.onStageComplete("output", outputResult.itemCount);
+    await callbacks?.onStageComplete("output", { itemsProcessed: outputResult.itemCount });
 
     // Update run as completed
     const totalCost = budget.totalSpent;

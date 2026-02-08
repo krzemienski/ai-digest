@@ -8,7 +8,7 @@ export { runDedup } from "./stages/dedup";
 export { runSynthesize } from "./stages/synthesize";
 export { runOutput } from "./stages/output";
 export { runPipeline } from "./coordinator";
-export type { PipelineResult, StageCallback } from "./coordinator";
+export type { PipelineResult, StageCallback, StageTrackingData, StageCallbackFactory } from "./coordinator";
 export {
   PODCAST_SCRIPT_SYSTEM_PROMPT,
   buildPodcastScriptPrompt,

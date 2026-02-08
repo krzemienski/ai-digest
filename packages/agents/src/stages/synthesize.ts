@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type { Database } from "@ai-digest/db";
 import { normalizedItems, eq, and, isNull, gte, desc } from "@ai-digest/db";
 import type { SynthesisConfig, ScoringConfig } from "@ai-digest/shared";
@@ -9,12 +10,16 @@ import {
   buildSynthesizePrompt,
   type SynthesizeInput,
 } from "../prompts/synthesize";
+import { SynthesizeResultSchema } from "../schemas/synthesize.schema";
 
 interface SynthesizeResult {
   synthesis: string;
   topTopics: string[];
   itemCount: number;
   costUsd: number;
+  modelUsed: string;
+  tokensInput: number;
+  tokensOutput: number;
 }
 
 export async function runSynthesize(
@@ -37,12 +42,14 @@ export async function runSynthesize(
     limit: synthesisConfig.maxItems,
   });
 
+  const MODEL = "claude-sonnet-4-5-20250929";
+
   if (topItems.length === 0) {
-    return { synthesis: "No items met the quality threshold for today's digest.", topTopics: [], itemCount: 0, costUsd: 0 };
+    return { synthesis: "No items met the quality threshold for today's digest.", topTopics: [], itemCount: 0, costUsd: 0, modelUsed: MODEL, tokensInput: 0, tokensOutput: 0 };
   }
 
   if (budget.isOverBudget) {
-    return { synthesis: "Budget exceeded before synthesis stage.", topTopics: [], itemCount: 0, costUsd: 0 };
+    return { synthesis: "Budget exceeded before synthesis stage.", topTopics: [], itemCount: 0, costUsd: 0, modelUsed: MODEL, tokensInput: 0, tokensOutput: 0 };
   }
 
   const inputs: SynthesizeInput[] = topItems.map(item => ({
@@ -60,41 +67,39 @@ export async function runSynthesize(
 
   try {
     const response = await client.messages.create({
-      model: "claude-opus-4-20250514",
-      max_tokens: 2048,
-      system: systemPrompt,
+      model: MODEL,
+      max_tokens: 4096,
+      system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
       messages: [{ role: "user", content: userPrompt }],
+      output_config: { format: zodOutputFormat(SynthesizeResultSchema) },
     });
 
     const textBlock = response.content.find(block => block.type === "text");
     if (!textBlock || textBlock.type !== "text") {
-      return { synthesis: "Failed to generate synthesis.", topTopics: [], itemCount: 0, costUsd: 0 };
+      return { synthesis: "Failed to generate synthesis.", topTopics: [], itemCount: 0, costUsd: 0, modelUsed: MODEL, tokensInput: 0, tokensOutput: 0 };
     }
 
-    // Collect unique topics from top items
-    const allTopics: string[] = [];
-    for (const item of topItems) {
-      for (const topic of item.categories) {
-        if (!allTopics.includes(topic)) {
-          allTopics.push(topic);
-        }
-      }
-    }
+    const parsed = SynthesizeResultSchema.parse(JSON.parse(textBlock.text));
 
-    // Opus pricing: $15/M input, $75/M output
-    const cost = (response.usage.input_tokens * 15 + response.usage.output_tokens * 75) / 1_000_000;
+    // Sonnet 4.5 pricing: $3/M input, $15/M output
+    const inputTokens = response.usage.input_tokens;
+    const outputTokens = response.usage.output_tokens;
+    const cost = (inputTokens * 3 + outputTokens * 15) / 1_000_000;
     budget.addCost(cost);
 
-    console.log(`Synthesis complete: ${topItems.length} items, ${allTopics.length} topics, cost: $${cost.toFixed(4)}`);
+    console.log(`Synthesis complete: ${topItems.length} items, ${parsed.topTopics.length} topics, cost: $${cost.toFixed(4)}`);
 
     return {
-      synthesis: textBlock.text,
-      topTopics: allTopics,
-      itemCount: topItems.length,
+      synthesis: parsed.synthesis,
+      topTopics: parsed.topTopics,
+      itemCount: parsed.itemCount,
       costUsd: cost,
+      modelUsed: MODEL,
+      tokensInput: inputTokens,
+      tokensOutput: outputTokens,
     };
   } catch (error) {
     console.error("Synthesis failed:", error);
-    return { synthesis: "Synthesis generation failed.", topTopics: [], itemCount: 0, costUsd: 0 };
+    return { synthesis: "Synthesis generation failed.", topTopics: [], itemCount: 0, costUsd: 0, modelUsed: MODEL, tokensInput: 0, tokensOutput: 0 };
   }
 }

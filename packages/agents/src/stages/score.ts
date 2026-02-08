@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type { Database } from "@ai-digest/db";
 import { normalizedItems, eq } from "@ai-digest/db";
 import type { ScoringConfig } from "@ai-digest/shared";
@@ -7,14 +8,17 @@ import {
   SCORE_SYSTEM_PROMPT,
   buildScorePrompt,
   type ScoreInput,
-  type ScoreOutput,
 } from "../prompts/score";
+import { ScoreResultSchema } from "../schemas/score.schema";
 
 const BATCH_SIZE = 25;
 
 interface ScoreResult {
   scored: number;
   costUsd: number;
+  modelUsed: string;
+  tokensInput: number;
+  tokensOutput: number;
 }
 
 export async function runScore(
@@ -35,11 +39,14 @@ export async function runScore(
   );
 
   if (unscored.length === 0) {
-    return { scored: 0, costUsd: 0 };
+    return { scored: 0, costUsd: 0, modelUsed: "claude-sonnet-4-5-20250929", tokensInput: 0, tokensOutput: 0 };
   }
 
+  const MODEL = "claude-sonnet-4-5-20250929";
   let totalScored = 0;
   let totalCost = 0;
+  let totalInputTokens = 0;
+  let totalOutputTokens = 0;
 
   for (let i = 0; i < unscored.length; i += BATCH_SIZE) {
     if (budget.isOverBudget) {
@@ -60,10 +67,11 @@ export async function runScore(
 
     try {
       const response = await client.messages.create({
-        model: "claude-sonnet-4-20250514",
+        model: MODEL,
         max_tokens: 4096,
-        system: SCORE_SYSTEM_PROMPT,
+        system: [{ type: "text", text: SCORE_SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
         messages: [{ role: "user", content: userPrompt }],
+        output_config: { format: zodOutputFormat(ScoreResultSchema) },
       });
 
       const textBlock = response.content.find(block => block.type === "text");
@@ -72,9 +80,8 @@ export async function runScore(
         continue;
       }
 
-      const jsonStr = textBlock.text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-      const parsed = JSON.parse(jsonStr) as { results: ScoreOutput[] } | ScoreOutput[];
-      const results = Array.isArray(parsed) ? parsed : parsed.results;
+      const parsed = ScoreResultSchema.parse(JSON.parse(textBlock.text));
+      const results = parsed.results;
 
       for (const result of results) {
         const matchingItem = batch.find(item => item.id === result.itemId);
@@ -97,9 +104,13 @@ export async function runScore(
         }
       }
 
-      // Sonnet pricing: $3/M input, $15/M output
-      const cost = (response.usage.input_tokens * 3 + response.usage.output_tokens * 15) / 1_000_000;
+      // Sonnet 4.5 pricing: $3/M input, $15/M output
+      const inputTokens = response.usage.input_tokens;
+      const outputTokens = response.usage.output_tokens;
+      const cost = (inputTokens * 3 + outputTokens * 15) / 1_000_000;
       totalCost = totalCost + cost;
+      totalInputTokens = totalInputTokens + inputTokens;
+      totalOutputTokens = totalOutputTokens + outputTokens;
       budget.addCost(cost);
 
       console.log(`Scored batch ${Math.floor(i / BATCH_SIZE) + 1}: ${results.length} items, cost: $${cost.toFixed(4)}`);
@@ -108,5 +119,5 @@ export async function runScore(
     }
   }
 
-  return { scored: totalScored, costUsd: totalCost };
+  return { scored: totalScored, costUsd: totalCost, modelUsed: MODEL, tokensInput: totalInputTokens, tokensOutput: totalOutputTokens };
 }

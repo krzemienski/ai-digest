@@ -7,12 +7,16 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
   "dependencies": {
     "@ai-digest/db": "workspace:*",
     "@ai-digest/shared": "workspace:*",
     "@anthropic-ai/sdk": "^0.74.0",
     "drizzle-orm": "^0.38.0",
     "fast-xml-parser": "^4.5.0",
-    "rss-parser": "^3.13.0"
+    "rss-parser": "^3.13.0",
+    "zod": "^3.23.0"
   }
 }
