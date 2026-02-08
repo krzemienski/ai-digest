@@ -148,7 +148,7 @@ export function DigestEmail({
                   textTransform: "uppercase" as const,
                   letterSpacing: "1px",
                   margin: "0 0 12px 0",
-                  borderBottom: "1px solid #1a1a1a",
+                  borderBottom: "1px solid #27272A",
                   paddingBottom: "8px",
                 }}
               >
@@ -160,7 +160,7 @@ export function DigestEmail({
                   key={iIdx}
                   style={{
                     backgroundColor: "#18181B",
-                    border: "1px solid #1a1a1a",
+                    border: "1px solid #27272A",
                     borderRadius: "4px",
                     padding: "12px 16px",
                     marginBottom: "8px",
