@@ -50,6 +50,17 @@ export async function POST(request: Request) {
       .set({ lastLoginAt: new Date() })
       .where(eq(users.id, user.id));
 
+    const isMobile = request.headers.get("X-Client-Type") === "mobile";
+    let token: string | undefined;
+    if (isMobile) {
+      const { signMobileToken } = await import("@/lib/mobile-auth");
+      token = await signMobileToken({
+        userId: user.id as string,
+        email: user.email,
+        role: user.role as "user" | "admin",
+      });
+    }
+
     return NextResponse.json(
       {
         success: true,
@@ -57,6 +68,7 @@ export async function POST(request: Request) {
           id: user.id,
           email: user.email,
           role: user.role,
+          ...(token ? { token } : {}),
         },
       },
       { status: 200 }

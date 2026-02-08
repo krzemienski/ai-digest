@@ -193,7 +193,7 @@ created: 2026-02-08
   - _Requirements: FR-3, FR-6, AC-11.6_
   - _Design: Layouts_
 
-- [ ] 2.8 [VERIFY] Quality checkpoint: full design system type check
+- [x] 2.8 [VERIFY] Quality checkpoint: full design system type check
   - **Do**: Run type check on entire mobile package including all design system files
   - **Verify**: `pnpm --filter @ai-digest/mobile check-types 2>&1 | tail -5` exits 0
   - **Done when**: Zero type errors across all design system components
@@ -203,7 +203,7 @@ created: 2026-02-08
 
 ## Phase 3: Infrastructure (API Client + Auth + Stores + Audio + Server JWT)
 
-- [ ] 3.1 Add JWT Bearer token support to web app login endpoint
+- [x] 3.1 Add JWT Bearer token support to web app login endpoint
   - **Do**:
     1. Install `jose` (lightweight JWT lib) in `apps/web`: `pnpm --filter @ai-digest/web add jose`
     2. Create `apps/web/src/lib/mobile-auth.ts` with `signMobileToken(payload)` and `verifyMobileToken(token)` using `SESSION_SECRET` env var. JWT expiry: 7 days. Payload: `{ userId, email, role }`

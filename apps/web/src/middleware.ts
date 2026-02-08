@@ -16,7 +16,8 @@ export function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get("ai-digest-session");
 
   if (pathname.startsWith("/api/admin")) {
-    if (!sessionCookie) {
+    const authHeader = request.headers.get("Authorization");
+    if (!sessionCookie && !authHeader?.startsWith("Bearer ")) {
       return NextResponse.json(
         { success: false, error: "Authentication required" },
         { status: 401 }
