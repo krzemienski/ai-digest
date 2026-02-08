@@ -14,6 +14,18 @@
     },
     "check-types": {
       "dependsOn": ["^build"]
+    },
+    "android": {
+      "cache": false,
+      "persistent": true
+    },
+    "ios": {
+      "cache": false,
+      "persistent": true
+    },
+    "web": {
+      "cache": false,
+      "persistent": true
     }
   }
 }

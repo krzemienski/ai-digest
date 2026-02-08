@@ -12,6 +12,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@ai-digest/shared": "workspace:*",
     "@babel/runtime": "^7.28.6",
     "@expo/metro-runtime": "^6.1.2",
     "@react-native/normalize-colors": "^0.83.1",
