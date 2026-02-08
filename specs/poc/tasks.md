@@ -109,7 +109,7 @@ created: 2026-02-08
   - _Requirements: AC-2.3, FR-2_
   - _Design: Component Primitives, Typography Scale_
 
-- [ ] 2.2 Build Button primitive (primary, danger, ghost, outline variants)
+- [x] 2.2 Build Button primitive (primary, danger, ghost, outline variants)
   - **Do**:
     1. Create `src/design-system/primitives/Button.tsx` with `CyberButton` component
     2. `variant` prop: `primary` (cyan bg, black text, neon-cyan shadow), `danger` (magenta bg), `ghost` (transparent, cyan text), `outline` (cyan border, transparent bg)
