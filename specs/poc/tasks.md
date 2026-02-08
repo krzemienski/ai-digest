@@ -369,7 +369,7 @@ created: 2026-02-08
   - _Requirements: FR-6, AC-11.1 through AC-11.6_
   - _Design: Mini Player / Full Player State Sync_
 
-- [ ] 4.6 Implement Full Podcast Player
+- [x] 4.6 Implement Full Podcast Player
   - **Do**:
     1. Create `src/features/podcast/FullPlayer.tsx`: Large episode art (60-70% width) with NeonBorder. Background gradient with cyberpunk tint. Play/Pause center (48px+), skip forward/back 15s flanking. Elapsed/remaining time. Secondary row: speed selector, sleep timer placeholder, bookmark, share, transcript toggle.
     2. Create `src/features/podcast/WaveformSeek.tsx`: Seek bar component (simplified waveform visual using bars). Touch/drag to seek via PanGestureHandler. Shows elapsed/buffered/remaining.
