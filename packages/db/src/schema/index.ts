@@ -5,3 +5,5 @@ export { episodes, transcripts } from "./episodes";
 export { subscribers } from "./subscribers";
 export { pipelineRuns, pipelineStages } from "./pipeline";
 export { config } from "./config";
+export { users } from "./users";
+export { sourceFetchLog } from "./source-fetch-log";

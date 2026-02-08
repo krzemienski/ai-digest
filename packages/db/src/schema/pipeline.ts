@@ -23,6 +23,10 @@ export const pipelineStages = pgTable("pipeline_stages", {
   itemsProcessed: integer("items_processed").default(0),
   retryCount: integer("retry_count").default(0),
   errorDetails: jsonb("error_details"),
+  modelUsed: text("model_used"),
+  tokensInput: integer("tokens_input"),
+  tokensOutput: integer("tokens_output"),
+  costUsd: real("cost_usd"),
 }, (table) => [
   index("idx_stages_run").on(table.pipelineRunId),
 ]);

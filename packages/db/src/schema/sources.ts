@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, boolean, timestamp, jsonb, integer } from "drizzle-orm/pg-core";
 import type { SourceConfig } from "@ai-digest/shared";
 
 export const sources = pgTable("sources", {
@@ -9,4 +9,8 @@ export const sources = pgTable("sources", {
   enabled: boolean("enabled").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  lastFetchAt: timestamp("last_fetch_at"),
+  lastFetchItemCount: integer("last_fetch_item_count"),
+  lastFetchError: text("last_fetch_error"),
+  consecutiveErrors: integer("consecutive_errors").default(0).notNull(),
 });

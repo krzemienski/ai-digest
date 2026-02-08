@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "bullmq": "^5.0.0",
     "ioredis": "^5.4.0",
     "drizzle-orm": "^0.38.0",
-    "@anthropic-ai/sdk": "^0.39.0",
+    "@anthropic-ai/sdk": "^0.74.0",
     "@ai-digest/agents": "workspace:*",
     "@ai-digest/db": "workspace:*",
     "@ai-digest/podcast": "workspace:*",

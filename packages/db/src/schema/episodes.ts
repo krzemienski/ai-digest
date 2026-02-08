@@ -11,6 +11,9 @@ export const episodes = pgTable("episodes", {
   audioFormat: text("audio_format").default("mp3_44100_128"),
   voiceConfig: jsonb("voice_config").$type<VoiceConfig>(),
   status: text("status").notNull().default("pending"),
+  targetDurationMinutes: integer("target_duration_minutes").default(10),
+  podcastStages: jsonb("podcast_stages"),
+  scriptPreview: text("script_preview"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
