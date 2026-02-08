@@ -295,7 +295,7 @@ created: 2026-02-08
   - _Requirements: NFR-4, NFR-15, FR-7_
   - _Design: Hooks, Utils_
 
-- [ ] 3.8 [VERIFY] Quality checkpoint: infrastructure type check
+- [x] 3.8 [VERIFY] Quality checkpoint: infrastructure type check
   - **Do**: Run type check on both web and mobile packages
   - **Verify**: `pnpm check-types 2>&1 | tail -10` exits 0 (root turbo check-types)
   - **Done when**: Zero type errors across both web and mobile packages
@@ -305,7 +305,7 @@ created: 2026-02-08
 
 ## Phase 4: P0 Screens (Feed + Digest Detail + Full Player + Mini Player + Tab Navigation)
 
-- [ ] 4.1 Implement 5-tab navigation shell with cyberpunk floating tab bar
+- [x] 4.1 Implement 5-tab navigation shell with cyberpunk floating tab bar
   - **Do**:
     1. Create `src/app/(tabs)/_layout.tsx` with Expo Router `Tabs` component
     2. 5 tabs: Home (index), Podcasts (podcasts/index), Search (search), Newsletters (newsletters/index), Profile (profile)
