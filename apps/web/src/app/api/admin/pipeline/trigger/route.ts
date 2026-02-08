@@ -3,7 +3,7 @@ import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { getQueueClient } from "@/lib/queue";
 
 export async function POST(request: NextRequest) {
-  const authError = await requireAdminFromRequest();
+  const authError = await requireAdminFromRequest(request);
   if (authError) return authError;
 
   try {

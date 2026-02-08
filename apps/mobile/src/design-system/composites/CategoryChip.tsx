@@ -13,6 +13,9 @@ export function CategoryChip({ label, selected, onPress }: CategoryChipProps) {
 
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ selected }}
       onPress={onPress}
       className={`rounded-pill px-4 py-1.5 border ${borderClass}`}
     >

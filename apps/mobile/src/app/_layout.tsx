@@ -49,10 +49,14 @@ export default function RootLayout() {
   // Load auth + preferences after fonts ready
   useEffect(() => {
     if (fontsLoaded || fontError || timedOut) {
-      Promise.all([checkAuth(), loadPreferences()]).then(() => {
-        setAppReady(true);
-        SplashScreen.hideAsync();
-      });
+      Promise.all([checkAuth(), loadPreferences()])
+        .catch(() => {
+          // Proceed with defaults even if auth/prefs fail
+        })
+        .finally(() => {
+          setAppReady(true);
+          void SplashScreen.hideAsync();
+        });
     }
   }, [fontsLoaded, fontError, timedOut, checkAuth, loadPreferences]);
 

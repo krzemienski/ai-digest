@@ -14,6 +14,9 @@ export function TopicChip({ label, selected, onToggle }: TopicChipProps) {
 
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ selected }}
       onPress={onToggle}
       className={`rounded-card px-4 py-3 border ${selectedClass}`}
     >

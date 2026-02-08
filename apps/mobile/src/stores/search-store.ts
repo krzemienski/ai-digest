@@ -35,23 +35,33 @@ export const useSearchStore = create<SearchState>((set, get) => ({
       return;
     }
     set({ isLoading: true, error: null, query });
-    const res = await api.search(query);
-    if (res.success && res.data) {
-      set({ results: res.data, isLoading: false });
-      // Save to recent searches
-      const recent = get().recentSearches.filter((s) => s !== query);
-      const updated = [query, ...recent].slice(0, MAX_RECENT);
-      set({ recentSearches: updated });
-      await AsyncStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
-    } else {
-      set({ error: res.error ?? "Search failed", isLoading: false });
+    try {
+      const res = await api.search(query);
+      if (res.success && res.data) {
+        set({ results: res.data, isLoading: false });
+        const recent = get().recentSearches.filter((s) => s !== query);
+        const updated = [query, ...recent].slice(0, MAX_RECENT);
+        set({ recentSearches: updated });
+        await AsyncStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+      } else {
+        set({ error: res.error ?? "Search failed", isLoading: false });
+      }
+    } catch {
+      set({ error: "Network error. Please check your connection.", isLoading: false });
     }
   },
 
   loadRecentSearches: async () => {
-    const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
-    if (stored) {
-      set({ recentSearches: JSON.parse(stored) as string[] });
+    try {
+      const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
+      if (stored) {
+        const parsed: unknown = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          set({ recentSearches: parsed as string[] });
+        }
+      }
+    } catch {
+      await AsyncStorage.removeItem(RECENT_SEARCHES_KEY);
     }
   },
 

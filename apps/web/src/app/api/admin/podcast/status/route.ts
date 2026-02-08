@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { db, episodes, desc } from "@ai-digest/db";
 
-export async function GET() {
-  const authError = await requireAdminFromRequest();
+export async function GET(request: NextRequest) {
+  const authError = await requireAdminFromRequest(request);
   if (authError) return authError;
 
   try {

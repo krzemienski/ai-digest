@@ -1,7 +1,5 @@
 import { View } from "react-native";
-import { CyberCard } from "@/design-system/primitives";
-import { CyberText } from "@/design-system/primitives";
-import { CyberBadge } from "@/design-system/primitives";
+import { CyberCard, CyberText, CyberBadge } from "@/design-system/primitives";
 
 interface DigestCardProps {
   title: string;

@@ -29,50 +29,66 @@ export const useDigestStore = create<DigestState>((set, get) => ({
 
   fetchDigests: async (page = 1) => {
     set({ isLoading: true, error: null });
-    const res = await api.getDigests(page);
-    if (res.success && res.data) {
-      set({
-        digests: page === 1 ? res.data : [...get().digests, ...res.data],
-        page,
-        hasMore: (res.meta?.total ?? 0) > page * 10,
-        isLoading: false,
-      });
-    } else {
-      set({ error: res.error ?? "Failed to load digests", isLoading: false });
+    try {
+      const res = await api.getDigests(page);
+      if (res.success && res.data) {
+        set({
+          digests: page === 1 ? res.data : [...get().digests, ...res.data],
+          page,
+          hasMore: (res.meta?.total ?? 0) > page * 10,
+          isLoading: false,
+        });
+      } else {
+        set({ error: res.error ?? "Failed to load digests", isLoading: false });
+      }
+    } catch {
+      set({ error: "Network error. Please check your connection.", isLoading: false });
     }
   },
 
   fetchDigest: async (id) => {
     set({ isLoading: true, error: null });
-    const res = await api.getDigest(id);
-    if (res.success && res.data) {
-      set({ currentDigest: res.data, isLoading: false });
-    } else {
-      set({ error: res.error ?? "Failed to load digest", isLoading: false });
+    try {
+      const res = await api.getDigest(id);
+      if (res.success && res.data) {
+        set({ currentDigest: res.data, isLoading: false });
+      } else {
+        set({ error: res.error ?? "Failed to load digest", isLoading: false });
+      }
+    } catch {
+      set({ error: "Network error. Please check your connection.", isLoading: false });
     }
   },
 
   fetchLatestDigest: async () => {
     set({ isLoading: true, error: null });
-    const res = await api.getLatestDigest();
-    if (res.success && res.data) {
-      set({ currentDigest: res.data, isLoading: false });
-    } else {
-      set({ error: res.error ?? "Failed to load latest digest", isLoading: false });
+    try {
+      const res = await api.getLatestDigest();
+      if (res.success && res.data) {
+        set({ currentDigest: res.data, isLoading: false });
+      } else {
+        set({ error: res.error ?? "Failed to load latest digest", isLoading: false });
+      }
+    } catch {
+      set({ error: "Network error. Please check your connection.", isLoading: false });
     }
   },
 
   refresh: async () => {
     set({ isRefreshing: true });
-    const res = await api.getDigests(1);
-    if (res.success && res.data) {
-      set({
-        digests: res.data,
-        page: 1,
-        hasMore: (res.meta?.total ?? 0) > 10,
-        isRefreshing: false,
-      });
-    } else {
+    try {
+      const res = await api.getDigests(1);
+      if (res.success && res.data) {
+        set({
+          digests: res.data,
+          page: 1,
+          hasMore: (res.meta?.total ?? 0) > 10,
+          isRefreshing: false,
+        });
+      } else {
+        set({ isRefreshing: false });
+      }
+    } catch {
       set({ isRefreshing: false });
     }
   },

@@ -27,7 +27,7 @@ export function CyberCard({
 
   if (onPress) {
     return (
-      <Pressable onPress={onPress} className={baseClasses} {...props}>
+      <Pressable accessibilityRole="button" onPress={onPress} className={baseClasses} {...props}>
         {children}
       </Pressable>
     );

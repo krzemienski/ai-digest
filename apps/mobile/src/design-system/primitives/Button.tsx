@@ -87,6 +87,9 @@ export function CyberButton({
 
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: isDisabled, busy: loading }}
       disabled={isDisabled}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}

@@ -3,10 +3,10 @@ import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { db, subscribers, eq } from "@ai-digest/db";
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const authError = await requireAdminFromRequest();
+  const authError = await requireAdminFromRequest(request);
   if (authError) return authError;
 
   try {

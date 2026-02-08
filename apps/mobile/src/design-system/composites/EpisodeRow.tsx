@@ -20,6 +20,8 @@ export function EpisodeRow({
 }: EpisodeRowProps) {
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Episode: ${title}`}
       onPress={onPress}
       className="flex-row items-center px-4 py-3 gap-3"
     >
@@ -43,7 +45,7 @@ export function EpisodeRow({
         </CyberText>
       </View>
 
-      <Pressable onPress={onPlay} hitSlop={8}>
+      <Pressable accessibilityRole="button" accessibilityLabel={`Play ${title}`} onPress={onPlay} hitSlop={8}>
         <CyberIcon name="play-circle" size="lg" color="#00FFFF" />
       </Pressable>
     </Pressable>

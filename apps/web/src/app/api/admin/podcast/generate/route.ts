@@ -35,7 +35,7 @@ const INITIAL_STAGES = {
 };
 
 export async function POST(request: NextRequest) {
-  const authError = await requireAdminFromRequest();
+  const authError = await requireAdminFromRequest(request);
   if (authError) return authError;
 
   try {

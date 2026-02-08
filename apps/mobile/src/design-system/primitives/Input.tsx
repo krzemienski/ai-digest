@@ -45,6 +45,7 @@ export function CyberInput({
         </CyberText>
       ) : null}
       <TextInput
+        accessibilityLabel={label ?? props.placeholder}
         className={`bg-cyber-surface text-cyber-text rounded-button px-4 py-3 border ${borderClasses} font-body text-base`}
         placeholderTextColor="#A0A0B0"
         keyboardType={config.keyboardType}

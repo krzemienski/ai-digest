@@ -5,8 +5,11 @@ export function usePullToRefresh(onRefresh: () => Promise<void>) {
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
-    await onRefresh();
-    setRefreshing(false);
+    try {
+      await onRefresh();
+    } finally {
+      setRefreshing(false);
+    }
   }, [onRefresh]);
 
   return { refreshing, onRefresh: handleRefresh };

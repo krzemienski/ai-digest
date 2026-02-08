@@ -46,43 +46,63 @@ export const useAdminStore = create<AdminState>((set) => ({
   error: null,
 
   fetchStats: async () => {
-    set({ isLoading: true });
-    const res = await api.getStats();
-    if (res.success && res.data) {
-      set({ stats: res.data, isLoading: false });
-    } else {
-      set({ error: res.error ?? "Failed to load stats", isLoading: false });
+    set({ isLoading: true, error: null });
+    try {
+      const res = await api.getStats();
+      if (res.success && res.data) {
+        set({ stats: res.data, isLoading: false });
+      } else {
+        set({ error: res.error ?? "Failed to load stats", isLoading: false });
+      }
+    } catch {
+      set({ error: "Network error. Please check your connection.", isLoading: false });
     }
   },
 
   fetchPipelineStatus: async () => {
-    const res = await api.getPipelineStatus();
-    if (res.success && res.data) {
-      set({ pipelineStatus: res.data });
+    try {
+      const res = await api.getPipelineStatus();
+      if (res.success && res.data) {
+        set({ pipelineStatus: res.data });
+      }
+    } catch {
+      // Silent failure for background status check
     }
   },
 
   fetchSources: async () => {
-    set({ isLoading: true });
-    const res = await api.getSources();
-    if (res.success && res.data) {
-      set({ sources: res.data, isLoading: false });
-    } else {
-      set({ error: res.error ?? "Failed to load sources", isLoading: false });
+    set({ isLoading: true, error: null });
+    try {
+      const res = await api.getSources();
+      if (res.success && res.data) {
+        set({ sources: res.data, isLoading: false });
+      } else {
+        set({ error: res.error ?? "Failed to load sources", isLoading: false });
+      }
+    } catch {
+      set({ error: "Network error. Please check your connection.", isLoading: false });
     }
   },
 
   triggerPipeline: async () => {
-    const res = await api.triggerPipeline();
-    if (res.success) {
-      // Refresh status after trigger
-      const statusRes = await api.getPipelineStatus();
-      if (statusRes.success && statusRes.data) {
-        set({ pipelineStatus: statusRes.data });
+    try {
+      const res = await api.triggerPipeline();
+      if (res.success) {
+        try {
+          const statusRes = await api.getPipelineStatus();
+          if (statusRes.success && statusRes.data) {
+            set({ pipelineStatus: statusRes.data });
+          }
+        } catch {
+          // Status refresh failure is non-critical
+        }
+        return true;
       }
-      return true;
+      set({ error: res.error ?? "Failed to trigger pipeline" });
+      return false;
+    } catch {
+      set({ error: "Network error. Please check your connection." });
+      return false;
     }
-    set({ error: res.error ?? "Failed to trigger pipeline" });
-    return false;
   },
 }));

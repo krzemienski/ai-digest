@@ -57,7 +57,7 @@ export function FullPlayer() {
     <View className="flex-1 bg-cyber-bg px-6 pt-4">
       {/* Collapse button */}
       <View className="flex-row justify-end mb-4">
-        <Pressable onPress={collapsePlayer} hitSlop={12} className="p-2">
+        <Pressable accessibilityRole="button" accessibilityLabel="Collapse player" onPress={collapsePlayer} hitSlop={12} className="p-2">
           <CyberIcon name="chevron-down" size="md" color="#FFFFFF" />
         </Pressable>
       </View>
@@ -90,11 +90,13 @@ export function FullPlayer() {
 
       {/* Main controls */}
       <View className="flex-row items-center justify-center gap-8 mb-8">
-        <Pressable onPress={handleSkipBack} hitSlop={12} className="p-2">
+        <Pressable accessibilityRole="button" accessibilityLabel="Skip back 15 seconds" onPress={handleSkipBack} hitSlop={12} className="p-2">
           <CyberIcon name="play-back" size="md" color="#FFFFFF" />
         </Pressable>
 
         <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={isPlaying ? "Pause" : "Play"}
           onPress={handlePlayPause}
           className="w-16 h-16 rounded-full bg-cyber-cyan items-center justify-center shadow-neon-cyan"
         >
@@ -105,7 +107,7 @@ export function FullPlayer() {
           />
         </Pressable>
 
-        <Pressable onPress={handleSkipForward} hitSlop={12} className="p-2">
+        <Pressable accessibilityRole="button" accessibilityLabel="Skip forward 15 seconds" onPress={handleSkipForward} hitSlop={12} className="p-2">
           <CyberIcon name="play-forward" size="md" color="#FFFFFF" />
         </Pressable>
       </View>
@@ -135,11 +137,11 @@ export function FullPlayer() {
 
       {/* Secondary row */}
       <View className="flex-row justify-center gap-8">
-        <Pressable onPress={handleShare} hitSlop={12} className="p-2">
+        <Pressable accessibilityRole="button" accessibilityLabel="Share episode" onPress={handleShare} hitSlop={12} className="p-2">
           <CyberIcon name="share-outline" size="md" color="#A0A0B0" />
         </Pressable>
 
-        <Pressable onPress={handleTranscript} hitSlop={12} className="p-2">
+        <Pressable accessibilityRole="button" accessibilityLabel="View transcript" onPress={handleTranscript} hitSlop={12} className="p-2">
           <CyberIcon name="document-text-outline" size="md" color="#A0A0B0" />
         </Pressable>
       </View>

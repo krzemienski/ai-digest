@@ -3,10 +3,10 @@ import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { db, queries } from "@ai-digest/db";
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ digestId: string }> }
 ) {
-  const authError = await requireAdminFromRequest();
+  const authError = await requireAdminFromRequest(request);
   if (authError) return authError;
 
   try {

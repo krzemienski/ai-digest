@@ -45,23 +45,31 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
   isLoading: true,
 
   loadPreferences: async () => {
-    const [prefsRaw, onboarding] = await Promise.all([
-      AsyncStorage.getItem(PREFS_KEY),
-      AsyncStorage.getItem(ONBOARDING_KEY),
-    ]);
-    if (prefsRaw) {
-      const prefs = JSON.parse(prefsRaw) as Partial<StoredPrefs>;
+    try {
+      const [prefsRaw, onboarding] = await Promise.all([
+        AsyncStorage.getItem(PREFS_KEY),
+        AsyncStorage.getItem(ONBOARDING_KEY),
+      ]);
+      if (prefsRaw) {
+        try {
+          const prefs = JSON.parse(prefsRaw) as Partial<StoredPrefs>;
+          set({
+            topics: Array.isArray(prefs.topics) ? prefs.topics : [],
+            notificationsEnabled: prefs.notificationsEnabled ?? false,
+            notifyDigests: prefs.notifyDigests ?? true,
+            notifyPodcasts: prefs.notifyPodcasts ?? true,
+          });
+        } catch {
+          await AsyncStorage.removeItem(PREFS_KEY);
+        }
+      }
       set({
-        topics: prefs.topics ?? [],
-        notificationsEnabled: prefs.notificationsEnabled ?? false,
-        notifyDigests: prefs.notifyDigests ?? true,
-        notifyPodcasts: prefs.notifyPodcasts ?? true,
+        onboardingComplete: onboarding === "true",
+        isLoading: false,
       });
+    } catch {
+      set({ isLoading: false });
     }
-    set({
-      onboardingComplete: onboarding === "true",
-      isLoading: false,
-    });
   },
 
   setTopics: async (topics) => {

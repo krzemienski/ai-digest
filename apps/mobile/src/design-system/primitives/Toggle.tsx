@@ -37,6 +37,9 @@ export function CyberToggle({
         </CyberText>
       ) : null}
       <Switch
+        accessibilityRole="switch"
+        accessibilityLabel={label}
+        accessibilityState={{ checked: value }}
         value={value}
         onValueChange={onValueChange}
         trackColor={{ false: TRACK_FALSE_COLOR, true: hex }}

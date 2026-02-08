@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { ScrollView, View, ActivityIndicator, Pressable } from "react-native";
+import { View, ActivityIndicator, Pressable } from "react-native";
 import {
   CyberText,
   CyberButton,

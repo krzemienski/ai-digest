@@ -17,6 +17,8 @@ export function MiniPlayer({ onPress, onPlayPause }: MiniPlayerProps) {
 
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Now playing: ${currentEpisode.title}. Tap to expand player.`}
       onPress={onPress}
       className="h-16 flex-row items-center px-4 gap-3 bg-cyber-surface border-t border-cyber-overlay"
     >
@@ -34,12 +36,14 @@ export function MiniPlayer({ onPress, onPlayPause }: MiniPlayerProps) {
       </View>
 
       <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={isPlaying ? "Pause" : "Play"}
         onPress={(e) => {
           e.stopPropagation?.();
           onPlayPause();
         }}
-        hitSlop={8}
-        className="w-8 h-8 items-center justify-center"
+        hitSlop={12}
+        className="w-11 h-11 items-center justify-center"
       >
         <CyberIcon
           name={isPlaying ? "pause" : "play"}

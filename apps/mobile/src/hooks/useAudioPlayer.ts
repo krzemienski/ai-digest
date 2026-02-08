@@ -14,7 +14,18 @@ import type { AddTrack } from "react-native-track-player";
 import type { Episode } from "@ai-digest/shared";
 
 export function useAudioPlayer() {
-  const store = useAudioStore();
+  const currentEpisode = useAudioStore((s) => s.currentEpisode);
+  const isPlaying = useAudioStore((s) => s.isPlaying);
+  const currentTime = useAudioStore((s) => s.currentTime);
+  const duration = useAudioStore((s) => s.duration);
+  const playbackSpeed = useAudioStore((s) => s.playbackSpeed);
+  const transcript = useAudioStore((s) => s.transcript);
+  const isExpanded = useAudioStore((s) => s.isExpanded);
+  const isBuffering = useAudioStore((s) => s.isBuffering);
+  const expandPlayer = useAudioStore((s) => s.expandPlayer);
+  const collapsePlayer = useAudioStore((s) => s.collapsePlayer);
+  const stop = useAudioStore((s) => s.stop);
+
   const progress = useProgress(1000);
   const playbackState = usePlaybackState();
 
@@ -24,8 +35,9 @@ export function useAudioPlayer() {
 
   // Sync TrackPlayer progress to Zustand store
   useEffect(() => {
-    if (store.currentEpisode && progress.duration > 0) {
-      store.updateProgress(progress.position, progress.duration);
+    const { currentEpisode: ep, updateProgress } = useAudioStore.getState();
+    if (ep && progress.duration > 0) {
+      updateProgress(progress.position, progress.duration);
     }
   }, [progress.position, progress.duration]);
 
@@ -33,6 +45,8 @@ export function useAudioPlayer() {
   useEffect(() => {
     const state = playbackState.state;
     if (state === undefined) return;
+
+    const store = useAudioStore.getState();
 
     if (state === State.Playing) {
       store.setBuffering(false);
@@ -61,41 +75,41 @@ export function useAudioPlayer() {
     };
     await addTrack(track);
     await playTrack();
-    store.play(episode);
+    useAudioStore.getState().play(episode);
   }, []);
 
   const pause = useCallback(async () => {
     await pauseTrack();
-    store.pause();
+    useAudioStore.getState().pause();
   }, []);
 
   const resume = useCallback(async () => {
     await playTrack();
-    store.resume();
+    useAudioStore.getState().resume();
   }, []);
 
   const seek = useCallback(async (time: number) => {
     await seekTo(time);
-    store.seek(time);
+    useAudioStore.getState().seek(time);
   }, []);
 
   const setSpeed = useCallback(async (speed: number) => {
     await setPlaybackRate(speed);
-    store.setSpeed(speed);
+    useAudioStore.getState().setSpeed(speed);
   }, []);
 
   return {
-    currentEpisode: store.currentEpisode,
-    isPlaying: store.isPlaying,
-    currentTime: store.currentTime,
-    duration: store.duration,
-    playbackSpeed: store.playbackSpeed,
-    transcript: store.transcript,
-    isExpanded: store.isExpanded,
-    isBuffering: store.isBuffering,
-    expandPlayer: store.expandPlayer,
-    collapsePlayer: store.collapsePlayer,
-    stop: store.stop,
+    currentEpisode,
+    isPlaying,
+    currentTime,
+    duration,
+    playbackSpeed,
+    transcript,
+    isExpanded,
+    isBuffering,
+    expandPlayer,
+    collapsePlayer,
+    stop,
     play,
     pause,
     resume,

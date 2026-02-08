@@ -56,11 +56,16 @@ export const api = {
     return res;
   },
 
-  register: async (email: string, password: string, name: string) =>
-    request<LoginResponse>("/api/auth/register", {
+  register: async (email: string, password: string, name: string) => {
+    const res = await request<LoginResponse>("/api/auth/register", {
       method: "POST",
       body: { email, password, name },
-    }),
+    });
+    if (res.success && res.data?.token) {
+      await setToken(res.data.token);
+    }
+    return res;
+  },
 
   logout: async () => {
     const res = await request("/api/auth/logout", {
