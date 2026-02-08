@@ -31,7 +31,7 @@ importers:
         version: link:../../packages/shared
       '@t3-oss/env-nextjs':
         specifier: ^0.11.0
-        version: 0.11.0(typescript@5.7.2)(zod@3.23.0)
+        version: 0.11.0(typescript@5.7.2)(zod@4.3.6)
       autoprefixer:
         specifier: ^10.0.0
         version: 10.0.0(postcss@8.4.31)
@@ -66,8 +66,8 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0
       zod:
-        specifier: ^3.23.0
-        version: 3.23.0
+        specifier: ^4.3.6
+        version: 4.3.6
       zustand:
         specifier: ^5.0.0
         version: 5.0.0(@types/react@19.0.0)(react@19.0.0)
@@ -104,7 +104,7 @@ importers:
         version: link:../../packages/shared
       '@anthropic-ai/sdk':
         specifier: ^0.74.0
-        version: 0.74.0(zod@3.23.0)
+        version: 0.74.0(zod@4.3.6)
       bullmq:
         specifier: ^5.0.0
         version: 5.0.0
@@ -129,7 +129,7 @@ importers:
         version: link:../shared
       '@anthropic-ai/sdk':
         specifier: ^0.74.0
-        version: 0.74.0(zod@3.23.0)
+        version: 0.74.0(zod@4.3.6)
       drizzle-orm:
         specifier: ^0.38.0
         version: 0.38.0(@types/react@19.0.0)(react@19.0.0)
@@ -140,8 +140,8 @@ importers:
         specifier: ^3.13.0
         version: 3.13.0
       zod:
-        specifier: ^3.23.0
-        version: 3.23.0
+        specifier: ^4.3.6
+        version: 4.3.6
 
   packages/db:
     dependencies:
@@ -166,13 +166,16 @@ importers:
         version: link:../shared
       '@react-email/components':
         specifier: ^0.0.30
-        version: 0.0.30(react-dom@19.0.0-rc-fb9a90fa48-20240614)(react@19.0.0)
+        version: 0.0.30(react-dom@19.0.0)(react@19.0.0)
       react:
         specifier: ^19.0.0
         version: 19.0.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.0.0(react@19.0.0)
       resend:
         specifier: ^4.0.0
-        version: 4.0.0(react-dom@19.0.0-rc-fb9a90fa48-20240614)(react@19.0.0)
+        version: 4.0.0(react-dom@19.0.0)(react@19.0.0)
     devDependencies:
       '@types/react':
         specifier: ^19.0.0
@@ -209,7 +212,7 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@anthropic-ai/sdk@0.74.0(zod@3.23.0):
+  /@anthropic-ai/sdk@0.74.0(zod@4.3.6):
     resolution: {integrity: sha512-srbJV7JKsc5cQ6eVuFzjZO7UR3xEPJqPamHFIe29bs38Ij2IripoAhC0S5NslNbaFUYqBKypmmpzMTpqfHEUDw==}
     hasBin: true
     peerDependencies:
@@ -219,7 +222,7 @@ packages:
         optional: true
     dependencies:
       json-schema-to-ts: 3.1.1
-      zod: 3.23.0
+      zod: 4.3.6
     dev: false
 
   /@aws-crypto/crc32@5.2.0:
@@ -1788,7 +1791,7 @@ packages:
       react: 19.0.0
     dev: false
 
-  /@react-email/components@0.0.30(react-dom@19.0.0-rc-fb9a90fa48-20240614)(react@19.0.0):
+  /@react-email/components@0.0.30(react-dom@19.0.0)(react@19.0.0):
     resolution: {integrity: sha512-JkPcGE/r3WsHMVO4kjkaQzAyXiSPATg5TgzTImypjGHbwrdLaDMVEBZz1SuLV8GexqCnmzo1qmhVHtHq8E7UWg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -1809,7 +1812,7 @@ packages:
       '@react-email/link': 0.0.12(react@19.0.0)
       '@react-email/markdown': 0.0.14(react@19.0.0)
       '@react-email/preview': 0.0.12(react@19.0.0)
-      '@react-email/render': 1.0.3(react-dom@19.0.0-rc-fb9a90fa48-20240614)(react@19.0.0)
+      '@react-email/render': 1.0.3(react-dom@19.0.0)(react@19.0.0)
       '@react-email/row': 0.0.12(react@19.0.0)
       '@react-email/section': 0.0.16(react@19.0.0)
       '@react-email/tailwind': 1.0.3(react@19.0.0)
@@ -1909,7 +1912,7 @@ packages:
       react: 19.0.0
     dev: false
 
-  /@react-email/render@0.0.17(react-dom@19.0.0-rc-fb9a90fa48-20240614)(react@19.0.0):
+  /@react-email/render@0.0.17(react-dom@19.0.0)(react@19.0.0):
     resolution: {integrity: sha512-xBQ+/73+WsGuXKY7r1U73zMBNV28xdV0cp9cFjhNYipBReDHhV97IpA6v7Hl0dDtDzt+yS/72dY5vYXrF1v8NA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -1919,11 +1922,11 @@ packages:
       html-to-text: 9.0.5
       js-beautify: 1.15.4
       react: 19.0.0
-      react-dom: 19.0.0-rc-fb9a90fa48-20240614(react@19.0.0)
+      react-dom: 19.0.0(react@19.0.0)
       react-promise-suspense: 0.3.4
     dev: false
 
-  /@react-email/render@1.0.3(react-dom@19.0.0-rc-fb9a90fa48-20240614)(react@19.0.0):
+  /@react-email/render@1.0.3(react-dom@19.0.0)(react@19.0.0):
     resolution: {integrity: sha512-VQ8g4SuIq/jWdfBTdTjb7B8Np0jj+OoD7VebfdHhLTZzVQKesR2aigpYqE/ZXmwj4juVxDm8T2b6WIIu48rPCg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -1933,7 +1936,7 @@ packages:
       html-to-text: 9.0.5
       prettier: 3.3.3
       react: 19.0.0
-      react-dom: 19.0.0-rc-fb9a90fa48-20240614(react@19.0.0)
+      react-dom: 19.0.0(react@19.0.0)
       react-promise-suspense: 0.3.4
     dev: false
 
@@ -2471,7 +2474,7 @@ packages:
       tslib: 2.8.1
     dev: false
 
-  /@t3-oss/env-core@0.11.0(typescript@5.7.2)(zod@3.23.0):
+  /@t3-oss/env-core@0.11.0(typescript@5.7.2)(zod@4.3.6):
     resolution: {integrity: sha512-PSalC5bG0a7XbyoLydiQdAnx3gICX6IQNctvh+TyLrdFxsxgocdj9Ui7sd061UlBzi+z4aIGjnem1kZx9QtUgQ==}
     peerDependencies:
       typescript: '>=5.0.0'
@@ -2481,10 +2484,10 @@ packages:
         optional: true
     dependencies:
       typescript: 5.7.2
-      zod: 3.23.0
+      zod: 4.3.6
     dev: false
 
-  /@t3-oss/env-nextjs@0.11.0(typescript@5.7.2)(zod@3.23.0):
+  /@t3-oss/env-nextjs@0.11.0(typescript@5.7.2)(zod@4.3.6):
     resolution: {integrity: sha512-gcRrY2CzSMSrxDf5+fKCUfzbBK125IxOcJHcoMVdjcTmYxEgIZFZ5qPPtngOY3UmTeXSqRZOGuNiosqWTFTkMw==}
     peerDependencies:
       typescript: '>=5.0.0'
@@ -2493,9 +2496,9 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@t3-oss/env-core': 0.11.0(typescript@5.7.2)(zod@3.23.0)
+      '@t3-oss/env-core': 0.11.0(typescript@5.7.2)(zod@4.3.6)
       typescript: 5.7.2
-      zod: 3.23.0
+      zod: 4.3.6
     dev: false
 
   /@types/bcryptjs@2.4.6:
@@ -4127,15 +4130,6 @@ packages:
       scheduler: 0.25.0
     dev: false
 
-  /react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0):
-    resolution: {integrity: sha512-PoEsPe32F7KPLYOBvZfjylEI1B67N44PwY3lyvpmBkhlluLnLz0jH8q2Wg9YidAi6z0k3iUnNRm5x10wurzt9Q==}
-    peerDependencies:
-      react: 19.0.0-rc-fb9a90fa48-20240614
-    dependencies:
-      react: 19.0.0
-      scheduler: 0.25.0-rc-fb9a90fa48-20240614
-    dev: false
-
   /react-promise-suspense@0.3.4:
     resolution: {integrity: sha512-I42jl7L3Ze6kZaq+7zXWSunBa3b1on5yfvUW6Eo/3fFOj6dZ5Bqmcd264nJbTK/gn1HjjILAjSwnZbV4RpSaNQ==}
     dependencies:
@@ -4183,11 +4177,11 @@ packages:
       redis-errors: 1.2.0
     dev: false
 
-  /resend@4.0.0(react-dom@19.0.0-rc-fb9a90fa48-20240614)(react@19.0.0):
+  /resend@4.0.0(react-dom@19.0.0)(react@19.0.0):
     resolution: {integrity: sha512-rDX0rspl/XcmC2JV2V5obQvRX2arzxXUvNFUDMOv5ObBLR68+7kigCOysb7+dlkb0JE3erhQG0nHrbBt/ZCWIg==}
     engines: {node: '>=18'}
     dependencies:
-      '@react-email/render': 0.0.17(react-dom@19.0.0-rc-fb9a90fa48-20240614)(react@19.0.0)
+      '@react-email/render': 0.0.17(react-dom@19.0.0)(react@19.0.0)
     transitivePeerDependencies:
       - react
       - react-dom
@@ -4236,10 +4230,6 @@ packages:
 
   /scheduler@0.25.0:
     resolution: {integrity: sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==}
-    dev: false
-
-  /scheduler@0.25.0-rc-fb9a90fa48-20240614:
-    resolution: {integrity: sha512-HHqQ/SqbeiDfXXVKgNxTpbQTD4n7IUb4hZATvHjp03jr3TF7igehCyHdOjeYTrzIseLO93cTTfSb5f4qWcirMQ==}
     dev: false
 
   /selderee@0.11.0:
@@ -4713,8 +4703,8 @@ packages:
     hasBin: true
     dev: false
 
-  /zod@3.23.0:
-    resolution: {integrity: sha512-OFLT+LTocvabn6q76BTwVB0hExEBS0IduTr3cqZyMqEDbOnYmcU+y0tUAYbND4uwclpBGi4I4UUBGzylWpjLGA==}
+  /zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
     dev: false
 
   /zustand@5.0.0(@types/react@19.0.0)(react@19.0.0):

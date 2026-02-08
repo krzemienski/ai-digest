@@ -42,7 +42,7 @@ export async function runSynthesize(
     limit: synthesisConfig.maxItems,
   });
 
-  const MODEL = "claude-sonnet-4-5-20250929";
+  const MODEL = "claude-haiku-4-5-20251001";
 
   if (topItems.length === 0) {
     return { synthesis: "No items met the quality threshold for today's digest.", topTopics: [], itemCount: 0, costUsd: 0, modelUsed: MODEL, tokensInput: 0, tokensOutput: 0 };
@@ -81,10 +81,10 @@ export async function runSynthesize(
 
     const parsed = SynthesizeResultSchema.parse(JSON.parse(textBlock.text));
 
-    // Sonnet 4.5 pricing: $3/M input, $15/M output
+    // Haiku 4.5 pricing: $1/M input, $5/M output
     const inputTokens = response.usage.input_tokens;
     const outputTokens = response.usage.output_tokens;
-    const cost = (inputTokens * 3 + outputTokens * 15) / 1_000_000;
+    const cost = (inputTokens * 1 + outputTokens * 5) / 1_000_000;
     budget.addCost(cost);
 
     console.log(`Synthesis complete: ${topItems.length} items, ${parsed.topTopics.length} topics, cost: $${cost.toFixed(4)}`);

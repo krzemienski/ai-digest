@@ -39,10 +39,10 @@ export async function runScore(
   );
 
   if (unscored.length === 0) {
-    return { scored: 0, costUsd: 0, modelUsed: "claude-sonnet-4-5-20250929", tokensInput: 0, tokensOutput: 0 };
+    return { scored: 0, costUsd: 0, modelUsed: "claude-haiku-4-5-20251001", tokensInput: 0, tokensOutput: 0 };
   }
 
-  const MODEL = "claude-sonnet-4-5-20250929";
+  const MODEL = "claude-haiku-4-5-20251001";
   let totalScored = 0;
   let totalCost = 0;
   let totalInputTokens = 0;
@@ -104,10 +104,10 @@ export async function runScore(
         }
       }
 
-      // Sonnet 4.5 pricing: $3/M input, $15/M output
+      // Haiku 4.5 pricing: $1/M input, $5/M output
       const inputTokens = response.usage.input_tokens;
       const outputTokens = response.usage.output_tokens;
-      const cost = (inputTokens * 3 + outputTokens * 15) / 1_000_000;
+      const cost = (inputTokens * 1 + outputTokens * 5) / 1_000_000;
       totalCost = totalCost + cost;
       totalInputTokens = totalInputTokens + inputTokens;
       totalOutputTokens = totalOutputTokens + outputTokens;

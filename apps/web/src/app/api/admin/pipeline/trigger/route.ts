@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({})) as Record<string, unknown>;
     const queue = getQueueClient();
-    const job = await queue.add("pipeline", { ...body, triggeredBy: "admin" });
+    const job = await queue.add("pipeline", { ...body, triggerType: "manual" });
 
     return NextResponse.json({
       success: true,

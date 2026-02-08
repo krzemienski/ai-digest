@@ -73,7 +73,7 @@ export async function processPodcast(
       compositeScore: item.compositeScore ?? 0,
     }));
 
-    // Generate podcast script via Claude Opus
+    // Generate podcast script via Claude Haiku
     const client = new Anthropic();
     const scriptPrompt = buildPodcastScriptPrompt({
       digestDate: dateStr,
@@ -83,7 +83,7 @@ export async function processPodcast(
     });
 
     const response = await client.messages.create({
-      model: "claude-opus-4-20250514",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 8192,
       system: PODCAST_SCRIPT_SYSTEM_PROMPT,
       messages: [{ role: "user", content: scriptPrompt }],
@@ -94,8 +94,8 @@ export async function processPodcast(
       throw new Error("No text response from podcast script generation");
     }
 
-    // Track Opus cost
-    const scriptCost = (response.usage.input_tokens * 15 + response.usage.output_tokens * 75) / 1_000_000;
+    // Track Haiku cost
+    const scriptCost = (response.usage.input_tokens * 1 + response.usage.output_tokens * 5) / 1_000_000;
     budget.addCost(scriptCost);
 
     // Parse script
