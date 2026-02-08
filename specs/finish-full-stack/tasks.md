@@ -29,7 +29,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-2.6, AC-6.1.3_
   - _Design: Section 8.2_
 
-- [ ] 2.2 [VERIFY] Theme complete: zero cyber/neon + email palette + type-check
+- [x] 2.2 [VERIFY] Theme complete: zero cyber/neon + email palette + type-check
   - **Do**: Confirm entire theme migration is complete
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && grep -rc "cyber-\|neon-\|#000000" apps/web/src/ packages/email/src/ 2>/dev/null | grep -v ":0$" | wc -l && pnpm check-types 2>&1 | tail -5`
   - **Done when**: 0 matches; type-check passes
@@ -39,7 +39,7 @@ created: 2026-02-08T00:00:00-05:00
 
 ## Phase 3: Pipeline Enhancement & Real Execution
 
-- [ ] 3.1 Enhance coordinator with per-stage DB cost tracking writes
+- [x] 3.1 Enhance coordinator with per-stage DB cost tracking writes
   - **Do**:
     1. Update `packages/agents/src/coordinator.ts`: ensure StageCallback.onStageComplete writes modelUsed, tokensInput, tokensOutput, costUsd to pipeline_stages table
     2. Update `apps/worker/src/processors/pipeline.ts`: provide callback implementations that use drizzle to insert/update pipeline_stages records with stage metadata (model, tokens, cost)
@@ -53,7 +53,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-4.3, AC-4.2.8_
   - _Design: Section 5.2_
 
-- [ ] 3.2 Clear seed data and run real pipeline end-to-end
+- [x] 3.2 Clear seed data and run real pipeline end-to-end
   - **Do**:
     1. Clear seed data: `psql ai_digest_dev -c "TRUNCATE normalized_items, digest_items, digests, episodes, transcripts, pipeline_stages, pipeline_runs CASCADE;"`
     2. Verify Redis running: `redis-cli ping`
@@ -76,7 +76,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-4.4, US-11.3, AC-11.3.1 through AC-11.3.6_
   - _Design: Section 5_
 
-- [ ] 3.3 [VERIFY] Pipeline checkpoint: real data + type-check
+- [x] 3.3 [VERIFY] Pipeline checkpoint: real data + type-check
   - **Do**: Verify pipeline produced real data and code compiles
   - **Verify**:
     ```bash
@@ -92,7 +92,7 @@ created: 2026-02-08T00:00:00-05:00
 
 ## Phase 4: Podcast Generation Fix
 
-- [ ] 4.1 Fix TTS request-id bug with raw fetch
+- [x] 4.1 Fix TTS request-id bug with raw fetch
   - **Do**:
     1. Rewrite `packages/podcast/src/tts.ts` `generateSegmentAudio()`:
        - Remove ElevenLabs SDK import (`const { ElevenLabsClient } = await import("elevenlabs")`)

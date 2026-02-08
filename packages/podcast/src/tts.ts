@@ -1,4 +1,3 @@
-import type { Readable } from "node:stream";
 import type { VoiceConfig, SpeakerVoice } from "@ai-digest/shared";
 import type { ScriptSegment } from "./script-parser";
 
@@ -10,12 +9,33 @@ export interface TTSResult {
   durationMs: number;
 }
 
-async function collectStream(readable: Readable): Promise<Buffer> {
-  const chunks: Buffer[] = [];
-  for await (const chunk of readable) {
-    chunks.push(Buffer.from(chunk as Uint8Array));
+const MAX_RETRIES = 3;
+const BASE_DELAY_MS = 1000;
+
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit,
+  retries: number = MAX_RETRIES
+): Promise<Response> {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    const response = await fetch(url, options);
+
+    if (response.ok) {
+      return response;
+    }
+
+    if ((response.status === 429 || response.status >= 500) && attempt < retries - 1) {
+      const delay = BASE_DELAY_MS * Math.pow(2, attempt);
+      console.warn(`TTS request failed (${response.status}), retrying in ${delay}ms...`);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      continue;
+    }
+
+    const errorText = await response.text().catch(() => "unknown");
+    throw new Error(`ElevenLabs TTS failed (${response.status}): ${errorText}`);
   }
-  return Buffer.concat(chunks);
+
+  throw new Error("TTS retries exhausted");
 }
 
 export async function generateSegmentAudio(
@@ -24,23 +44,33 @@ export async function generateSegmentAudio(
   voiceSettings: { stability: number; similarityBoost: number; speed: number; style: number },
   previousRequestIds: string[]
 ): Promise<TTSResult> {
-  const { ElevenLabsClient } = await import("elevenlabs");
-  const client = new ElevenLabsClient({
-    apiKey: process.env.ELEVENLABS_API_KEY,
-  });
+  const apiKey = process.env.ELEVENLABS_API_KEY;
+  if (!apiKey) {
+    throw new Error("ELEVENLABS_API_KEY environment variable is required");
+  }
 
-  const audioStream = await client.textToSpeech.convert(voiceId, {
-    text: segment.text,
-    model_id: "eleven_multilingual_v2",
-    voice_settings: {
-      stability: voiceSettings.stability,
-      similarity_boost: voiceSettings.similarityBoost,
-      style: voiceSettings.style,
+  const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`;
+
+  const response = await fetchWithRetry(url, {
+    method: "POST",
+    headers: {
+      "xi-api-key": apiKey,
+      "Content-Type": "application/json",
     },
-    previous_request_ids: previousRequestIds.slice(-3), // API supports up to 3
+    body: JSON.stringify({
+      text: segment.text,
+      model_id: "eleven_multilingual_v2",
+      voice_settings: {
+        stability: voiceSettings.stability,
+        similarity_boost: voiceSettings.similarityBoost,
+        style: voiceSettings.style,
+      },
+      previous_request_ids: previousRequestIds.slice(-3),
+    }),
   });
 
-  const audioBuffer = await collectStream(audioStream);
+  const requestId = response.headers.get("request-id") ?? `fallback-${Date.now()}`;
+  const audioBuffer = Buffer.from(await response.arrayBuffer());
 
   // Estimate duration from buffer size (MP3 128kbps ~ 16KB/s)
   const estimatedDurationMs = Math.round((audioBuffer.length / 16000) * 1000);
@@ -49,7 +79,7 @@ export async function generateSegmentAudio(
     order: segment.order,
     speaker: segment.speaker,
     audioBuffer,
-    requestId: `seg-${segment.order}-${Date.now()}`,
+    requestId,
     durationMs: estimatedDurationMs,
   };
 }
