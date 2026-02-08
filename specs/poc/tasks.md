@@ -179,7 +179,7 @@ created: 2026-02-08
   - _Requirements: NFR-3, AC-3.2, AC-3.3, AC-3.6_
   - _Design: Design System, Effects_
 
-- [ ] 2.7 Build layout components (ScreenLayout, TabShell, ModalLayout)
+- [x] 2.7 Build layout components (ScreenLayout, TabShell, ModalLayout)
   - **Do**:
     1. `ScreenLayout.tsx`: SafeAreaView wrapper + StatusBar (light-content) + cyber-bg background. Props: children, scrollable (wraps in ScrollView), edges
     2. `TabShell.tsx`: Container for tab screens that reserves space for mini player (64px) above tab bar. Uses `KeyboardAvoidingView` to handle keyboard + mini player coexistence
