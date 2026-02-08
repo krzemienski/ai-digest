@@ -396,7 +396,7 @@ created: 2026-02-08
   - _Requirements: FR-7, AC-3.1 through AC-3.6_
   - _Design: Screen Inventory (screen 1)_
 
-- [ ] 4.8 [VERIFY] Quality checkpoint: P0 screens complete
+- [x] 4.8 [VERIFY] Quality checkpoint: P0 screens complete
   - **Do**: Run full type check on mobile package
   - **Verify**: `pnpm --filter @ai-digest/mobile check-types 2>&1 | tail -5` exits 0
   - **Done when**: All P0 screens compile with zero type errors
@@ -406,7 +406,7 @@ created: 2026-02-08
 
 ## Phase 5: P1 Screens (Auth + Onboarding + Episodes + Search + Newsletter + Profile + Admin + Notifications + Error/Empty States)
 
-- [ ] 5.1 Implement Auth screens (Login + Register)
+- [x] 5.1 Implement Auth screens (Login + Register)
   - **Do**:
     1. Create `src/app/(auth)/login.tsx`: ScreenLayout with cyberpunk title, email Input, password Input, primary Button "Log In". On submit: call api.login() with X-Client-Type mobile, store token in SecureStore via authStore, navigate to (tabs).
     2. Create `src/app/(auth)/register.tsx`: Similar form with email + password + confirm password. Call api.register(), then auto-login.
