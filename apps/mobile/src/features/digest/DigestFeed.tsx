@@ -10,6 +10,7 @@ import { useRouter } from "expo-router";
 import { DigestCard, CategoryChip, EmptyState } from "@/design-system/composites";
 import { useDigestStore } from "@/stores/digest-store";
 import { usePullToRefresh } from "@/hooks/usePullToRefresh";
+import { useResponsiveLayout } from "@/hooks/useResponsiveLayout";
 import { formatRelativeTime } from "@/utils/format";
 import type { Digest } from "@ai-digest/shared";
 
@@ -27,6 +28,7 @@ export function DigestFeed() {
   const refresh = useDigestStore((s) => s.refresh);
 
   const { refreshing, onRefresh } = usePullToRefresh(refresh);
+  const { columns } = useResponsiveLayout();
 
   useEffect(() => {
     void fetchDigests();
@@ -84,6 +86,8 @@ export function DigestFeed() {
     [handleDigestPress],
   );
 
+  const numColumns = columns > 1 ? columns : 1;
+
   const renderFooter = useCallback(() => {
     if (!hasMore) return null;
     return (
@@ -115,9 +119,12 @@ export function DigestFeed() {
 
   return (
     <FlatList
+      key={`digest-feed-${numColumns}`}
       data={digests}
       renderItem={renderDigestCard}
       keyExtractor={keyExtractor}
+      numColumns={numColumns}
+      columnWrapperStyle={numColumns > 1 ? { gap: 16 } : undefined}
       ListHeaderComponent={renderCategoryChips}
       ListEmptyComponent={renderEmpty}
       ListFooterComponent={renderFooter}
