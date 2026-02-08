@@ -652,7 +652,7 @@ created: 2026-02-08
 
 ## Phase 8: Functional Validation
 
-- [ ] 8.1 Build and validate on iOS Simulator
+- [x] 8.1 Build and validate on iOS Simulator
   - **Do**:
     1. Start Next.js dev server: `pnpm --filter @ai-digest/web dev`
     2. Start Expo dev server: `pnpm --filter @ai-digest/mobile ios`
