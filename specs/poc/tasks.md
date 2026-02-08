@@ -141,13 +141,13 @@ created: 2026-02-08
   - _Requirements: FR-2, NFR-2_
   - _Design: Component Primitives_
 
-- [ ] 2.4 [VERIFY] Quality checkpoint: primitives type check
+- [x] 2.4 [VERIFY] Quality checkpoint: primitives type check
   - **Do**: Run type check to confirm all primitives compile
   - **Verify**: `pnpm --filter @ai-digest/mobile check-types 2>&1 | tail -5` exits 0
   - **Done when**: Zero type errors
   - **Commit**: `chore(mobile): pass primitives quality checkpoint` (only if fixes needed)
 
-- [ ] 2.5 Build composite components (DigestCard, EpisodeRow, CategoryChip, TopicChip, StatusBadge, SettingsGroup, EmptyState)
+- [x] 2.5 Build composite components (DigestCard, EpisodeRow, CategoryChip, TopicChip, StatusBadge, SettingsGroup, EmptyState)
   - **Do**:
     1. `DigestCard.tsx`: Uses Card + Text + Badge. Props: title, source, summary (2-3 lines), category tag, timestamp, onPress. Truncate summary with `numberOfLines={3}`
     2. `EpisodeRow.tsx`: Horizontal row with episode art (40px Image), title, date, duration, play button (Icon). `onPlay` + `onPress` callbacks
@@ -164,7 +164,7 @@ created: 2026-02-08
   - _Requirements: FR-2, FR-4, AC-7.2, AC-9.1, AC-7.5, AC-5.1, AC-17.2, AC-21.1_
   - _Design: Component Primitives, Screen Inventory_
 
-- [ ] 2.6 Build effects (NeonBorder, Scanline, GlitchText, PulsingDot) with reduced-motion support
+- [x] 2.6 Build effects (NeonBorder, Scanline, GlitchText, PulsingDot) with reduced-motion support
   - **Do**:
     1. Create `src/hooks/useReducedMotion.ts` -- check `AccessibilityInfo.isReduceMotionEnabled()` or use `useReducedMotion` from reanimated
     2. `NeonBorder.tsx`: Animated neon glow wrapper using `react-native-reanimated`. Wraps children with animated border shadow. Props: color (cyan/magenta/green), intensity, animated (default true). When reduced-motion: static border, no animation.
