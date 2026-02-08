@@ -85,7 +85,7 @@ created: 2026-02-08
   - _Requirements: NFR-5, AC-3.4_
   - _Design: Technical Decisions (Font loading)_
 
-- [ ] 1.5 [VERIFY] Quality checkpoint: type check foundation
+- [x] 1.5 [VERIFY] Quality checkpoint: type check foundation
   - **Do**: Run type check on mobile package to confirm all foundation files compile
   - **Verify**: `pnpm --filter @ai-digest/mobile check-types 2>&1 | tail -5` exits 0
   - **Done when**: Zero type errors in mobile package
@@ -95,7 +95,7 @@ created: 2026-02-08
 
 ## Phase 2: Design System (Primitives + Composites + Effects)
 
-- [ ] 2.1 Build Text primitive (heading, body, caption, tag, code variants)
+- [x] 2.1 Build Text primitive (heading, body, caption, tag, code variants)
   - **Do**:
     1. Create `src/design-system/primitives/Text.tsx` with `CyberText` component
     2. Variants via `variant` prop: `h1` (JetBrains Mono 700, 30px), `h2` (700, 24px), `h3` (500, 20px), `body` (Inter 400, 16px), `body-medium` (500, 16px), `body-small` (400, 14px), `caption` (400, 12px), `tag` (Space Mono 400, 12px), `code` (JetBrains Mono 400, 14px)
