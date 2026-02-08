@@ -228,13 +228,13 @@ created: 2026-02-08
   - **Commit**: `feat(web): add Bearer token support to auth/me and auth/logout`
   - _Design: Auth Strategy_
 
-- [ ] 3.3 [VERIFY] Quality checkpoint: server JWT changes
+- [x] 3.3 [VERIFY] Quality checkpoint: server JWT changes
   - **Do**: Run type check on web app to confirm JWT changes compile
   - **Verify**: `pnpm --filter @ai-digest/web check-types 2>&1 | tail -5` exits 0
   - **Done when**: Zero type errors in web package
   - **Commit**: `chore(web): pass JWT auth quality checkpoint` (only if fixes needed)
 
-- [ ] 3.4 Implement API client with typed fetch wrapper and Bearer token auth
+- [x] 3.4 Implement API client with typed fetch wrapper and Bearer token auth
   - **Do**:
     1. Install `expo-secure-store` in mobile package
     2. Create `src/services/api-client.ts` -- typed `request<T>()` function per design.md spec. Reads `EXPO_PUBLIC_API_URL` env var. Sends `X-Client-Type: mobile` header. Sends `Authorization: Bearer <token>` from SecureStore when `requireAuth: true`. Returns `ApiResponse<T>`.
