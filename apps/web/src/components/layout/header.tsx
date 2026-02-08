@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Container } from "./container";
 
 function HamburgerIcon() {
@@ -30,13 +31,38 @@ const navLinks = [
   { href: "/archive", label: "Archive" },
 ] as const;
 
+interface AuthUser {
+  email: string;
+  role: string;
+}
+
 export function Header() {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success) {
+          setUser({ email: data.data.email, role: data.data.role });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setUser(null);
+    router.push("/login");
+    router.refresh();
+  };
 
   return (
     <header className="border-b border-cyber-overlay bg-cyber-bg/80 backdrop-blur-sm sticky top-0 z-40">
       <Container className="flex h-16 items-center justify-between">
-        <Link href="/" className="font-mono text-xl font-bold text-cyber-cyan tracking-wider hover:shadow-neon-cyan transition-shadow">
+        <Link href="/" className="text-xl font-bold text-cyber-cyan tracking-wider hover:shadow-neon-cyan transition-shadow">
           AI DIGEST
         </Link>
 
@@ -46,11 +72,40 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors font-mono"
+              className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors"
             >
               {link.label}
             </Link>
           ))}
+
+          {user ? (
+            <div className="flex items-center gap-4 ml-2 pl-4 border-l border-cyber-overlay">
+              {user.role === "admin" && (
+                <Link
+                  href="/admin"
+                  className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors"
+                >
+                  Admin
+                </Link>
+              )}
+              <span className="text-xs text-cyber-text-secondary truncate max-w-[140px]">
+                {user.email}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="text-sm text-cyber-cyan hover:underline ml-2 pl-4 border-l border-cyber-overlay"
+            >
+              Login
+            </Link>
+          )}
         </nav>
 
         {/* Mobile hamburger button */}
@@ -73,11 +128,39 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors font-mono py-3 px-2 min-h-[44px] flex items-center"
+                className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors py-3 px-2 min-h-[44px] flex items-center"
               >
                 {link.label}
               </Link>
             ))}
+
+            {user ? (
+              <>
+                {user.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors py-3 px-2 min-h-[44px] flex items-center"
+                  >
+                    Admin
+                  </Link>
+                )}
+                <button
+                  onClick={() => { setMobileMenuOpen(false); handleLogout(); }}
+                  className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors py-3 px-2 min-h-[44px] flex items-center text-left"
+                >
+                  Logout ({user.email})
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm text-cyber-cyan py-3 px-2 min-h-[44px] flex items-center"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </nav>
       )}
