@@ -349,13 +349,13 @@ created: 2026-02-08
   - _Requirements: FR-22, AC-8.1 through AC-8.6_
   - _Design: Screen Inventory (screen 6)_
 
-- [ ] 4.4 [VERIFY] Quality checkpoint: feed + detail type check
+- [x] 4.4 [VERIFY] Quality checkpoint: feed + detail type check
   - **Do**: Run type check after P0 screen work
   - **Verify**: `pnpm --filter @ai-digest/mobile check-types 2>&1 | tail -5` exits 0
   - **Done when**: Zero type errors
   - **Commit**: `chore(mobile): pass P0 screens quality checkpoint` (only if fixes needed)
 
-- [ ] 4.5 Implement Mini Player with gorhom/bottom-sheet
+- [x] 4.5 Implement Mini Player with gorhom/bottom-sheet
   - **Do**:
     1. Create `src/features/podcast/MiniPlayer.tsx`: 64px bar with episode art thumbnail (40px), truncated title (1 line), play/pause button. Tap handler calls audioStore.expandPlayer()
     2. Integrate into `src/app/(tabs)/_layout.tsx`: render BottomSheet with snap points [64, "95%"]. When audioStore.currentEpisode is null, hide completely. Content switches between MiniPlayer (collapsed) and FullPlayer (expanded) based on audioStore.isExpanded.
