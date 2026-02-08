@@ -3,27 +3,33 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow login page without auth
-  if (pathname === "/admin/login") {
+  // Public routes — no auth needed
+  if (
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname.startsWith("/api/auth/")
+  ) {
     return NextResponse.next();
   }
 
-  const adminKey = process.env.ADMIN_API_KEY;
-  const apiKey = request.headers.get("x-api-key");
-  const cookieToken = request.cookies.get("admin-token")?.value;
+  // Admin pages: check for session cookie presence (actual validation in route handlers)
+  const sessionCookie = request.cookies.get("ai-digest-session");
 
-  const isAuthorized = adminKey && (apiKey === adminKey || cookieToken === adminKey);
-
-  if (!isAuthorized) {
-    // API routes get JSON 401
-    if (pathname.startsWith("/api/admin")) {
+  if (pathname.startsWith("/api/admin")) {
+    if (!sessionCookie) {
       return NextResponse.json(
-        { success: false, error: "Unauthorized" },
+        { success: false, error: "Authentication required" },
         { status: 401 }
       );
     }
-    // Page routes redirect to login
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith("/admin")) {
+    if (!sessionCookie) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    return NextResponse.next();
   }
 
   return NextResponse.next();

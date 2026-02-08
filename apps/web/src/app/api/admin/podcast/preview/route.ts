@@ -9,7 +9,7 @@ const previewSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
-  const authError = requireAdminFromRequest(request);
+  const authError = await requireAdminFromRequest();
   if (authError) return authError;
 
   try {

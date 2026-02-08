@@ -14,7 +14,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const authError = requireAdminFromRequest(request);
+  const authError = await requireAdminFromRequest();
   if (authError) return authError;
 
   try {
@@ -44,7 +44,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const authError = requireAdminFromRequest(request);
+  const authError = await requireAdminFromRequest();
   if (authError) return authError;
 
   try {

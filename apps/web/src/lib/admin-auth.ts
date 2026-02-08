@@ -1,28 +1,32 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { getSession } from "./session";
 
-export function requireAdmin(request: NextRequest): NextResponse | null {
-  const apiKey = request.headers.get("x-api-key");
-  const adminKey = process.env.ADMIN_API_KEY;
+/**
+ * Require admin session for API routes.
+ * Returns null if authorized, NextResponse error if not.
+ * Replaces old x-api-key / admin-token cookie checks.
+ */
+export async function requireAdminFromRequest(): Promise<NextResponse | null> {
+  const session = await getSession();
 
-  if (!adminKey || apiKey !== adminKey) {
+  if (!session.isLoggedIn) {
     return NextResponse.json(
-      { success: false, error: "Unauthorized" },
+      { success: false, error: "Authentication required" },
       { status: 401 }
     );
   }
+
+  if (session.role !== "admin") {
+    return NextResponse.json(
+      { success: false, error: "Admin access required" },
+      { status: 403 }
+    );
+  }
+
   return null;
 }
 
-export function requireAdminFromRequest(request: NextRequest): NextResponse | null {
-  const apiKey = request.headers.get("x-api-key");
-  const cookieToken = request.cookies.get("admin-token")?.value;
-  const adminKey = process.env.ADMIN_API_KEY;
-
-  if (!adminKey || (apiKey !== adminKey && cookieToken !== adminKey)) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized" },
-      { status: 401 }
-    );
-  }
-  return null;
+/** @deprecated Use requireAdminFromRequest (no argument needed now) */
+export function requireAdmin(): Promise<NextResponse | null> {
+  return requireAdminFromRequest();
 }

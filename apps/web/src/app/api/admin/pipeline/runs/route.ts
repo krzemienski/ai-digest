@@ -3,7 +3,7 @@ import { db, queries } from "@ai-digest/db";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
 
 export async function GET(request: NextRequest) {
-  const authError = requireAdminFromRequest(request);
+  const authError = await requireAdminFromRequest();
   if (authError) return authError;
 
   try {

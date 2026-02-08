@@ -5,7 +5,7 @@ import { requireAdminFromRequest } from "@/lib/admin-auth";
 const CONFIG_KEYS = ["topics", "scoring", "synthesis", "budget", "schedule", "podcast"] as const;
 
 export async function GET(request: NextRequest) {
-  const authError = requireAdminFromRequest(request);
+  const authError = await requireAdminFromRequest();
   if (authError) return authError;
 
   try {

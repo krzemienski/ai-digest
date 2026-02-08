@@ -5,6 +5,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     REDIS_URL: z.string().url().optional(),
+    SESSION_SECRET: z.string().min(32),
     ADMIN_API_KEY: z.string().min(16).optional(),
     ANTHROPIC_API_KEY: z.string().optional(),
     ELEVENLABS_API_KEY: z.string().optional(),
@@ -21,6 +22,7 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     REDIS_URL: process.env.REDIS_URL,
+    SESSION_SECRET: process.env.SESSION_SECRET,
     ADMIN_API_KEY: process.env.ADMIN_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
     ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
