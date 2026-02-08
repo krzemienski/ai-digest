@@ -466,7 +466,7 @@ created: 2026-02-08
   - _Requirements: FR-9, AC-19.1 through AC-19.6, NFR-15_
   - _Design: Screen Inventory (screen 13)_
 
-- [ ] 5.6 Implement Newsletter Archive + Reader
+- [x] 5.6 Implement Newsletter Archive + Reader
   - **Do**:
     1. Create `src/features/newsletter/NewsletterArchive.tsx`: Chronological FlatList of newsletter issues (reusing digest data filtered by type). Subscribe/unsubscribe toggle with email input. Frequency preference selector.
     2. Update `src/app/(tabs)/newsletters/index.tsx` to render NewsletterArchive
