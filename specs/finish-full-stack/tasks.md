@@ -405,7 +405,7 @@ created: 2026-02-08T00:00:00-05:00
 
 ## Phase 7: Consumer Pages Polish
 
-- [ ] 7.1 Polish digest feed and detail pages with real data
+- [x] 7.1 Polish digest feed and detail pages with real data
   - **Do**:
     1. `apps/web/src/app/digests/page.tsx`: fetch /api/digests, render card per digest (date, count, synthesis preview, topic badges), "Load More" pagination (10/page), empty state CTA
     2. `apps/web/src/components/digest/digest-feed.tsx`, `digest-card.tsx`: real data rendering
@@ -431,7 +431,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: US-4.4, US-4.5, AC-4.4.1 through AC-4.5.8_
   - _Design: Stitch screens 1-3_
 
-- [ ] 7.2 Polish podcast player, episode library, and mini-player with real audio
+- [x] 7.2 Polish podcast player, episode library, and mini-player with real audio
   - **Do**:
     1. `apps/web/src/app/podcasts/page.tsx`: episode library cards (title, date, duration MM:SS, play button), newest first, empty state
     2. `apps/web/src/app/podcasts/[id]/page.tsx`: full player with controls, transcript below
@@ -460,7 +460,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: US-5.6, US-5.7, US-5.8, US-5.9, AC-5.6.1 through AC-5.9.6_
   - _Design: Stitch screens 4-6_
 
-- [ ] 7.3 Polish search, archive, and subscribe pages
+- [x] 7.3 Polish search, archive, and subscribe pages
   - **Do**:
     1. `apps/web/src/app/search/page.tsx`: prominent search input, 300ms debounce, grouped results ("Digests" and "Items"), loading indicator, empty state, min 2 chars
     2. `apps/web/src/components/search/search-input.tsx`: header search icon that expands
@@ -485,7 +485,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: US-7.1, US-6.4, AC-7.1.1 through AC-7.1.8, AC-6.4.1 through AC-6.4.4_
   - _Design: Stitch screens 10, 14_
 
-- [ ] 7.4 [VERIFY] Consumer pages checkpoint: all pages 200 + real data + type-check
+- [x] 7.4 [VERIFY] Consumer pages checkpoint: all pages 200 + real data + type-check
   - **Do**: Verify all consumer pages load with real data
   - **Verify**:
     ```bash
