@@ -71,7 +71,7 @@ created: 2026-02-08
   - _Requirements: FR-2, AC-2.1 through AC-2.6_
   - _Design: Design System, Color Tokens_
 
-- [ ] 1.4 Configure font loading (JetBrains Mono, Inter, Space Mono + splash hold)
+- [x] 1.4 Configure font loading (JetBrains Mono, Inter, Space Mono + splash hold)
   - **Do**:
     1. Install: `@expo-google-fonts/jetbrains-mono`, `@expo-google-fonts/inter`, `@expo-google-fonts/space-mono`, `expo-splash-screen`
     2. Update `src/app/_layout.tsx` to use `useFonts` hook loading all required weights: JetBrainsMono_400Regular, JetBrainsMono_500Medium, JetBrainsMono_700Bold, Inter_400Regular, Inter_500Medium, Inter_600SemiBold, SpaceMono_400Regular

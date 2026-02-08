@@ -14,6 +14,9 @@
   "dependencies": {
     "@ai-digest/shared": "workspace:*",
     "@babel/runtime": "^7.28.6",
+    "@expo-google-fonts/inter": "^0.4.2",
+    "@expo-google-fonts/jetbrains-mono": "^0.4.1",
+    "@expo-google-fonts/space-mono": "^0.4.2",
     "@expo/metro-runtime": "^6.1.2",
     "@react-native/normalize-colors": "^0.83.1",
     "@react-navigation/core": "^7.14.0",
@@ -24,6 +27,7 @@
     "expo-linking": "^8.0.11",
     "expo-modules-core": "^3.0.29",
     "expo-router": "^6.0.23",
+    "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
     "fbjs": "^3.0.5",
     "nativewind": "^4.2.1",
