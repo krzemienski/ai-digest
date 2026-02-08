@@ -186,7 +186,7 @@ created: 2026-02-08T00:00:00-05:00
   - **Done when**: Zero type errors
   - **Commit**: `chore(podcast): fix type errors from podcast refactor` (if needed)
 
-- [ ] 4.6 Generate real podcast episode
+- [x] 4.6 Generate real podcast episode
   - **Do**:
     1. Ensure worker is running with podcast queue
     2. Get latest digest ID: `psql -t ai_digest_dev -c "SELECT id FROM digests ORDER BY created_at DESC LIMIT 1;" | tr -d ' '`
