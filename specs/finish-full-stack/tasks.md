@@ -163,7 +163,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-5.1, FR-5.2, FR-5.10, FR-5.11, US-5.1, US-5.2, US-5.3_
   - _Design: Section 6.1, 6.2, 6.3_
 
-- [ ] 4.4 Improve audio assembly (silence gaps, loudness normalization, ID3 metadata)
+- [x] 4.4 Improve audio assembly (silence gaps, loudness normalization, ID3 metadata)
   - **Do**:
     1. Update `packages/podcast/src/assembler.ts`:
        - Between different speakers: generate 400ms silence via ffmpeg `anullsrc` and insert in concat list
@@ -180,7 +180,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-5.6, NFR-5_
   - _Design: Section 6.6_
 
-- [ ] 4.5 [VERIFY] Podcast code quality checkpoint
+- [x] 4.5 [VERIFY] Podcast code quality checkpoint
   - **Do**: Type-check entire monorepo after podcast changes
   - **Verify**: `cd /Users/nick/Desktop/ai-digest && pnpm check-types 2>&1 | tail -10`
   - **Done when**: Zero type errors
