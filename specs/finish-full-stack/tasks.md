@@ -114,7 +114,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-5.5_
   - _Design: Section 6.4_
 
-- [ ] 4.2 Add podcast script + quality review Zod schemas
+- [x] 4.2 Add podcast script + quality review Zod schemas
   - **Do**:
     1. Create `packages/agents/src/schemas/podcast-script.schema.ts`: PodcastScriptSchema with metadata (episodeDate, totalEstimatedDuration, topicsCovered, storyCount) and segments array (order, speaker enum ["Host A","Host B"], text, estimatedDuration, segmentType enum, relatedStoryTitles, emotion enum)
     2. Create `packages/agents/src/schemas/quality-review.schema.ts`: QualityReviewSchema with overallScore (number), naturalness, coverage, accuracy, engagement, pacing, transitions (all numbers), passed (boolean), feedback (string), segmentsToRevise array

@@ -19,3 +19,7 @@ export type {
   PodcastTopicItem,
   PodcastScriptSegment,
 } from "./prompts/podcast-script";
+export { PodcastScriptSchema } from "./schemas/podcast-script.schema";
+export type { PodcastScriptOutput } from "./schemas/podcast-script.schema";
+export { QualityReviewSchema } from "./schemas/quality-review.schema";
+export type { QualityReviewOutput } from "./schemas/quality-review.schema";
