@@ -264,7 +264,7 @@ created: 2026-02-08
   - _Requirements: FR-4, FR-5, FR-9_
   - _Design: Audio Store, Technical Decisions (Zustand)_
 
-- [ ] 3.6 Implement audio service (react-native-track-player setup + background service)
+- [x] 3.6 Implement audio service (react-native-track-player setup + background service)
   - **Do**:
     1. Install `react-native-track-player` in mobile package
     2. Create `src/services/audio-service.ts` per design.md: `setupAudioService()` (TrackPlayer.setupPlayer with 50MB cache, capabilities) and `playbackService()` (event listeners for RemotePlay, RemotePause, RemoteSeek, RemoteJumpForward/Backward)
