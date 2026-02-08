@@ -296,7 +296,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-7.1, FR-7.2, FR-7.3, FR-3.5, US-7.1_
   - _Design: Section 2.6_
 
-- [ ] 5.4 [VERIFY] Admin API checkpoint: type-check + all endpoints respond
+- [x] 5.4 [VERIFY] Admin API checkpoint: type-check + all endpoints respond
   - **Do**: Type-check + verify all new endpoints
   - **Verify**:
     ```bash
