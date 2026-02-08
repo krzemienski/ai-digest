@@ -384,7 +384,7 @@ created: 2026-02-08
   - _Requirements: FR-5, AC-10.1 through AC-10.8_
   - _Design: Full-Screen Player Design_
 
-- [ ] 4.7 Implement Splash screen with cyberpunk loading
+- [x] 4.7 Implement Splash screen with cyberpunk loading
   - **Do**:
     1. Update `src/app/_layout.tsx` root layout: while fonts loading, show splash view with deep black bg (#0A0A0F), centered app logo/title (GlitchText "AI DIGEST"), Scanline overlay, PulsingDot loading indicator (cyan). Auto-navigate based on auth state + onboarding state when ready.
     2. Navigation logic: if first launch -> onboarding; if not logged in -> auth/login; else -> (tabs)
