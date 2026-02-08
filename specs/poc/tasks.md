@@ -278,7 +278,7 @@ created: 2026-02-08
   - _Requirements: FR-5, NFR-7, AC-10.7, AC-10.8_
   - _Design: Audio Architecture, Service Worker Pattern_
 
-- [ ] 3.7 Implement utility hooks (useApi, usePullToRefresh, useDebounce, useOnboarding)
+- [x] 3.7 Implement utility hooks (useApi, usePullToRefresh, useDebounce, useOnboarding)
   - **Do**:
     1. `hooks/useApi.ts`: Generic fetcher hook wrapping api calls with loading/error/data state + refetch
     2. `hooks/usePullToRefresh.ts`: Returns refreshing boolean + onRefresh callback for RefreshControl
