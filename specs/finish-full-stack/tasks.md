@@ -209,7 +209,7 @@ created: 2026-02-08T00:00:00-05:00
 
 ## Phase 5: Admin API Endpoints
 
-- [ ] 5.1 Build admin stats and health endpoints
+- [x] 5.1 Build admin stats and health endpoints
   - **Do**:
     1. Create `apps/web/src/app/api/admin/stats/route.ts` GET:
        - Count normalized_items, digests, episodes (status='ready'), subscribers (status='active')
@@ -237,7 +237,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-8.1, FR-8.2, US-8.1, US-8.3_
   - _Design: Section 9_
 
-- [ ] 5.2 Build source validation, subscriber delete, and newsletter HTML endpoints
+- [x] 5.2 Build source validation, subscriber delete, and newsletter HTML endpoints
   - **Do**:
     1. Create `apps/web/src/app/api/admin/sources/validate/route.ts` POST:
        - Accept `{ url: z.string().url() }`
@@ -266,7 +266,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-3.4, FR-6.1, US-3.4, US-6.1, US-6.2, US-6.3_
   - _Design: Section 7, 8_
 
-- [ ] 5.3 Add tsvector search index and seed source catalog
+- [x] 5.3 Add tsvector search index and seed source catalog
   - **Do**:
     1. Add tsvector column + GIN index via raw SQL migration:
        ```sql

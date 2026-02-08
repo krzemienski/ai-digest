@@ -24,3 +24,5 @@ export type {
 } from "./types";
 
 export { deterministicId, formatDigestDate, isWithinHours } from "./utils";
+
+export { SEED_SOURCES, type SeedSource } from "./seed-sources";
