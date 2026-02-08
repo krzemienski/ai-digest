@@ -5,10 +5,22 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface StatsData {
-  readonly totalRuns: number;
   readonly totalItems: number;
-  readonly subscriberCount: number;
-  readonly lastRunStatus: string;
+  readonly totalDigests: number;
+  readonly totalEpisodes: number;
+  readonly totalSubscribers: number;
+  readonly latestPipelineRun: {
+    readonly status: string;
+    readonly startedAt: string;
+    readonly completedAt: string | null;
+    readonly itemsIngested: number;
+    readonly costUsd: number | null;
+  } | null;
+  readonly sourceHealth: {
+    readonly healthy: number;
+    readonly degraded: number;
+    readonly erroring: number;
+  };
 }
 
 interface StatCardProps {
@@ -41,51 +53,32 @@ export function DashboardStats() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [runsRes, subscribersRes, statusRes] = await Promise.all([
-          fetch("/api/admin/pipeline/runs", { credentials: "include" }),
-          fetch("/api/admin/subscribers", { credentials: "include" }),
-          fetch("/api/admin/pipeline/status", { credentials: "include" }),
-        ]);
-
-        const runsData = (await runsRes.json()) as {
+        const res = await fetch("/api/admin/stats", { credentials: "include" });
+        const data = (await res.json()) as {
           success: boolean;
-          data?: ReadonlyArray<{ itemsIngested?: number }>;
-        };
-        const subscribersData = (await subscribersRes.json()) as {
-          success: boolean;
-          data?: { count: number };
-        };
-        const statusData = (await statusRes.json()) as {
-          success: boolean;
-          data?: { current: { status: string } | null };
+          data?: StatsData;
         };
 
-        const runs = runsData.success && runsData.data ? runsData.data : [];
-        const totalItems = runs.reduce(
-          (sum, run) => sum + (run.itemsIngested ?? 0),
-          0
-        );
-        const subCount =
-          subscribersData.success && subscribersData.data
-            ? subscribersData.data.count
-            : 0;
-        const lastStatus =
-          statusData.success && statusData.data?.current
-            ? statusData.data.current.status
-            : "idle";
-
-        setStats({
-          totalRuns: runs.length,
-          totalItems,
-          subscriberCount: subCount,
-          lastRunStatus: lastStatus,
-        });
+        if (data.success && data.data) {
+          setStats(data.data);
+        } else {
+          setStats({
+            totalItems: 0,
+            totalDigests: 0,
+            totalEpisodes: 0,
+            totalSubscribers: 0,
+            latestPipelineRun: null,
+            sourceHealth: { healthy: 0, degraded: 0, erroring: 0 },
+          });
+        }
       } catch {
         setStats({
-          totalRuns: 0,
           totalItems: 0,
-          subscriberCount: 0,
-          lastRunStatus: "error",
+          totalDigests: 0,
+          totalEpisodes: 0,
+          totalSubscribers: 0,
+          latestPipelineRun: null,
+          sourceHealth: { healthy: 0, degraded: 0, erroring: 0 },
         });
       } finally {
         setLoading(false);
@@ -97,11 +90,25 @@ export function DashboardStats() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCardSkeleton />
-        <StatCardSkeleton />
-        <StatCardSkeleton />
-        <StatCardSkeleton />
+      <div className="space-y-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <Card>
+            <Skeleton className="h-5 w-32 mb-2" />
+            <Skeleton className="h-4 w-full mb-1" />
+            <Skeleton className="h-4 w-3/4" />
+          </Card>
+          <Card>
+            <Skeleton className="h-5 w-32 mb-2" />
+            <Skeleton className="h-4 w-full mb-1" />
+            <Skeleton className="h-4 w-3/4" />
+          </Card>
+        </div>
       </div>
     );
   }
@@ -111,11 +118,77 @@ export function DashboardStats() {
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <StatCard label="Total Items" value={stats.totalItems} />
-      <StatCard label="Total Runs" value={stats.totalRuns} />
-      <StatCard label="Subscribers" value={stats.subscriberCount} />
-      <StatCard label="Last Run Status" value={stats.lastRunStatus} />
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard label="Total Items" value={stats.totalItems} />
+        <StatCard label="Total Digests" value={stats.totalDigests} />
+        <StatCard label="Episodes Ready" value={stats.totalEpisodes} />
+        <StatCard label="Active Subscribers" value={stats.totalSubscribers} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <Card>
+          <h3 className="text-sm font-bold text-text-primary mb-3">
+            Latest Pipeline Run
+          </h3>
+          {stats.latestPipelineRun ? (
+            <div className="space-y-1 text-sm">
+              <p className="text-text-secondary">
+                <span className="text-text-primary font-medium">Status:</span>{" "}
+                {stats.latestPipelineRun.status}
+              </p>
+              <p className="text-text-secondary">
+                <span className="text-text-primary font-medium">Started:</span>{" "}
+                {new Date(stats.latestPipelineRun.startedAt).toLocaleString()}
+              </p>
+              {stats.latestPipelineRun.completedAt && (
+                <p className="text-text-secondary">
+                  <span className="text-text-primary font-medium">
+                    Completed:
+                  </span>{" "}
+                  {new Date(
+                    stats.latestPipelineRun.completedAt
+                  ).toLocaleString()}
+                </p>
+              )}
+              <p className="text-text-secondary">
+                <span className="text-text-primary font-medium">
+                  Items Ingested:
+                </span>{" "}
+                {stats.latestPipelineRun.itemsIngested}
+              </p>
+              {stats.latestPipelineRun.costUsd !== null && (
+                <p className="text-text-secondary">
+                  <span className="text-text-primary font-medium">Cost:</span> $
+                  {stats.latestPipelineRun.costUsd.toFixed(2)}
+                </p>
+              )}
+            </div>
+          ) : (
+            <p className="text-sm text-text-secondary">No runs yet</p>
+          )}
+        </Card>
+
+        <Card>
+          <h3 className="text-sm font-bold text-text-primary mb-3">
+            Source Health
+          </h3>
+          <div className="space-y-1 text-sm">
+            <p className="text-text-secondary">
+              <span className="text-success font-medium">Healthy:</span>{" "}
+              {stats.sourceHealth.healthy}
+            </p>
+            <p className="text-text-secondary">
+              <span className="text-warning font-medium">Degraded:</span>{" "}
+              {stats.sourceHealth.degraded}
+            </p>
+            <p className="text-text-secondary">
+              <span className="text-destructive font-medium">Erroring:</span>{" "}
+              {stats.sourceHealth.erroring}
+            </p>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 }

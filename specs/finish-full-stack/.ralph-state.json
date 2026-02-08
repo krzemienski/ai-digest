@@ -3,7 +3,7 @@
   "name": "finish-full-stack",
   "basePath": "specs/finish-full-stack",
   "phase": "execution",
-  "taskIndex": 15,
+  "taskIndex": 20,
   "totalTasks": 48,
   "taskIteration": 1,
   "maxTaskIterations": 200,

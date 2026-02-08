@@ -312,7 +312,7 @@ created: 2026-02-08T00:00:00-05:00
 
 ## Phase 6: Admin Dashboard UI
 
-- [ ] 6.1 Wire admin dashboard with real stats and quick actions
+- [x] 6.1 Wire admin dashboard with real stats and quick actions
   - **Do**:
     1. Update `apps/web/src/app/admin/page.tsx`: fetch `/api/admin/stats` via fetch, display 4 stat cards (items, digests, episodes, subscribers), last pipeline run info, source health summary
     2. Update `apps/web/src/components/admin/dashboard-stats.tsx`: render real numbers from stats API, trend indicators
@@ -327,7 +327,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: US-8.1, US-8.2, AC-8.1.1 through AC-8.2.4_
   - _Design: Stitch screen 7_
 
-- [ ] 6.2 Build real-time pipeline monitor page
+- [x] 6.2 Build real-time pipeline monitor page
   - **Do**:
     1. Update `apps/web/src/app/admin/pipeline/page.tsx`: "Run Pipeline" trigger button (disabled while running), real-time monitor polling /api/admin/pipeline/status every 2s, history table below
     2. Update `apps/web/src/components/admin/pipeline-status.tsx`: vertical stage timeline with status icons (pending/running spinner/completed check/failed X), duration, item counts
@@ -344,7 +344,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: US-4.2, US-4.3, AC-4.2.1 through AC-4.3.5_
   - _Design: Stitch screen 8_
 
-- [ ] 6.3 Build podcast admin with trigger, progress monitor, and voice config
+- [x] 6.3 Build podcast admin with trigger, progress monitor, and voice config
   - **Do**:
     1. Update `apps/web/src/app/admin/podcast/page.tsx`: duration selector (5/10/15/20 min buttons), digest dropdown (latest default), "Generate X-min Podcast" button, 6-stage progress timeline polling every 3s, script preview section
     2. Update `apps/web/src/components/admin/voice-selector.tsx`: Host A + Host B voice dropdowns from pre-made list, settings sliders (stability, similarity, style)
@@ -359,7 +359,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: US-5.1, US-5.2, US-5.3, US-5.5, AC-5.1.1 through AC-5.5.7_
   - _Design: Stitch screen 9_
 
-- [ ] 6.4 Wire source management, config, subscriber, and schedule pages
+- [x] 6.4 Wire source management, config, subscriber, and schedule pages
   - **Do**:
     1. `admin/sources/page.tsx` + `source-table.tsx`: health status indicators (green/yellow/red), type badges, enable/disable toggle, expandable fetch log, "Test Connection" button, "Add Source" modal with type-specific config fields
     2. `source-form.tsx`: type dropdown with conditional fields (RSS=url, GitHub=topics/minStars, ArXiv=categories, HN=queries/minPoints, etc.)
@@ -388,7 +388,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: US-3.1, US-3.2, US-3.3, US-4.6, US-6.3, US-8.4_
   - _Design: Stitch screens 11, 12_
 
-- [ ] 6.5 [VERIFY] Admin UI checkpoint: all pages return 200 + type-check
+- [x] 6.5 [VERIFY] Admin UI checkpoint: all pages return 200 + type-check
   - **Do**: Verify all admin pages load and type-check passes
   - **Verify**:
     ```bash

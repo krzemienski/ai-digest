@@ -28,6 +28,51 @@ interface SaveResponse {
   readonly error?: string;
 }
 
+interface Digest {
+  readonly id: string;
+  readonly digestDate: string;
+}
+
+interface DigestsApiResponse {
+  readonly success: boolean;
+  readonly data?: ReadonlyArray<Digest>;
+  readonly error?: string;
+}
+
+interface GenerateResponse {
+  readonly success: boolean;
+  readonly data?: { readonly episodeId: string };
+  readonly error?: string;
+}
+
+type StageStatus = "pending" | "running" | "done" | "failed";
+
+interface StageData {
+  readonly status: StageStatus;
+  readonly startedAt: string | null;
+  readonly completedAt: string | null;
+}
+
+interface StatusApiResponse {
+  readonly success: boolean;
+  readonly data?: {
+    readonly id: string;
+    readonly status: "generating" | "ready" | "failed";
+    readonly audioUrl: string | null;
+    readonly durationSeconds: number | null;
+    readonly podcastStages: {
+      readonly content_select: StageData;
+      readonly script_gen: StageData;
+      readonly quality_review: StageData;
+      readonly tts: StageData;
+      readonly assembly: StageData;
+      readonly upload: StageData;
+    };
+    readonly scriptPreview: string | null;
+  };
+  readonly error?: string;
+}
+
 const DEFAULT_CONFIG: PodcastConfig = {
   hostAVoiceId: "",
   hostBVoiceId: "",
@@ -72,6 +117,14 @@ export default function PodcastConfigPage() {
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<{ readonly type: "success" | "error"; readonly message: string } | null>(null);
 
+  // Generation state
+  const [digests, setDigests] = useState<ReadonlyArray<Digest>>([]);
+  const [selectedDigestId, setSelectedDigestId] = useState<string>("");
+  const [targetDuration, setTargetDuration] = useState<number>(10);
+  const [generating, setGenerating] = useState(false);
+  const [generatingEpisodeId, setGeneratingEpisodeId] = useState<string | null>(null);
+  const [statusData, setStatusData] = useState<StatusApiResponse["data"] | null>(null);
+
   useEffect(() => {
     const fetchConfig = async () => {
       try {
@@ -90,6 +143,57 @@ export default function PodcastConfigPage() {
 
     void fetchConfig();
   }, []);
+
+  // Fetch available digests
+  useEffect(() => {
+    const fetchDigests = async () => {
+      try {
+        const res = await fetch("/api/digests", { credentials: "include" });
+        const data = (await res.json()) as DigestsApiResponse;
+
+        if (data.success && data.data && data.data.length > 0) {
+          setDigests(data.data);
+          const firstDigest = data.data[0];
+          if (firstDigest) {
+            setSelectedDigestId(firstDigest.id);
+          }
+        }
+      } catch {
+        // Silent fail - generation section will be disabled
+      }
+    };
+
+    void fetchDigests();
+  }, []);
+
+  // Poll for status while generating
+  useEffect(() => {
+    if (!generating || !generatingEpisodeId) return;
+
+    const pollStatus = async () => {
+      try {
+        const res = await fetch(`/api/admin/podcast/status?episodeId=${generatingEpisodeId}`, {
+          credentials: "include",
+        });
+        const data = (await res.json()) as StatusApiResponse;
+
+        if (data.success && data.data) {
+          setStatusData(data.data);
+
+          if (data.data.status === "ready" || data.data.status === "failed") {
+            setGenerating(false);
+          }
+        }
+      } catch {
+        // Silent fail - will retry on next poll
+      }
+    };
+
+    void pollStatus();
+    const interval = setInterval(() => void pollStatus(), 3000);
+
+    return () => clearInterval(interval);
+  }, [generating, generatingEpisodeId]);
 
   const updateConfig = useCallback(
     <K extends keyof PodcastConfig>(field: K, value: PodcastConfig[K]) => {
@@ -124,6 +228,38 @@ export default function PodcastConfigPage() {
     }
   };
 
+  const handleGenerate = async () => {
+    if (!selectedDigestId) return;
+
+    setGenerating(true);
+    setStatusData(null);
+    setFeedback(null);
+
+    try {
+      const res = await fetch("/api/admin/podcast/generate", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          digestId: selectedDigestId,
+          targetDurationMinutes: targetDuration,
+        }),
+      });
+
+      const data = (await res.json()) as GenerateResponse;
+
+      if (data.success && data.data) {
+        setGeneratingEpisodeId(data.data.episodeId);
+      } else {
+        setFeedback({ type: "error", message: data.error ?? "Failed to start generation" });
+        setGenerating(false);
+      }
+    } catch {
+      setFeedback({ type: "error", message: "Network error: could not start generation" });
+      setGenerating(false);
+    }
+  };
+
   const voiceSettings = {
     stability: config.stability,
     similarity_boost: config.similarityBoost,
@@ -147,11 +283,142 @@ export default function PodcastConfigPage() {
     );
   }
 
+  const getStageIcon = (status: StageStatus) => {
+    switch (status) {
+      case "pending":
+        return <div className="w-4 h-4 rounded-full border-2 border-text-secondary" />;
+      case "running":
+        return <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin" />;
+      case "done":
+        return <div className="w-4 h-4 text-success">✓</div>;
+      case "failed":
+        return <div className="w-4 h-4 text-destructive">✕</div>;
+    }
+  };
+
+  const formatTime = (timestamp: string | null) => {
+    if (!timestamp) return "—";
+    return new Date(timestamp).toLocaleTimeString();
+  };
+
   return (
     <div>
       <h1 className="text-2xl text-accent mb-6">Podcast Configuration</h1>
 
       <div className="space-y-8">
+        {/* GENERATION SECTION */}
+        <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+          <h2 className="text-lg text-accent mb-4">Generate Podcast</h2>
+
+          <div className="space-y-4">
+            {/* Digest Selector */}
+            <div>
+              <label className="block text-xs text-text-secondary uppercase mb-1">
+                Select Digest
+              </label>
+              <select
+                value={selectedDigestId}
+                onChange={(e) => setSelectedDigestId(e.target.value)}
+                disabled={generating || digests.length === 0}
+                className="w-full h-10 px-3 bg-bg border border-surface-elevated rounded text-text-primary text-sm focus:outline-none focus:border-accent focus:transition-all disabled:opacity-50"
+              >
+                {digests.length === 0 && (
+                  <option value="">No digests available</option>
+                )}
+                {digests.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {new Date(d.digestDate).toLocaleDateString()}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Duration Selector */}
+            <div>
+              <label className="block text-xs text-text-secondary uppercase mb-2">
+                Target Duration
+              </label>
+              <div className="flex gap-2">
+                {[5, 10, 15, 20].map((mins) => (
+                  <button
+                    key={mins}
+                    type="button"
+                    disabled={generating}
+                    onClick={() => setTargetDuration(mins)}
+                    className={`flex-1 h-10 rounded border transition-all ${
+                      targetDuration === mins
+                        ? "bg-accent text-bg border-accent"
+                        : "bg-bg text-text-primary border-surface-elevated hover:border-accent"
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  >
+                    {mins} min
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Generate Button */}
+            <Button
+              variant="primary"
+              size="lg"
+              disabled={generating || !selectedDigestId}
+              onClick={() => void handleGenerate()}
+              className="w-full"
+            >
+              {generating ? "Generating..." : `Generate ${targetDuration}-min Podcast`}
+            </Button>
+
+            {/* Progress Monitor */}
+            {statusData !== null && (
+              <div className="mt-6 space-y-3">
+                <div className="text-xs text-text-secondary uppercase mb-2">
+                  Generation Progress
+                </div>
+                {(
+                  [
+                    { key: "content_select" as const, label: "Content Selection" },
+                    { key: "script_gen" as const, label: "Script Generation" },
+                    { key: "quality_review" as const, label: "Quality Review" },
+                    { key: "tts" as const, label: "Text-to-Speech" },
+                    { key: "assembly" as const, label: "Audio Assembly" },
+                    { key: "upload" as const, label: "Upload" },
+                  ]
+                ).map(({ key, label }) => {
+                  if (!statusData) return null;
+                  const stage = statusData.podcastStages[key];
+                  return (
+                    <div
+                      key={key}
+                      className="flex items-center gap-3 p-3 bg-bg border border-surface-elevated rounded"
+                    >
+                      <div className="flex-shrink-0">{getStageIcon(stage.status)}</div>
+                      <div className="flex-1">
+                        <div className="text-sm text-text-primary">{label}</div>
+                        <div className="text-xs text-text-secondary">
+                          {stage.startedAt && `Started: ${formatTime(stage.startedAt)}`}
+                          {stage.completedAt && ` • Completed: ${formatTime(stage.completedAt)}`}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Script Preview */}
+            {statusData?.scriptPreview && statusData.status === "ready" && (
+              <div className="mt-6">
+                <div className="text-xs text-text-secondary uppercase mb-2">
+                  Script Preview
+                </div>
+                <div className="p-4 bg-bg border border-surface-elevated rounded text-sm text-text-primary whitespace-pre-wrap">
+                  {statusData.scriptPreview}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+
         {/* Speaker Voices */}
         <section className="bg-surface border border-surface-elevated rounded-lg p-6">
           <h2 className="text-lg text-accent mb-4">Speaker Voices</h2>
