@@ -129,7 +129,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: FR-5.3, FR-5.4_
   - _Design: Section 15.2_
 
-- [ ] 4.3 Create separate BullMQ podcast job with 6-stage progress tracking
+- [x] 4.3 Create separate BullMQ podcast job with 6-stage progress tracking
   - **Do**:
     1. Create `apps/web/src/app/api/admin/podcast/generate/route.ts` POST:
        - Validate `{ digestId: z.string().uuid(), targetDurationMinutes: z.enum(["5","10","15","20"]) }`
