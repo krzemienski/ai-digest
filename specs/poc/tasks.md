@@ -336,7 +336,7 @@ created: 2026-02-08
   - _Requirements: FR-4, AC-7.1 through AC-7.8_
   - _Design: Data Flow (Digest Feed Loading)_
 
-- [ ] 4.3 Implement Digest Detail view
+- [x] 4.3 Implement Digest Detail view
   - **Do**:
     1. Create `src/features/digest/DigestDetail.tsx`: ScrollView with full article content. Title (h1), source attribution with link, reading time estimate, summary + items. Code blocks in JetBrains Mono. Share button triggers native share. Bookmark action with visual feedback (cyan fill toggle).
     2. Update `src/app/digest/[id].tsx` to render DigestDetail, fetch via `api.getDigest(id)` using route params
