@@ -321,7 +321,7 @@ created: 2026-02-08
   - _Requirements: FR-3, AC-29.1 through AC-29.7_
   - _Design: Navigation Types, Screen Inventory_
 
-- [ ] 4.2 Implement Home - Daily Digest Feed screen
+- [x] 4.2 Implement Home - Daily Digest Feed screen
   - **Do**:
     1. Create `src/features/digest/DigestFeed.tsx`: FlatList rendering DigestCard components. Pull-to-refresh via usePullToRefresh. Horizontal CategoryChip scroll at top. Empty state when no digests.
     2. Update `src/app/(tabs)/index.tsx` to render DigestFeed inside ScreenLayout

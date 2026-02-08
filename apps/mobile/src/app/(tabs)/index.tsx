@@ -1,12 +1,10 @@
 import { ScreenLayout } from "@/design-system/layouts";
-import { CyberText } from "@/design-system/primitives";
+import { DigestFeed } from "@/features/digest/DigestFeed";
 
 export default function HomeScreen() {
   return (
     <ScreenLayout>
-      <CyberText variant="h1" className="p-4">
-        Home
-      </CyberText>
+      <DigestFeed />
     </ScreenLayout>
   );
 }
