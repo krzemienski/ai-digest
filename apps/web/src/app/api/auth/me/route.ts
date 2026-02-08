@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/session";
+import { getUserFromRequest } from "@/lib/auth-from-request";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const session = await getSession();
+    const user = await getUserFromRequest(request);
 
-    if (!session.isLoggedIn) {
+    if (!user) {
       return NextResponse.json(
         { success: false, error: "Authentication required" },
         { status: 401 }
@@ -16,15 +16,15 @@ export async function GET() {
       {
         success: true,
         data: {
-          userId: session.userId,
-          email: session.email,
-          role: session.role,
+          userId: user.userId,
+          email: user.email,
+          role: user.role,
         },
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Session error:", error);
+    console.error("Auth check error:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }

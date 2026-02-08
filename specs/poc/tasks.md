@@ -217,7 +217,7 @@ created: 2026-02-08
   - _Requirements: FR-22 (auth prerequisite)_
   - _Design: Auth Strategy, Server-Side Changes Required_
 
-- [ ] 3.2 Add Bearer token validation to public API routes (auth/me, auth/logout)
+- [x] 3.2 Add Bearer token validation to public API routes (auth/me, auth/logout)
   - **Do**:
     1. Create `apps/web/src/lib/auth-from-request.ts` with `getUserFromRequest(request)` that: (a) checks `Authorization: Bearer <token>` header first, verifies JWT, returns user info; (b) falls back to iron-session; (c) returns null if neither
     2. Update `apps/web/src/app/api/auth/me/route.ts` to use `getUserFromRequest` instead of only `getSession`
