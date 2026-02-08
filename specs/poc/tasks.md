@@ -434,13 +434,13 @@ created: 2026-02-08
   - _Requirements: FR-7, AC-4.1 through AC-6.5_
   - _Design: Screen Inventory (screens 2-4)_
 
-- [ ] 5.3 [VERIFY] Quality checkpoint: auth + onboarding
+- [x] 5.3 [VERIFY] Quality checkpoint: auth + onboarding
   - **Do**: Run type check
   - **Verify**: `pnpm --filter @ai-digest/mobile check-types 2>&1 | tail -5` exits 0
   - **Done when**: Zero type errors
   - **Commit**: `chore(mobile): pass auth+onboarding quality checkpoint` (only if fixes needed)
 
-- [ ] 5.4 Implement Episode List and Transcript View
+- [x] 5.4 Implement Episode List and Transcript View
   - **Do**:
     1. Create `src/features/podcast/EpisodeList.tsx`: FlatList of EpisodeRow components. Sort toggle (newest/oldest). Currently playing episode highlighted with cyan accent. Play button per row starts playback via audioStore.
     2. Update `src/app/(tabs)/podcasts/index.tsx` to render EpisodeList
@@ -453,7 +453,7 @@ created: 2026-02-08
   - _Requirements: FR-12, AC-9.1 through AC-9.5, AC-12.1 through AC-12.5_
   - _Design: Screen Inventory (screens 7, 10)_
 
-- [ ] 5.5 Implement Search Overlay
+- [x] 5.5 Implement Search Overlay
   - **Do**:
     1. Create `src/features/search/SearchOverlay.tsx`: Full-screen with auto-focused Input (search variant). Debounced 300ms via useDebounce. Results grouped by type (Digests, Podcasts, Newsletters) with section headers. Filter chips: content type, date range, topic. Recent searches from searchStore (persisted).
     2. Create `src/features/search/SearchResults.tsx`: SectionList rendering grouped results

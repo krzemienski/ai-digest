@@ -1,12 +1,10 @@
 import { ScreenLayout } from "@/design-system/layouts";
-import { CyberText } from "@/design-system/primitives";
+import { SearchOverlay } from "@/features/search/SearchOverlay";
 
 export default function SearchScreen() {
   return (
     <ScreenLayout>
-      <CyberText variant="h1" className="p-4">
-        Search
-      </CyberText>
+      <SearchOverlay />
     </ScreenLayout>
   );
 }
