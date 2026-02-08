@@ -1,6 +1,15 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY environment variable is required");
+    }
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return _resend;
+}
 const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID ?? "";
 
 export async function addResendContact(
@@ -14,7 +23,7 @@ export async function addResendContact(
   }
 
   try {
-    const response = await resend.contacts.create({
+    const response = await getResend().contacts.create({
       email,
       audienceId: RESEND_AUDIENCE_ID,
     });
@@ -31,7 +40,7 @@ export async function removeResendContact(email: string): Promise<void> {
   }
 
   try {
-    await resend.contacts.remove({
+    await getResend().contacts.remove({
       email,
       audienceId: RESEND_AUDIENCE_ID,
     });

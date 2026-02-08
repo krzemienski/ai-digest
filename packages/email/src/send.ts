@@ -3,7 +3,16 @@ import { DigestEmail } from "./templates/digest-email";
 import type { DigestEmailSection } from "./templates/digest-email";
 import { WelcomeEmail } from "./templates/welcome-email";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY environment variable is required");
+    }
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return _resend;
+}
 
 const FROM_ADDRESS =
   process.env.EMAIL_FROM ?? "AI Digest <digest@ai-digest.dev>";
@@ -30,7 +39,7 @@ export async function sendDigestNewsletter(
 
     while (attempts < 3 && !success) {
       try {
-        await resend.emails.send({
+        await getResend().emails.send({
           from: FROM_ADDRESS,
           to: email,
           subject: `AI Digest — ${digest.digestDate}`,
@@ -73,7 +82,7 @@ export async function sendWelcomeEmail(
 ): Promise<void> {
   const unsubscribeUrl = `${unsubscribeBaseUrl}?email=${encodeURIComponent(email)}`;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_ADDRESS,
     to: email,
     subject: "Welcome to AI Digest",

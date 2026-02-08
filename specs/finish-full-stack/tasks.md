@@ -505,7 +505,7 @@ created: 2026-02-08T00:00:00-05:00
 
 ## Phase 8: Playwright E2E & Validation
 
-- [ ] 8.1 [VERIFY] Full build verification
+- [x] 8.1 [VERIFY] Full build verification
   - **Do**: Type-check + full Next.js production build
   - **Verify**:
     ```bash
@@ -516,7 +516,7 @@ created: 2026-02-08T00:00:00-05:00
   - **Done when**: Both exit code 0
   - **Commit**: `chore(build): pass full build verification` (if fixes needed)
 
-- [ ] 8.2 Playwright screenshot validation: 14 pages x 3 breakpoints
+- [x] 8.2 Playwright screenshot validation: 14 pages x 3 breakpoints
   - **Do**:
     1. Ensure dev server running at http://localhost:3000
     2. Using Playwright MCP browser tools:
@@ -535,7 +535,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: US-11.1, AC-11.1.1 through AC-11.1.5, US-2.4, AC-2.4.1 through AC-2.4.7_
   - _Design: Section 13.1_
 
-- [ ] 8.3 cURL verification of all 28 API endpoints
+- [x] 8.3 cURL verification of all 28 API endpoints
   - **Do**: Test every endpoint:
     - **Public (no auth)**: POST /api/auth/register (duplicate -> 409), POST /api/auth/login, GET /api/auth/me, POST /api/auth/logout, GET /api/digests, GET /api/digests/:id, GET /api/episodes, GET /api/episodes/:id, GET /api/search?q=AI, POST /api/subscribe, POST /api/unsubscribe
     - **Admin (with session)**: GET /api/admin/stats, GET /api/admin/health, GET /api/admin/sources, POST /api/admin/sources, GET /api/admin/sources/:id, PATCH /api/admin/sources/:id, DELETE /api/admin/sources/:id, POST /api/admin/sources/validate, POST /api/admin/pipeline/trigger, GET /api/admin/pipeline/status, GET /api/admin/pipeline/runs, GET /api/admin/config, GET/PUT /api/admin/config/:key, POST /api/admin/podcast/generate, GET /api/admin/podcast/status, GET/POST /api/admin/subscribers, DELETE /api/admin/subscribers/:id, GET /api/admin/newsletter/:digestId/html
@@ -555,7 +555,7 @@ created: 2026-02-08T00:00:00-05:00
   - _Requirements: US-11.2, AC-11.2.1 through AC-11.2.4_
   - _Design: Section 13.2_
 
-- [ ] 8.4 Database and pipeline evidence verification
+- [x] 8.4 Database and pipeline evidence verification
   - **Do**: Verify all real data requirements via psql
   - **Verify**:
     ```bash
@@ -583,7 +583,7 @@ created: 2026-02-08T00:00:00-05:00
 
 ## Phase 9: Final Quality Gate
 
-- [ ] 9.1 [VERIFY] Full local CI: type-check + build
+- [x] 9.1 [VERIFY] Full local CI: type-check + build
   - **Do**: Run complete local CI suite
   - **Verify**:
     ```bash
@@ -594,7 +594,7 @@ created: 2026-02-08T00:00:00-05:00
   - **Done when**: Both exit 0
   - **Commit**: `fix(build): address final type/build issues` (if fixes needed)
 
-- [ ] 9.2 [VERIFY] Acceptance criteria checklist
+- [x] 9.2 [VERIFY] Acceptance criteria checklist
   - **Do**: Programmatically verify all P0 acceptance criteria
   - **Verify**:
     ```bash

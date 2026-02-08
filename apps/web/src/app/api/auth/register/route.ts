@@ -88,7 +88,7 @@ export async function POST(request: Request) {
         {
           success: false,
           error: "Validation failed",
-          details: error.errors,
+          details: error.issues,
         },
         { status: 400 }
       );

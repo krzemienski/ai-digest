@@ -6,7 +6,7 @@ import { requireAdminFromRequest } from "@/lib/admin-auth";
 const createSourceSchema = z.object({
   type: z.string().min(1),
   name: z.string().min(1),
-  config: z.record(z.unknown()),
+  config: z.record(z.string(), z.unknown()),
   enabled: z.boolean().optional().default(true),
 });
 

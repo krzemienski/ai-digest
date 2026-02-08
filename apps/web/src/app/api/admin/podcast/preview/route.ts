@@ -5,7 +5,7 @@ import { requireAdminFromRequest } from "@/lib/admin-auth";
 const previewSchema = z.object({
   text: z.string().min(1),
   voiceId: z.string().min(1),
-  settings: z.record(z.unknown()).optional(),
+  settings: z.record(z.string(), z.unknown()).optional(),
 });
 
 export async function POST(request: NextRequest) {

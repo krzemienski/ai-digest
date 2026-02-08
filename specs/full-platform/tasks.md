@@ -647,7 +647,7 @@ Focus: Build consumer-facing pages -- digest feed, detail, podcast player, mini-
   - _Requirements: FR-40, AC-34.1, AC-34.2, AC-34.3, AC-34.4_
   - _Design: Key React Components, Cyberpunk Design Tokens_
 
-- [ ] 6.3 Build public API routes for digests and episodes
+- [x] 6.3 Build public API routes for digests and episodes
   - **Do**:
     1. Create `apps/web/src/app/api/digests/route.ts` -- GET paginated digests
     2. Create `apps/web/src/app/api/digests/[id]/route.ts` -- GET single digest with items
@@ -1061,7 +1061,7 @@ Focus: Responsive refinement, cyberpunk effects, full end-to-end pipeline run, f
 
 ## Phase 10: Quality Gates
 
-- [ ] 10.1 [VERIFY] Full local CI: type-check all packages + build
+- [x] 10.1 [VERIFY] Full local CI: type-check all packages + build
   - **Do**: Run complete local quality suite
   - **Verify**: All commands must pass:
     1. Type-check each package: `pnpm exec tsc --noEmit -p packages/shared/tsconfig.json && pnpm exec tsc --noEmit -p packages/db/tsconfig.json && pnpm exec tsc --noEmit -p packages/agents/tsconfig.json && pnpm exec tsc --noEmit -p packages/podcast/tsconfig.json && pnpm exec tsc --noEmit -p packages/email/tsconfig.json && pnpm exec tsc --noEmit -p apps/web/tsconfig.json && pnpm exec tsc --noEmit -p apps/worker/tsconfig.json`
@@ -1070,7 +1070,7 @@ Focus: Responsive refinement, cyberpunk effects, full end-to-end pipeline run, f
   - **Done when**: All commands pass with zero errors, web app builds successfully
   - **Commit**: `chore(root): pass full local CI` (if fixes needed)
 
-- [ ] 10.2 Create PR and verify CI
+- [x] 10.2 Create PR and verify CI (skipped: no git remote configured)
   - **Do**:
     1. Verify current branch is a feature branch: `git branch --show-current`
     2. If on default branch, STOP and alert user
@@ -1085,7 +1085,7 @@ Focus: Responsive refinement, cyberpunk effects, full end-to-end pipeline run, f
 
 ## Phase 11: PR Lifecycle
 
-- [ ] 11.1 Monitor CI and fix failures
+- [x] 11.1 Monitor CI and fix failures (skipped: no git remote configured)
   - **Do**:
     1. Run `gh pr checks` to see CI status
     2. If any check fails, read details, fix locally, push
@@ -1094,7 +1094,7 @@ Focus: Responsive refinement, cyberpunk effects, full end-to-end pipeline run, f
   - **Done when**: All CI checks green
   - **Commit**: `fix(root): address ci failures` (only if fixes needed)
 
-- [ ] 11.2 Address review comments
+- [x] 11.2 Address review comments (skipped: no git remote configured)
   - **Do**:
     1. Check for PR review comments: `gh pr view --comments`
     2. Address each comment with code changes
@@ -1104,7 +1104,7 @@ Focus: Responsive refinement, cyberpunk effects, full end-to-end pipeline run, f
   - **Done when**: All review comments addressed, CI green
   - **Commit**: `fix(root): address review feedback`
 
-- [ ] 11.3 [VERIFY] Final AC checklist
+- [x] 11.3 [VERIFY] Final AC checklist
   - **Do**: Programmatically verify each major acceptance criteria:
     1. FR-1 through FR-7: Fetchers exist for all 7 sources -- `ls packages/agents/src/fetchers/` shows 7 files
     2. FR-8: NormalizedItem schema -- `grep -l "NormalizedItem" packages/shared/src/types/`
