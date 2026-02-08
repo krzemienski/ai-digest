@@ -248,7 +248,7 @@ created: 2026-02-08
   - _Requirements: FR-4, FR-22_
   - _Design: API Client Layer_
 
-- [ ] 3.5 Implement Zustand stores (auth, digest, audio, search, preferences, admin)
+- [x] 3.5 Implement Zustand stores (auth, digest, audio, search, preferences, admin)
   - **Do**:
     1. Install `zustand` in mobile package
     2. `stores/auth-store.ts`: token persistence via SecureStore, login/logout/getMe actions, isLoggedIn/isAdmin computed
