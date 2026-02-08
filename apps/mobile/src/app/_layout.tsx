@@ -19,7 +19,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { usePreferencesStore } from "@/stores/preferences-store";
 import { CyberText } from "@/design-system/primitives";
 import { PulsingDot } from "@/design-system/effects";
-import "../globals.css";
+import "../../global.css";
 
 SplashScreen.preventAutoHideAsync();
 
