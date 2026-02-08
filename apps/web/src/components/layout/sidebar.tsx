@@ -36,7 +36,7 @@ function SidebarNav({ onNavigate }: { readonly onNavigate?: () => void }) {
   return (
     <>
       <div className="py-4 px-4">
-        <h2 className="font-mono text-lg text-cyber-cyan">Admin</h2>
+        <h2 className="text-lg text-accent">Admin</h2>
       </div>
 
       <nav className="flex-1 flex flex-col gap-1 px-2">
@@ -51,10 +51,10 @@ function SidebarNav({ onNavigate }: { readonly onNavigate?: () => void }) {
               key={link.href}
               href={link.href}
               onClick={onNavigate}
-              className={`font-mono text-sm py-2 px-4 rounded transition-colors min-h-[44px] flex items-center ${
+              className={`text-sm py-2 px-4 rounded transition-colors min-h-[44px] flex items-center ${
                 isActive
-                  ? "text-cyber-cyan bg-cyber-overlay/50"
-                  : "text-cyber-text-secondary hover:text-cyber-cyan"
+                  ? "text-accent bg-surface-elevated/50"
+                  : "text-text-secondary hover:text-accent"
               }`}
             >
               {link.label}
@@ -63,10 +63,10 @@ function SidebarNav({ onNavigate }: { readonly onNavigate?: () => void }) {
         })}
       </nav>
 
-      <div className="p-4 border-t border-cyber-overlay">
+      <div className="p-4 border-t border-surface-elevated">
         <button
           onClick={handleLogout}
-          className="font-mono text-sm text-cyber-text-secondary hover:text-cyber-magenta transition-colors w-full text-left py-2 px-4 min-h-[44px]"
+          className="text-sm text-text-secondary hover:text-destructive transition-colors w-full text-left py-2 px-4 min-h-[44px]"
           type="button"
         >
           Logout
@@ -82,16 +82,16 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile toggle button */}
-      <div className="md:hidden sticky top-0 z-30 bg-cyber-surface border-b border-cyber-overlay px-4 py-2 flex items-center gap-3">
+      <div className="md:hidden sticky top-0 z-30 bg-surface border-b border-surface-elevated px-4 py-2 flex items-center gap-3">
         <button
           type="button"
           onClick={() => setMobileOpen((prev) => !prev)}
-          className="flex items-center justify-center min-w-[44px] min-h-[44px] text-cyber-text-secondary hover:text-cyber-cyan transition-colors"
+          className="flex items-center justify-center min-w-[44px] min-h-[44px] text-text-secondary hover:text-accent transition-colors"
           aria-label={mobileOpen ? "Close admin menu" : "Open admin menu"}
         >
           <MenuIcon />
         </button>
-        <span className="font-mono text-sm text-cyber-cyan">Admin Menu</span>
+        <span className="text-sm text-accent">Admin Menu</span>
       </div>
 
       {/* Mobile overlay sidebar */}
@@ -103,14 +103,14 @@ export function Sidebar() {
             onClick={() => setMobileOpen(false)}
             aria-label="Close menu overlay"
           />
-          <aside className="relative z-50 w-64 bg-cyber-surface border-r border-cyber-overlay flex flex-col max-h-screen overflow-y-auto">
+          <aside className="relative z-50 w-64 bg-surface border-r border-surface-elevated flex flex-col max-h-screen overflow-y-auto">
             <SidebarNav onNavigate={() => setMobileOpen(false)} />
           </aside>
         </div>
       )}
 
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-56 bg-cyber-surface border-r border-cyber-overlay flex-col min-h-screen shrink-0">
+      <aside className="hidden md:flex w-56 bg-surface border-r border-surface-elevated flex-col min-h-screen shrink-0">
         <SidebarNav />
       </aside>
     </>

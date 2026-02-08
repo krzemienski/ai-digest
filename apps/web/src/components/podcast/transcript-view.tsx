@@ -5,11 +5,11 @@ import { useAudioStore } from "@/stores/audio-store";
 import type { TranscriptSegment } from "@ai-digest/shared";
 
 const SPEAKER_COLORS = [
-  "text-cyber-cyan",
-  "text-cyber-green",
-  "text-cyber-magenta",
-  "text-cyber-orange",
-  "text-cyber-amber",
+  "text-accent",
+  "text-success",
+  "text-destructive",
+  "text-accent-hover",
+  "text-warning",
 ] as const;
 
 function getSpeakerColorMap(segments: readonly TranscriptSegment[]): Map<string, string> {
@@ -39,7 +39,7 @@ function highlightText(text: string, query: string): React.ReactNode {
 
   return parts.map((part, i) =>
     regex.test(part) ? (
-      <mark key={i} className="bg-cyber-amber/30 text-cyber-text">
+      <mark key={i} className="bg-warning/30 text-text-primary">
         {part}
       </mark>
     ) : (
@@ -71,10 +71,10 @@ export function TranscriptView({ segments, searchQuery = "" }: TranscriptViewPro
   };
 
   return (
-    <div ref={containerRef} className="mt-4 max-h-96 overflow-y-auto space-y-2 font-mono text-sm">
+    <div ref={containerRef} className="mt-4 max-h-96 overflow-y-auto space-y-2 text-sm">
       {segments.map((segment, index) => {
         const isActive = index === activeSegmentIndex;
-        const colorClass = speakerColors.get(segment.speaker) ?? "text-cyber-cyan";
+        const colorClass = speakerColors.get(segment.speaker) ?? "text-accent";
 
         return (
           <div
@@ -82,21 +82,21 @@ export function TranscriptView({ segments, searchQuery = "" }: TranscriptViewPro
             ref={isActive ? activeRef : undefined}
             className={`flex gap-3 p-2 rounded transition-colors ${
               isActive
-                ? "bg-cyber-overlay/50 border-l-2 border-cyber-cyan"
+                ? "bg-surface-elevated/50 border-l-2 border-accent"
                 : "border-l-2 border-transparent"
             }`}
           >
             <button
               type="button"
               onClick={() => handleTimestampClick(segment.startTime)}
-              className="shrink-0 text-cyber-text-secondary hover:text-cyber-cyan transition-colors cursor-pointer"
+              className="shrink-0 text-text-secondary hover:text-accent transition-colors cursor-pointer"
             >
               {formatTimestamp(segment.startTime)}
             </button>
             <span className={`shrink-0 font-bold ${colorClass}`}>
               {segment.speaker}:
             </span>
-            <span className="text-cyber-text">
+            <span className="text-text-primary">
               {highlightText(segment.text, searchQuery)}
             </span>
           </div>

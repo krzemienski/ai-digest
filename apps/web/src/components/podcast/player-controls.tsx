@@ -49,11 +49,11 @@ export function PlayerControls() {
       <button
         type="button"
         onClick={() => skipBack(15)}
-        className="flex flex-col items-center justify-center w-12 h-12 rounded-full text-cyber-text-secondary hover:text-cyber-cyan hover:bg-cyber-overlay transition-all duration-200"
+        className="flex flex-col items-center justify-center w-12 h-12 rounded-full text-text-secondary hover:text-accent hover:bg-surface-elevated transition-all duration-200"
         aria-label="Skip back 15 seconds"
       >
         <SkipBackIcon />
-        <span className="text-[10px] font-mono mt-0.5">-15s</span>
+        <span className="text-[10px] mt-0.5">-15s</span>
       </button>
 
       <button
@@ -61,8 +61,8 @@ export function PlayerControls() {
         onClick={() => (isPlaying ? pause() : resume())}
         className={`flex items-center justify-center w-14 h-14 rounded-full transition-all duration-200 ${
           isPlaying
-            ? "bg-cyber-cyan text-cyber-bg hover:shadow-neon-cyan"
-            : "border-2 border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan/10 hover:shadow-neon-cyan"
+            ? "bg-accent text-bg hover:"
+            : "border-2 border-accent text-accent hover:bg-accent/10 hover:"
         }`}
         aria-label={isPlaying ? "Pause" : "Play"}
       >
@@ -72,11 +72,11 @@ export function PlayerControls() {
       <button
         type="button"
         onClick={() => skipForward(30)}
-        className="flex flex-col items-center justify-center w-12 h-12 rounded-full text-cyber-text-secondary hover:text-cyber-cyan hover:bg-cyber-overlay transition-all duration-200"
+        className="flex flex-col items-center justify-center w-12 h-12 rounded-full text-text-secondary hover:text-accent hover:bg-surface-elevated transition-all duration-200"
         aria-label="Skip forward 30 seconds"
       >
         <SkipForwardIcon />
-        <span className="text-[10px] font-mono mt-0.5">+30s</span>
+        <span className="text-[10px] mt-0.5">+30s</span>
       </button>
     </div>
   );

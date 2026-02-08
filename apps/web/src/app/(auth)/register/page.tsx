@@ -50,17 +50,17 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="bg-cyber-surface border border-cyber-overlay rounded-lg p-8">
-      <h1 className="text-2xl font-semibold text-cyber-text mb-2 text-center">
+    <div className="bg-surface border border-surface-elevated rounded-lg p-8">
+      <h1 className="text-2xl font-semibold text-text-primary mb-2 text-center">
         Create Account
       </h1>
-      <p className="text-sm text-cyber-text-secondary text-center mb-8">
+      <p className="text-sm text-text-secondary text-center mb-8">
         Get started with AI Digest
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-sm text-cyber-text-secondary">
+          <label htmlFor="email" className="text-sm text-text-secondary">
             Email
           </label>
           <input
@@ -70,13 +70,13 @@ export default function RegisterPage() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
             required
-            className="w-full bg-cyber-bg border border-cyber-overlay rounded-md px-4 py-2.5 text-sm text-cyber-text placeholder:text-cyber-text-secondary/50 focus:outline-none focus:border-cyber-cyan focus:ring-1 focus:ring-cyber-cyan transition-colors"
+            className="w-full bg-bg border border-surface-elevated rounded-md px-4 py-2.5 text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
             autoFocus
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="text-sm text-cyber-text-secondary">
+          <label htmlFor="password" className="text-sm text-text-secondary">
             Password
           </label>
           <input
@@ -86,12 +86,12 @@ export default function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Min 8 chars, 1 letter, 1 number"
             required
-            className="w-full bg-cyber-bg border border-cyber-overlay rounded-md px-4 py-2.5 text-sm text-cyber-text placeholder:text-cyber-text-secondary/50 focus:outline-none focus:border-cyber-cyan focus:ring-1 focus:ring-cyber-cyan transition-colors"
+            className="w-full bg-bg border border-surface-elevated rounded-md px-4 py-2.5 text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="confirm-password" className="text-sm text-cyber-text-secondary">
+          <label htmlFor="confirm-password" className="text-sm text-text-secondary">
             Confirm Password
           </label>
           <input
@@ -101,7 +101,7 @@ export default function RegisterPage() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Re-enter your password"
             required
-            className="w-full bg-cyber-bg border border-cyber-overlay rounded-md px-4 py-2.5 text-sm text-cyber-text placeholder:text-cyber-text-secondary/50 focus:outline-none focus:border-cyber-cyan focus:ring-1 focus:ring-cyber-cyan transition-colors"
+            className="w-full bg-bg border border-surface-elevated rounded-md px-4 py-2.5 text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
           />
         </div>
 
@@ -112,15 +112,15 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-cyber-cyan text-cyber-bg font-medium text-sm py-2.5 rounded-md hover:bg-cyber-cyan/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-accent text-bg font-medium text-sm py-2.5 rounded-md hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? "Creating account..." : "Create Account"}
         </button>
       </form>
 
-      <p className="text-sm text-cyber-text-secondary text-center mt-6">
+      <p className="text-sm text-text-secondary text-center mt-6">
         Already have an account?{" "}
-        <Link href="/login" className="text-cyber-cyan hover:underline">
+        <Link href="/login" className="text-accent hover:underline">
           Sign in
         </Link>
       </p>

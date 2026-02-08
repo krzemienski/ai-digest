@@ -1,13 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 
 const SOURCE_COLORS: Record<string, string> = {
-  hackernews: "#FF6600",
-  github: "#00FF88",
-  arxiv: "#B31B1B",
-  rss: "#00FFFF",
-  huggingface: "#FFD21E",
-  reddit: "#FF4500",
-  producthunt: "#DA552F",
+  hackernews: "#f97316",
+  github: "#22c55e",
+  arxiv: "#ef4444",
+  rss: "#3b82f6",
+  huggingface: "#eab308",
+  reddit: "#f97316",
+  producthunt: "#f97316",
 };
 
 interface SourceBadgeProps {
@@ -15,6 +15,6 @@ interface SourceBadgeProps {
 }
 
 export function SourceBadge({ source }: SourceBadgeProps) {
-  const color = SOURCE_COLORS[source] ?? "#00FFFF";
+  const color = SOURCE_COLORS[source] ?? "#3b82f6";
   return <Badge color={color}>{source}</Badge>;
 }

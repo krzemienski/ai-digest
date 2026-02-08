@@ -20,17 +20,17 @@ interface SourceTableProps {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  rss: "#FF8800",
-  github: "#F0F0F5",
-  arxiv: "#B31B1B",
-  hackernews: "#FF6600",
-  huggingface: "#FFD21E",
-  reddit: "#FF4500",
-  producthunt: "#DA552F",
+  rss: "#3b82f6",
+  github: "#22c55e",
+  arxiv: "#ef4444",
+  hackernews: "#f97316",
+  huggingface: "#eab308",
+  reddit: "#f97316",
+  producthunt: "#f97316",
 };
 
 function getTypeColor(type: string): string {
-  return TYPE_COLORS[type] ?? "#00FFFF";
+  return TYPE_COLORS[type] ?? "#3b82f6";
 }
 
 function TableSkeleton() {
@@ -104,8 +104,8 @@ export function SourceTable({ onEdit }: SourceTableProps) {
 
   if (sources.length === 0) {
     return (
-      <div className="text-center py-12 border border-cyber-overlay rounded-lg">
-        <p className="font-mono text-cyber-text-secondary text-sm">
+      <div className="text-center py-12 border border-surface-elevated rounded-lg">
+        <p className="text-text-secondary text-sm">
           No sources configured. Add one to get started.
         </p>
       </div>
@@ -116,25 +116,25 @@ export function SourceTable({ onEdit }: SourceTableProps) {
     <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
       <table className="w-full border-collapse text-sm min-w-[480px]">
         <thead>
-          <tr className="border-b border-cyber-overlay">
-            <th className="text-left py-3 px-4 font-mono text-xs text-cyber-text-secondary uppercase tracking-wider whitespace-nowrap">
+          <tr className="border-b border-surface-elevated">
+            <th className="text-left py-3 px-4 text-xs text-text-secondary uppercase tracking-wider whitespace-nowrap">
               Name
             </th>
-            <th className="text-left py-3 px-4 font-mono text-xs text-cyber-text-secondary uppercase tracking-wider whitespace-nowrap">
+            <th className="text-left py-3 px-4 text-xs text-text-secondary uppercase tracking-wider whitespace-nowrap">
               Type
             </th>
-            <th className="text-left py-3 px-4 font-mono text-xs text-cyber-text-secondary uppercase tracking-wider whitespace-nowrap">
+            <th className="text-left py-3 px-4 text-xs text-text-secondary uppercase tracking-wider whitespace-nowrap">
               Enabled
             </th>
-            <th className="text-right py-3 px-4 font-mono text-xs text-cyber-text-secondary uppercase tracking-wider whitespace-nowrap">
+            <th className="text-right py-3 px-4 text-xs text-text-secondary uppercase tracking-wider whitespace-nowrap">
               Actions
             </th>
           </tr>
         </thead>
         <tbody>
           {sources.map((source) => (
-            <tr key={source.id} className="border-b border-cyber-overlay/50 hover:bg-cyber-overlay/20 transition-colors">
-              <td className="py-3 px-4 text-cyber-text font-mono">
+            <tr key={source.id} className="border-b border-surface-elevated/50 hover:bg-surface-elevated/20 transition-colors">
+              <td className="py-3 px-4 text-text-primary">
                 {source.name}
               </td>
               <td className="py-3 px-4">
@@ -149,10 +149,10 @@ export function SourceTable({ onEdit }: SourceTableProps) {
                 >
                   <span
                     className={`inline-block w-3 h-3 rounded-full ${
-                      source.enabled ? "bg-cyber-green shadow-neon-green" : "bg-cyber-magenta"
+                      source.enabled ? "bg-success" : "bg-destructive"
                     }`}
                   />
-                  <span className="font-mono text-xs text-cyber-text-secondary">
+                  <span className="text-xs text-text-secondary">
                     {source.enabled ? "on" : "off"}
                   </span>
                 </button>

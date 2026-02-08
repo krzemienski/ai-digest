@@ -15,10 +15,10 @@ export function SpeedSelector() {
           key={speed}
           type="button"
           onClick={() => setSpeed(speed)}
-          className={`px-3 py-1.5 rounded font-mono text-sm transition-all duration-200 min-w-[48px] min-h-[44px] flex items-center justify-center ${
+          className={`px-3 py-1.5 rounded text-sm transition-all duration-200 min-w-[48px] min-h-[44px] flex items-center justify-center ${
             playbackSpeed === speed
-              ? "bg-cyber-cyan text-cyber-bg shadow-neon-cyan"
-              : "bg-cyber-overlay text-cyber-text-secondary hover:text-cyber-cyan hover:bg-cyber-overlay/80"
+              ? "bg-accent text-bg"
+              : "bg-surface-elevated text-text-secondary hover:text-accent hover:bg-surface-elevated/80"
           }`}
           aria-label={`Set playback speed to ${speed}x`}
           aria-pressed={playbackSpeed === speed}

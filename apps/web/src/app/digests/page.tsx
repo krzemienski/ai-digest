@@ -9,8 +9,8 @@ export default async function DigestsPage() {
     return (
       <Container className="py-12">
         <div className="text-center">
-          <h2 className="font-mono text-xl text-cyber-text-secondary">No digests yet</h2>
-          <p className="text-sm text-cyber-text-secondary/60 mt-2">
+          <h2 className="text-xl text-text-secondary">No digests yet</h2>
+          <p className="text-sm text-text-secondary/60 mt-2">
             Run the pipeline to generate your first digest.
           </p>
         </div>
@@ -23,7 +23,7 @@ export default async function DigestsPage() {
   if (!digestWithItems) {
     return (
       <Container className="py-12">
-        <p className="text-cyber-text-secondary">Digest data unavailable.</p>
+        <p className="text-text-secondary">Digest data unavailable.</p>
       </Container>
     );
   }

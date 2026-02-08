@@ -92,12 +92,12 @@ export default function ScheduleConfigPage() {
   if (loading) {
     return (
       <div>
-        <h1 className="font-mono text-2xl text-cyber-cyan mb-6">Pipeline Schedule</h1>
+        <h1 className="text-2xl text-accent mb-6">Pipeline Schedule</h1>
         <div className="space-y-6">
           {[1, 2].map((i) => (
-            <div key={i} className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6 animate-pulse">
-              <div className="h-5 w-40 bg-cyber-overlay rounded mb-4" />
-              <div className="h-10 w-full bg-cyber-overlay rounded" />
+            <div key={i} className="bg-surface border border-surface-elevated rounded-lg p-6 animate-pulse">
+              <div className="h-5 w-40 bg-surface-elevated rounded mb-4" />
+              <div className="h-10 w-full bg-surface-elevated rounded" />
             </div>
           ))}
         </div>
@@ -107,37 +107,37 @@ export default function ScheduleConfigPage() {
 
   return (
     <div>
-      <h1 className="font-mono text-2xl text-cyber-cyan mb-6">Pipeline Schedule</h1>
+      <h1 className="text-2xl text-accent mb-6">Pipeline Schedule</h1>
 
       <div className="space-y-8">
         {/* Current Schedule */}
-        <section className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-          <h2 className="font-mono text-lg text-cyber-cyan mb-4">Current Schedule</h2>
+        <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+          <h2 className="text-lg text-accent mb-4">Current Schedule</h2>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs text-cyber-text-secondary uppercase">Timezone:</span>
-              <span className="font-mono text-sm text-cyber-text">{schedule.timezone}</span>
+              <span className="text-xs text-text-secondary uppercase">Timezone:</span>
+              <span className="text-sm text-text-primary">{schedule.timezone}</span>
             </div>
             {lastUpdated !== null && (
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs text-cyber-text-secondary uppercase">Last Updated:</span>
-                <span className="font-mono text-sm text-cyber-text">{lastUpdated}</span>
+                <span className="text-xs text-text-secondary uppercase">Last Updated:</span>
+                <span className="text-sm text-text-primary">{lastUpdated}</span>
               </div>
             )}
           </div>
         </section>
 
         {/* Cron Editor */}
-        <section className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-          <h2 className="font-mono text-lg text-cyber-cyan mb-4">Cron Expression</h2>
+        <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+          <h2 className="text-lg text-accent mb-4">Cron Expression</h2>
           <CronEditor value={schedule.cron} onChange={handleCronChange} />
         </section>
 
         {/* Feedback */}
         {feedback !== null && (
           <p
-            className={`font-mono text-sm ${
-              feedback.type === "success" ? "text-cyber-green" : "text-cyber-magenta"
+            className={`text-sm ${
+              feedback.type === "success" ? "text-success" : "text-destructive"
             }`}
           >
             {feedback.message}

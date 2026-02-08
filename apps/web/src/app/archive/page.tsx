@@ -9,19 +9,19 @@ export default async function ArchivePage() {
 
   return (
     <Container className="py-8">
-      <h1 className="font-mono text-2xl font-bold text-cyber-cyan mb-6">
+      <h1 className="text-2xl font-bold text-accent mb-6">
         Newsletter Archive
       </h1>
 
       <div className="mb-8">
-        <p className="text-cyber-text-secondary text-sm font-mono mb-3">
+        <p className="text-text-secondary text-sm mb-3">
           Subscribe to receive future digests in your inbox.
         </p>
         <SubscribeForm />
       </div>
 
       {digests.length === 0 ? (
-        <p className="text-center text-cyber-text-secondary font-mono text-sm py-12">
+        <p className="text-center text-text-secondary text-sm py-12">
           No archived digests yet.
         </p>
       ) : (
@@ -34,16 +34,16 @@ export default async function ArchivePage() {
 
             return (
               <Link key={digest.id} href={`/digests/${digest.id}`}>
-                <Card className="hover:border-cyber-cyan transition-colors cursor-pointer mb-4">
+                <Card className="hover:border-accent transition-colors cursor-pointer mb-4">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                    <h2 className="font-mono text-lg font-bold text-cyber-text">
+                    <h2 className="text-lg font-bold text-text-primary">
                       Digest — {String(digest.digestDate)}
                     </h2>
-                    <span className="text-xs text-cyber-text-secondary font-mono">
+                    <span className="text-xs text-text-secondary">
                       {digest.itemCount} items
                     </span>
                   </div>
-                  <p className="text-sm text-cyber-text-secondary leading-relaxed">
+                  <p className="text-sm text-text-secondary leading-relaxed">
                     {truncatedSynthesis}
                   </p>
                 </Card>

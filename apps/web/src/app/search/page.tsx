@@ -11,7 +11,7 @@ export default async function SearchPage({
 
   return (
     <Container className="py-8">
-      <h1 className="font-mono text-2xl font-bold text-cyber-cyan mb-6">
+      <h1 className="text-2xl font-bold text-accent mb-6">
         Search
       </h1>
       <div className="mb-8">
@@ -20,7 +20,7 @@ export default async function SearchPage({
       {q ? (
         <SearchResults query={q} />
       ) : (
-        <p className="text-center text-cyber-text-secondary font-mono text-sm py-12">
+        <p className="text-center text-text-secondary text-sm py-12">
           Enter a search query to find articles, transcripts, and more.
         </p>
       )}

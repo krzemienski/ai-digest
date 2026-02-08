@@ -39,19 +39,19 @@ export function DashboardActions() {
 
   return (
     <div className="mt-8">
-      <h2 className="font-mono text-lg text-cyber-text mb-4">Quick Actions</h2>
+      <h2 className="text-lg text-text-primary mb-4">Quick Actions</h2>
       <div className="flex items-center gap-4">
         <button
           onClick={() => void handleTrigger()}
           disabled={loading}
           type="button"
-          className="bg-cyber-cyan text-cyber-bg font-mono font-bold px-4 py-2 rounded disabled:opacity-50 transition-opacity"
+          className="bg-accent text-bg font-bold px-4 py-2 rounded disabled:opacity-50 transition-opacity"
         >
           {loading ? "Triggering..." : "Run Pipeline Now"}
         </button>
         {result !== null && (
           <span
-            className={`font-mono text-sm ${isError ? "text-cyber-magenta" : "text-cyber-green"}`}
+            className={`text-sm ${isError ? "text-destructive" : "text-success"}`}
           >
             {result}
           </span>
@@ -59,8 +59,8 @@ export function DashboardActions() {
       </div>
 
       <div className="mt-8">
-        <h2 className="font-mono text-lg text-cyber-text mb-4">Recent Activity</h2>
-        <p className="font-mono text-sm text-cyber-text-secondary">
+        <h2 className="text-lg text-text-primary mb-4">Recent Activity</h2>
+        <p className="text-sm text-text-secondary">
           Visit the Pipeline page for detailed run history and stage timelines.
         </p>
       </div>

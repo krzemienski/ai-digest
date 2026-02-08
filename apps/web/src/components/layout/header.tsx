@@ -60,9 +60,9 @@ export function Header() {
   };
 
   return (
-    <header className="border-b border-cyber-overlay bg-cyber-bg/80 backdrop-blur-sm sticky top-0 z-40">
+    <header className="border-b border-surface-elevated bg-bg/80 backdrop-blur-sm sticky top-0 z-40">
       <Container className="flex h-16 items-center justify-between">
-        <Link href="/" className="text-xl font-bold text-cyber-cyan tracking-wider hover:shadow-neon-cyan transition-shadow">
+        <Link href="/" className="text-xl font-bold text-accent tracking-wider hover:transition-shadow">
           AI DIGEST
         </Link>
 
@@ -72,28 +72,28 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors"
+              className="text-sm text-text-secondary hover:text-accent transition-colors"
             >
               {link.label}
             </Link>
           ))}
 
           {user ? (
-            <div className="flex items-center gap-4 ml-2 pl-4 border-l border-cyber-overlay">
+            <div className="flex items-center gap-4 ml-2 pl-4 border-l border-surface-elevated">
               {user.role === "admin" && (
                 <Link
                   href="/admin"
-                  className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors"
+                  className="text-sm text-text-secondary hover:text-accent transition-colors"
                 >
                   Admin
                 </Link>
               )}
-              <span className="text-xs text-cyber-text-secondary truncate max-w-[140px]">
+              <span className="text-xs text-text-secondary truncate max-w-[140px]">
                 {user.email}
               </span>
               <button
                 onClick={handleLogout}
-                className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors"
+                className="text-sm text-text-secondary hover:text-accent transition-colors"
               >
                 Logout
               </button>
@@ -101,7 +101,7 @@ export function Header() {
           ) : (
             <Link
               href="/login"
-              className="text-sm text-cyber-cyan hover:underline ml-2 pl-4 border-l border-cyber-overlay"
+              className="text-sm text-accent hover:underline ml-2 pl-4 border-l border-surface-elevated"
             >
               Login
             </Link>
@@ -111,7 +111,7 @@ export function Header() {
         {/* Mobile hamburger button */}
         <button
           type="button"
-          className="md:hidden flex items-center justify-center min-w-[44px] min-h-[44px] text-cyber-text-secondary hover:text-cyber-cyan transition-colors"
+          className="md:hidden flex items-center justify-center min-w-[44px] min-h-[44px] text-text-secondary hover:text-accent transition-colors"
           onClick={() => setMobileMenuOpen((prev) => !prev)}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >
@@ -121,14 +121,14 @@ export function Header() {
 
       {/* Mobile nav dropdown */}
       {mobileMenuOpen && (
-        <nav className="md:hidden border-t border-cyber-overlay bg-cyber-bg/95 backdrop-blur-sm px-4 pb-4 pt-2">
+        <nav className="md:hidden border-t border-surface-elevated bg-bg/95 backdrop-blur-sm px-4 pb-4 pt-2">
           <div className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors py-3 px-2 min-h-[44px] flex items-center"
+                className="text-sm text-text-secondary hover:text-accent transition-colors py-3 px-2 min-h-[44px] flex items-center"
               >
                 {link.label}
               </Link>
@@ -140,14 +140,14 @@ export function Header() {
                   <Link
                     href="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors py-3 px-2 min-h-[44px] flex items-center"
+                    className="text-sm text-text-secondary hover:text-accent transition-colors py-3 px-2 min-h-[44px] flex items-center"
                   >
                     Admin
                   </Link>
                 )}
                 <button
                   onClick={() => { setMobileMenuOpen(false); handleLogout(); }}
-                  className="text-sm text-cyber-text-secondary hover:text-cyber-cyan transition-colors py-3 px-2 min-h-[44px] flex items-center text-left"
+                  className="text-sm text-text-secondary hover:text-accent transition-colors py-3 px-2 min-h-[44px] flex items-center text-left"
                 >
                   Logout ({user.email})
                 </button>
@@ -156,7 +156,7 @@ export function Header() {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm text-cyber-cyan py-3 px-2 min-h-[44px] flex items-center"
+                className="text-sm text-accent py-3 px-2 min-h-[44px] flex items-center"
               >
                 Login
               </Link>

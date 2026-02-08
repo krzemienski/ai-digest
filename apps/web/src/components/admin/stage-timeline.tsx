@@ -11,21 +11,21 @@ interface StageTimelineProps {
 }
 
 const STATUS_DOT_COLORS: Record<string, string> = {
-  idle: "bg-cyber-overlay border-cyber-text-secondary",
-  pending: "bg-cyber-overlay border-cyber-text-secondary",
-  running: "bg-cyber-cyan/20 border-cyber-cyan animate-pulse",
-  completed: "bg-cyber-green/20 border-cyber-green",
-  failed: "bg-cyber-magenta/20 border-cyber-magenta",
-  skipped: "bg-cyber-overlay border-cyber-text-secondary",
+  idle: "bg-surface-elevated border-text-secondary",
+  pending: "bg-surface-elevated border-text-secondary",
+  running: "bg-accent/20 border-accent animate-pulse",
+  completed: "bg-success/20 border-success",
+  failed: "bg-destructive/20 border-destructive",
+  skipped: "bg-surface-elevated border-text-secondary",
 };
 
 const STATUS_TEXT_COLORS: Record<string, string> = {
-  idle: "text-cyber-text-secondary",
-  pending: "text-cyber-text-secondary",
-  running: "text-cyber-cyan",
-  completed: "text-cyber-green",
-  failed: "text-cyber-magenta",
-  skipped: "text-cyber-text-secondary",
+  idle: "text-text-secondary",
+  pending: "text-text-secondary",
+  running: "text-accent",
+  completed: "text-success",
+  failed: "text-destructive",
+  skipped: "text-text-secondary",
 };
 
 function getDotColor(status: string): string {
@@ -57,7 +57,7 @@ function isActiveStage(status: string): boolean {
 export function StageTimeline({ stages }: StageTimelineProps) {
   if (stages.length === 0) {
     return (
-      <p className="font-mono text-cyber-text-secondary text-sm">
+      <p className="text-text-secondary text-sm">
         No stage data available.
       </p>
     );
@@ -74,42 +74,42 @@ export function StageTimeline({ stages }: StageTimelineProps) {
           <div key={`stage-${String(idx)}`} className="relative pb-6 last:pb-0">
             {/* Connecting line */}
             {!isLast && (
-              <div className="absolute left-[-16px] top-3 bottom-0 border-l-2 border-cyber-overlay" />
+              <div className="absolute left-[-16px] top-3 bottom-0 border-l-2 border-surface-elevated" />
             )}
 
             {/* Dot */}
             <div
               className={`absolute left-[-20px] top-1 w-3 h-3 rounded-full border-2 ${getDotColor(stage.status)} ${
-                active ? "ring-2 ring-cyber-cyan/40" : ""
+                active ? "ring-2 ring-accent/40" : ""
               }`}
             />
 
             {/* Content */}
             <div
-              className={`ml-2 ${active ? "bg-cyber-cyan/5 -mx-2 px-2 py-1 rounded" : ""}`}
+              className={`ml-2 ${active ? "bg-accent/5 -mx-2 px-2 py-1 rounded" : ""}`}
             >
               <div className="flex items-center gap-3">
                 <span
-                  className={`font-mono text-sm font-medium ${
-                    active ? "text-cyber-cyan" : "text-cyber-text"
+                  className={`text-sm font-medium ${
+                    active ? "text-accent" : "text-text-primary"
                   }`}
                 >
                   {stage.name}
                 </span>
                 <span
-                  className={`font-mono text-xs ${getTextColor(stage.status)}`}
+                  className={`text-xs ${getTextColor(stage.status)}`}
                 >
                   {stage.status}
                 </span>
                 {duration && (
-                  <span className="font-mono text-xs text-cyber-text-secondary">
+                  <span className="text-xs text-text-secondary">
                     {duration}
                   </span>
                 )}
               </div>
 
               {stage.error && (
-                <p className="font-mono text-xs text-cyber-magenta mt-1 break-words">
+                <p className="text-xs text-destructive mt-1 break-words">
                   {String(stage.error)}
                 </p>
               )}

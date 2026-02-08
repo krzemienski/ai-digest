@@ -34,17 +34,17 @@ export interface DigestEmailProps {
 }
 
 const SOURCE_COLORS: Record<string, string> = {
-  hackernews: "#FF6600",
-  github: "#00FF88",
-  arxiv: "#B31B1B",
-  rss: "#00FFFF",
-  huggingface: "#FFD21E",
-  reddit: "#FF4500",
-  producthunt: "#DA552F",
+  hackernews: "#f97316",
+  github: "#22c55e",
+  arxiv: "#ef4444",
+  rss: "#3b82f6",
+  huggingface: "#eab308",
+  reddit: "#f97316",
+  producthunt: "#f97316",
 };
 
 function getSourceColor(source: string): string {
-  return SOURCE_COLORS[source] ?? "#00FFFF";
+  return SOURCE_COLORS[source] ?? "#3b82f6";
 }
 
 function formatScore(score: number): string {
@@ -63,9 +63,9 @@ export function DigestEmail({
       <Preview>AI Digest — {digestDate}</Preview>
       <Body
         style={{
-          backgroundColor: "#0D0D14",
+          backgroundColor: "#09090B",
           fontFamily:
-            "'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', 'Courier New', monospace",
+            "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
           margin: 0,
           padding: 0,
         }}
@@ -81,34 +81,33 @@ export function DigestEmail({
           <Section style={{ padding: "20px 0", textAlign: "center" as const }}>
             <Text
               style={{
-                color: "#00FFFF",
+                color: "#FAFAFA",
                 fontSize: "28px",
                 fontWeight: "bold",
                 margin: "0 0 4px 0",
-                letterSpacing: "2px",
+                letterSpacing: "1px",
               }}
             >
-              AI DIGEST
+              AI Digest
             </Text>
             <Text
               style={{
-                color: "#F0F0F5",
+                color: "#A1A1AA",
                 fontSize: "14px",
                 margin: 0,
-                opacity: 0.7,
               }}
             >
               {digestDate}
             </Text>
           </Section>
 
-          <Hr style={{ borderColor: "#1a1a2e", margin: "0 0 20px 0" }} />
+          <Hr style={{ borderColor: "#3F3F46", margin: "0 0 20px 0" }} />
 
           {/* Editorial Synthesis */}
           <Section
             style={{
-              backgroundColor: "#12121f",
-              borderLeft: "3px solid #00FFFF",
+              backgroundColor: "#18181B",
+              borderLeft: "3px solid #3b82f6",
               padding: "16px 20px",
               marginBottom: "24px",
               borderRadius: "0 4px 4px 0",
@@ -116,7 +115,7 @@ export function DigestEmail({
           >
             <Text
               style={{
-                color: "#00FFFF",
+                color: "#3b82f6",
                 fontSize: "12px",
                 fontWeight: "bold",
                 textTransform: "uppercase" as const,
@@ -128,7 +127,7 @@ export function DigestEmail({
             </Text>
             <Text
               style={{
-                color: "#F0F0F5",
+                color: "#FAFAFA",
                 fontSize: "14px",
                 lineHeight: "1.6",
                 margin: 0,
@@ -143,13 +142,13 @@ export function DigestEmail({
             <Section key={sIdx} style={{ marginBottom: "24px" }}>
               <Text
                 style={{
-                  color: "#00FF88",
+                  color: "#FAFAFA",
                   fontSize: "16px",
                   fontWeight: "bold",
                   textTransform: "uppercase" as const,
                   letterSpacing: "1px",
                   margin: "0 0 12px 0",
-                  borderBottom: "1px solid #1a1a2e",
+                  borderBottom: "1px solid #1a1a1a",
                   paddingBottom: "8px",
                 }}
               >
@@ -160,8 +159,8 @@ export function DigestEmail({
                 <Section
                   key={iIdx}
                   style={{
-                    backgroundColor: "#12121f",
-                    border: "1px solid #1a1a2e",
+                    backgroundColor: "#18181B",
+                    border: "1px solid #1a1a1a",
                     borderRadius: "4px",
                     padding: "12px 16px",
                     marginBottom: "8px",
@@ -172,7 +171,7 @@ export function DigestEmail({
                       <Link
                         href={item.sourceUrl}
                         style={{
-                          color: "#F0F0F5",
+                          color: "#FAFAFA",
                           fontSize: "14px",
                           fontWeight: "bold",
                           textDecoration: "none",
@@ -186,7 +185,7 @@ export function DigestEmail({
                     <Column style={{ width: "100%" }}>
                       <Text
                         style={{
-                          color: "#a0a0b0",
+                          color: "#A1A1AA",
                           fontSize: "13px",
                           lineHeight: "1.4",
                           margin: 0,
@@ -214,7 +213,7 @@ export function DigestEmail({
                     <Column style={{ textAlign: "right" as const }}>
                       <Text
                         style={{
-                          color: "#00FFFF",
+                          color: "#3b82f6",
                           fontSize: "11px",
                           margin: 0,
                         }}
@@ -229,11 +228,11 @@ export function DigestEmail({
           ))}
 
           {/* Footer */}
-          <Hr style={{ borderColor: "#1a1a2e", margin: "20px 0" }} />
+          <Hr style={{ borderColor: "#3F3F46", margin: "20px 0" }} />
           <Section style={{ textAlign: "center" as const, padding: "10px 0" }}>
             <Text
               style={{
-                color: "#666680",
+                color: "#71717A",
                 fontSize: "12px",
                 margin: "0 0 8px 0",
               }}
@@ -243,7 +242,7 @@ export function DigestEmail({
             <Link
               href={unsubscribeUrl}
               style={{
-                color: "#FF0066",
+                color: "#A1A1AA",
                 fontSize: "12px",
                 textDecoration: "underline",
               }}

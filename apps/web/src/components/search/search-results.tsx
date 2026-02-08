@@ -67,7 +67,7 @@ export function SearchResults({ query }: SearchResultsProps) {
   if (results.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-cyber-text-secondary font-mono text-sm">
+        <p className="text-text-secondary text-sm">
           No results found for &apos;{query}&apos;
         </p>
       </div>
@@ -76,7 +76,7 @@ export function SearchResults({ query }: SearchResultsProps) {
 
   return (
     <div>
-      <p className="text-xs text-cyber-text-secondary font-mono mb-4">
+      <p className="text-xs text-text-secondary mb-4">
         {results.length} result{results.length !== 1 ? "s" : ""} found
       </p>
       <div className="space-y-4">

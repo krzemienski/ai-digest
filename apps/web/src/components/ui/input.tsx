@@ -5,7 +5,7 @@ const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>
   ({ className = "", ...props }, ref) => (
     <input
       ref={ref}
-      className={`w-full h-10 px-3 bg-cyber-bg border border-cyber-overlay rounded text-cyber-text font-mono text-sm placeholder:text-cyber-text-secondary/50 focus:outline-none focus:border-cyber-cyan focus:shadow-neon-cyan transition-all ${className}`}
+      className={`w-full h-10 px-3 bg-bg border border-surface-elevated rounded text-text-primary text-sm placeholder:text-text-secondary/50 focus:outline-none focus:border-accent focus:transition-all ${className}`}
       {...props}
     />
   )

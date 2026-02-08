@@ -134,12 +134,12 @@ export default function PodcastConfigPage() {
   if (loading) {
     return (
       <div>
-        <h1 className="font-mono text-2xl text-cyber-cyan mb-6">Podcast Configuration</h1>
+        <h1 className="text-2xl text-accent mb-6">Podcast Configuration</h1>
         <div className="space-y-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6 animate-pulse">
-              <div className="h-5 w-40 bg-cyber-overlay rounded mb-4" />
-              <div className="h-10 w-full bg-cyber-overlay rounded" />
+            <div key={i} className="bg-surface border border-surface-elevated rounded-lg p-6 animate-pulse">
+              <div className="h-5 w-40 bg-surface-elevated rounded mb-4" />
+              <div className="h-10 w-full bg-surface-elevated rounded" />
             </div>
           ))}
         </div>
@@ -149,12 +149,12 @@ export default function PodcastConfigPage() {
 
   return (
     <div>
-      <h1 className="font-mono text-2xl text-cyber-cyan mb-6">Podcast Configuration</h1>
+      <h1 className="text-2xl text-accent mb-6">Podcast Configuration</h1>
 
       <div className="space-y-8">
         {/* Speaker Voices */}
-        <section className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-          <h2 className="font-mono text-lg text-cyber-cyan mb-4">Speaker Voices</h2>
+        <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+          <h2 className="text-lg text-accent mb-4">Speaker Voices</h2>
           <div className="space-y-5">
             <div className="space-y-3">
               <VoiceSelector
@@ -165,7 +165,7 @@ export default function PodcastConfigPage() {
               <VoicePreview voiceId={config.hostAVoiceId} settings={voiceSettings} />
             </div>
 
-            <div className="border-t border-cyber-overlay pt-5 space-y-3">
+            <div className="border-t border-surface-elevated pt-5 space-y-3">
               <VoiceSelector
                 label="Host B Voice ID"
                 value={config.hostBVoiceId}
@@ -177,8 +177,8 @@ export default function PodcastConfigPage() {
         </section>
 
         {/* Voice Settings */}
-        <section className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-          <h2 className="font-mono text-lg text-cyber-cyan mb-4">Voice Settings</h2>
+        <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+          <h2 className="text-lg text-accent mb-4">Voice Settings</h2>
           <div className="space-y-4">
             {([
               { key: "stability" as const, label: "Stability", min: 0, max: 1, step: 0.05 },
@@ -188,10 +188,10 @@ export default function PodcastConfigPage() {
             ]).map(({ key, label, min, max, step }) => (
               <div key={key}>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="font-mono text-xs text-cyber-text-secondary uppercase">
+                  <label className="text-xs text-text-secondary uppercase">
                     {label}
                   </label>
-                  <span className="font-mono text-sm text-cyber-cyan">
+                  <span className="text-sm text-accent">
                     {config[key].toFixed(2)}
                   </span>
                 </div>
@@ -202,7 +202,7 @@ export default function PodcastConfigPage() {
                   step={step}
                   value={config[key]}
                   onChange={(e) => updateConfig(key, parseFloat(e.target.value))}
-                  className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-cyber-overlay accent-cyber-cyan"
+                  className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-surface-elevated accent-accent"
                 />
               </div>
             ))}
@@ -210,11 +210,11 @@ export default function PodcastConfigPage() {
         </section>
 
         {/* Episode Settings */}
-        <section className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-          <h2 className="font-mono text-lg text-cyber-cyan mb-4">Episode Settings</h2>
+        <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+          <h2 className="text-lg text-accent mb-4">Episode Settings</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+              <label className="block text-xs text-text-secondary uppercase mb-1">
                 Target Duration (minutes)
               </label>
               <input
@@ -223,18 +223,18 @@ export default function PodcastConfigPage() {
                 max={120}
                 value={config.targetDurationMinutes}
                 onChange={(e) => updateConfig("targetDurationMinutes", parseInt(e.target.value, 10) || 15)}
-                className="w-full h-10 px-3 bg-cyber-bg border border-cyber-overlay rounded text-cyber-text font-mono text-sm focus:outline-none focus:border-cyber-cyan focus:shadow-neon-cyan transition-all"
+                className="w-full h-10 px-3 bg-bg border border-surface-elevated rounded text-text-primary text-sm focus:outline-none focus:border-accent focus:transition-all"
               />
             </div>
 
             <div>
-              <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+              <label className="block text-xs text-text-secondary uppercase mb-1">
                 Audio Format
               </label>
               <select
                 value={config.audioFormat}
                 onChange={(e) => updateConfig("audioFormat", toAudioFormat(e.target.value))}
-                className="w-full h-10 px-3 bg-cyber-bg border border-cyber-overlay rounded text-cyber-text font-mono text-sm focus:outline-none focus:border-cyber-cyan focus:shadow-neon-cyan transition-all"
+                className="w-full h-10 px-3 bg-bg border border-surface-elevated rounded text-text-primary text-sm focus:outline-none focus:border-accent focus:transition-all"
               >
                 {AUDIO_FORMATS.map((f) => (
                   <option key={f.value} value={f.value}>
@@ -251,9 +251,9 @@ export default function PodcastConfigPage() {
                 type="checkbox"
                 checked={config.enabled}
                 onChange={(e) => updateConfig("enabled", e.target.checked)}
-                className="w-5 h-5 rounded border-cyber-overlay bg-cyber-bg text-cyber-cyan accent-cyber-cyan cursor-pointer"
+                className="w-5 h-5 rounded border-surface-elevated bg-bg text-accent accent-accent cursor-pointer"
               />
-              <span className="font-mono text-sm text-cyber-text">
+              <span className="text-sm text-text-primary">
                 Enable Podcast Generation
               </span>
             </label>
@@ -263,8 +263,8 @@ export default function PodcastConfigPage() {
         {/* Feedback */}
         {feedback !== null && (
           <p
-            className={`font-mono text-sm ${
-              feedback.type === "success" ? "text-cyber-green" : "text-cyber-magenta"
+            className={`text-sm ${
+              feedback.type === "success" ? "text-success" : "text-destructive"
             }`}
           >
             {feedback.message}

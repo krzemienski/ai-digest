@@ -30,17 +30,17 @@ export function DigestFeed({ digestDate, synthesis, items }: DigestFeedProps) {
     <div>
       {/* Date header */}
       <div className="mb-6">
-        <h2 className="font-mono text-2xl font-bold text-cyber-cyan tracking-wider">
+        <h2 className="text-2xl font-bold text-accent tracking-wider">
           {digestDate}
         </h2>
       </div>
 
       {/* Editorial Synthesis */}
-      <div className="bg-cyber-surface border-l-2 border-cyber-cyan rounded-r-lg p-5 mb-8">
-        <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-cyber-cyan mb-2">
+      <div className="bg-surface border-l-2 border-accent rounded-r-lg p-5 mb-8">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-accent mb-2">
           Editorial Synthesis
         </h3>
-        <p className="text-sm text-cyber-text leading-relaxed whitespace-pre-line">
+        <p className="text-sm text-text-primary leading-relaxed whitespace-pre-line">
           {synthesis}
         </p>
       </div>

@@ -69,15 +69,15 @@ export function VoicePreview({
         type="button"
         disabled={loading || !voiceId.trim()}
         onClick={() => void handlePreview()}
-        className="bg-cyber-surface border border-cyber-cyan text-cyber-cyan font-mono text-sm px-4 h-9 rounded hover:bg-cyber-cyan/10 hover:shadow-neon-cyan transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        className="bg-surface border border-accent text-accent text-sm px-4 h-9 rounded hover:bg-accent/10 hover:transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? "Generating..." : "Preview Voice"}
       </button>
       {message !== null && (
-        <span className="font-mono text-xs text-cyber-text-secondary">{message}</span>
+        <span className="text-xs text-text-secondary">{message}</span>
       )}
       {error !== null && (
-        <span className="font-mono text-xs text-cyber-magenta">{error}</span>
+        <span className="text-xs text-destructive">{error}</span>
       )}
     </div>
   );

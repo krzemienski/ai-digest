@@ -76,16 +76,16 @@ export default function SubscribersDashboardPage() {
   if (loading) {
     return (
       <div>
-        <h1 className="font-mono text-2xl text-cyber-cyan mb-6">Subscribers</h1>
+        <h1 className="text-2xl text-accent mb-6">Subscribers</h1>
         <div className="grid grid-cols-3 gap-4 mb-8">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
+            <div key={i} className="bg-surface border border-surface-elevated rounded-lg p-6">
               <Skeleton className="h-4 w-24 mb-2" />
               <Skeleton className="h-8 w-16" />
             </div>
           ))}
         </div>
-        <div className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
+        <div className="bg-surface border border-surface-elevated rounded-lg p-6">
           <Skeleton className="h-5 w-32 mb-4" />
           {[1, 2, 3, 4].map((i) => (
             <Skeleton key={i} className="h-10 w-full mb-2" />
@@ -98,40 +98,40 @@ export default function SubscribersDashboardPage() {
   if (error !== null) {
     return (
       <div>
-        <h1 className="font-mono text-2xl text-cyber-cyan mb-6">Subscribers</h1>
-        <p className="font-mono text-sm text-cyber-magenta">{error}</p>
+        <h1 className="text-2xl text-accent mb-6">Subscribers</h1>
+        <p className="text-sm text-destructive">{error}</p>
       </div>
     );
   }
 
   return (
     <div>
-      <h1 className="font-mono text-2xl text-cyber-cyan mb-6">Subscribers</h1>
+      <h1 className="text-2xl text-accent mb-6">Subscribers</h1>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-          <p className="font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+        <div className="bg-surface border border-surface-elevated rounded-lg p-6">
+          <p className="text-xs text-text-secondary uppercase mb-1">
             Total Active
           </p>
-          <p className="font-mono text-2xl text-cyber-green">{activeCount}</p>
+          <p className="text-2xl text-success">{activeCount}</p>
         </div>
-        <div className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-          <p className="font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+        <div className="bg-surface border border-surface-elevated rounded-lg p-6">
+          <p className="text-xs text-text-secondary uppercase mb-1">
             New (7d)
           </p>
-          <p className="font-mono text-2xl text-cyber-cyan">{newLast7Days}</p>
+          <p className="text-2xl text-accent">{newLast7Days}</p>
         </div>
-        <div className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-          <p className="font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+        <div className="bg-surface border border-surface-elevated rounded-lg p-6">
+          <p className="text-xs text-text-secondary uppercase mb-1">
             Unsubscribed
           </p>
-          <p className="font-mono text-2xl text-cyber-text-secondary">{displayUnsubscribed}</p>
+          <p className="text-2xl text-text-secondary">{displayUnsubscribed}</p>
         </div>
       </div>
 
       {/* Subscriber Table */}
-      <div className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
+      <div className="bg-surface border border-surface-elevated rounded-lg p-6">
         <SubscriberTable subscribers={tableRows} />
       </div>
     </div>

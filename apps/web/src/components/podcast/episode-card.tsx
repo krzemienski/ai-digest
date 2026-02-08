@@ -35,10 +35,10 @@ function PlaySmallIcon() {
 }
 
 const statusColorMap: Record<string, string> = {
-  ready: "#00FF88",
-  pending: "#FFD700",
-  generating: "#00FFFF",
-  failed: "#FF0066",
+  ready: "#22c55e",
+  pending: "#f59e0b",
+  generating: "#3b82f6",
+  failed: "#e11d48",
 };
 
 export function EpisodeCard({ episode }: EpisodeCardProps) {
@@ -66,13 +66,13 @@ export function EpisodeCard({ episode }: EpisodeCardProps) {
         <button
           type="button"
           onClick={handlePlay}
-          className="flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border-2 border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan/10 hover:shadow-neon-cyan transition-all duration-200"
+          className="flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border-2 border-accent text-accent hover:bg-accent/10 hover:transition-all duration-200"
           aria-label={`Play ${episode.title}`}
         >
           <PlaySmallIcon />
         </button>
       ) : (
-        <div className="flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border-2 border-cyber-overlay text-cyber-text-secondary">
+        <div className="flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border-2 border-surface-elevated text-text-secondary">
           <PlaySmallIcon />
         </div>
       )}
@@ -80,22 +80,22 @@ export function EpisodeCard({ episode }: EpisodeCardProps) {
       {/* Episode info */}
       <div className="flex-1 min-w-0">
         <Link href={`/podcasts/${episode.id}`} className="hover:underline">
-          <h3 className="font-mono text-sm text-cyber-text truncate">
+          <h3 className="text-sm text-text-primary truncate">
             {episode.title}
           </h3>
         </Link>
         <div className="flex items-center gap-3 mt-1">
-          <span className="font-sans text-xs text-cyber-text-secondary">
+          <span className="font-sans text-xs text-text-secondary">
             {new Date(episode.createdAt).toLocaleDateString()}
           </span>
-          <span className="font-mono text-xs text-cyber-text-secondary">
+          <span className="text-xs text-text-secondary">
             {formatDuration(episode.durationSeconds)}
           </span>
         </div>
       </div>
 
       {/* Status badge */}
-      <Badge color={statusColorMap[episode.status] ?? "#00FFFF"}>
+      <Badge color={statusColorMap[episode.status] ?? "#3b82f6"}>
         {episode.status}
       </Badge>
     </Card>

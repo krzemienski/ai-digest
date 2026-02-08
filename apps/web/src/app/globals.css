@@ -2,50 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: #09090B;
+  --surface: #18181B;
+  --surface-elevated: #27272A;
+  --border: #3F3F46;
+  --border-subtle: #27272A;
+  --text-primary: #FAFAFA;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  --accent: #3B82F6;
+  --accent-hover: #60A5FA;
+}
+
 body {
-  background-color: #0A0A0F;
-  color: #FFFFFF;
-  font-family: var(--font-inter), "Inter", sans-serif;
-}
-
-@layer utilities {
-  .neon-glow-cyan {
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.1);
-  }
-  .neon-glow-magenta {
-    box-shadow: 0 0 10px rgba(255, 0, 102, 0.3), 0 0 20px rgba(255, 0, 102, 0.1);
-  }
-  .neon-glow-green {
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.3), 0 0 20px rgba(0, 255, 136, 0.1);
-  }
-  .scanline-overlay {
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 255, 255, 0.03) 2px,
-      rgba(0, 255, 255, 0.03) 4px
-    );
-    pointer-events: none;
-  }
-}
-
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
-
-@keyframes glitch {
-  0%, 100% { clip-path: inset(0 0 0 0); transform: none; }
-  20% { clip-path: inset(10% 0 60% 0); transform: translate(-2px, 2px); }
-  40% { clip-path: inset(40% 0 20% 0); transform: translate(2px, -2px); }
-  60% { clip-path: inset(60% 0 10% 0); transform: translate(-1px, 1px); }
-  80% { clip-path: inset(20% 0 50% 0); transform: translate(1px, -1px); }
-}
-
-@keyframes neon-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
+  background-color: var(--bg);
+  color: var(--text-primary);
 }
 
 @media (prefers-reduced-motion: reduce) {

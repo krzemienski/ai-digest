@@ -15,10 +15,10 @@ export default async function EpisodePage({
     return (
       <Container className="py-8">
         <div className="text-center py-16">
-          <h1 className="font-mono text-cyber-magenta text-2xl mb-4">
+          <h1 className="text-destructive text-2xl mb-4">
             Episode Not Found
           </h1>
-          <p className="font-sans text-cyber-text-secondary">
+          <p className="font-sans text-text-secondary">
             The requested episode does not exist or has been removed.
           </p>
         </div>

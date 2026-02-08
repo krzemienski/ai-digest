@@ -113,21 +113,21 @@ export function SourceForm({ source, onClose, onSaved }: SourceFormProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <h2 className="font-mono text-lg text-cyber-cyan mb-4">
+      <div className="bg-surface border border-surface-elevated rounded-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        <h2 className="text-lg text-accent mb-4">
           {isEditing ? "Edit Source" : "Add Source"}
         </h2>
 
         <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
           <div>
-            <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+            <label className="block text-xs text-text-secondary uppercase mb-1">
               Type
             </label>
             <select
               value={type}
               onChange={(e) => setType(e.target.value as SourceType)}
               disabled={isEditing}
-              className="w-full h-10 px-3 bg-cyber-bg border border-cyber-overlay rounded text-cyber-text font-mono text-sm focus:outline-none focus:border-cyber-cyan focus:shadow-neon-cyan transition-all disabled:opacity-50"
+              className="w-full h-10 px-3 bg-bg border border-surface-elevated rounded text-text-primary text-sm focus:outline-none focus:border-accent focus:transition-all disabled:opacity-50"
             >
               {SOURCE_TYPES.map((t) => (
                 <option key={t} value={t}>
@@ -138,7 +138,7 @@ export function SourceForm({ source, onClose, onSaved }: SourceFormProps) {
           </div>
 
           <div>
-            <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+            <label className="block text-xs text-text-secondary uppercase mb-1">
               Name
             </label>
             <Input
@@ -149,7 +149,7 @@ export function SourceForm({ source, onClose, onSaved }: SourceFormProps) {
           </div>
 
           <div>
-            <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+            <label className="block text-xs text-text-secondary uppercase mb-1">
               Config (JSON)
             </label>
             <textarea
@@ -157,7 +157,7 @@ export function SourceForm({ source, onClose, onSaved }: SourceFormProps) {
               onChange={(e) => setConfigText(e.target.value)}
               placeholder={configPlaceholder(type)}
               rows={5}
-              className="w-full px-3 py-2 bg-cyber-bg border border-cyber-overlay rounded text-cyber-text font-mono text-sm placeholder:text-cyber-text-secondary/50 focus:outline-none focus:border-cyber-cyan focus:shadow-neon-cyan transition-all resize-y"
+              className="w-full px-3 py-2 bg-bg border border-surface-elevated rounded text-text-primary text-sm placeholder:text-text-secondary/50 focus:outline-none focus:border-accent focus:transition-all resize-y"
             />
           </div>
 
@@ -167,14 +167,14 @@ export function SourceForm({ source, onClose, onSaved }: SourceFormProps) {
                 type="checkbox"
                 checked={enabled}
                 onChange={(e) => setEnabled(e.target.checked)}
-                className="accent-cyber-cyan w-4 h-4"
+                className="accent-accent w-4 h-4"
               />
-              <span className="font-mono text-sm text-cyber-text">Enabled</span>
+              <span className="text-sm text-text-primary">Enabled</span>
             </label>
           </div>
 
           {error !== null && (
-            <p className="font-mono text-sm text-cyber-magenta">{error}</p>
+            <p className="text-sm text-destructive">{error}</p>
           )}
 
           <div className="flex items-center justify-end gap-3 pt-2">

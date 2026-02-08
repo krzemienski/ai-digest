@@ -14,7 +14,7 @@ function WaveformPlaceholder() {
         return (
           <div
             key={i}
-            className="w-1.5 rounded-full bg-cyber-cyan/30"
+            className="w-1.5 rounded-full bg-accent/30"
             style={{ height: `${Math.min(height, 64)}px` }}
           />
         );
@@ -114,15 +114,15 @@ export function PodcastPlayer() {
   if (!currentEpisode) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] text-center p-8">
-        <div className="w-16 h-16 rounded-full border-2 border-cyber-overlay flex items-center justify-center mb-4">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyber-text-secondary">
+        <div className="w-16 h-16 rounded-full border-2 border-surface-elevated flex items-center justify-center mb-4">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-text-secondary">
             <polygon points="6,3 20,12 6,21" />
           </svg>
         </div>
-        <p className="font-mono text-cyber-text-secondary text-lg">
+        <p className="text-text-secondary text-lg">
           No episode selected
         </p>
-        <p className="font-sans text-cyber-text-secondary/60 text-sm mt-2">
+        <p className="font-sans text-text-secondary/60 text-sm mt-2">
           Choose an episode from the library to start listening
         </p>
       </div>
@@ -133,10 +133,10 @@ export function PodcastPlayer() {
     <div className="flex flex-col items-center w-full max-w-lg mx-auto px-4 py-6 md:px-6">
       {/* Episode info */}
       <div className="text-center mb-4 w-full">
-        <h2 className="font-mono text-cyber-cyan text-lg leading-tight truncate shadow-neon-cyan">
+        <h2 className="text-accent text-lg leading-tight truncate">
           {currentEpisode.title}
         </h2>
-        <p className="font-sans text-cyber-text-secondary text-sm mt-1">
+        <p className="font-sans text-text-secondary text-sm mt-1">
           {formatDate(currentEpisode.createdAt)}
         </p>
       </div>
@@ -156,7 +156,7 @@ export function PodcastPlayer() {
 
       {/* Speed selector */}
       <div className="w-full">
-        <p className="text-center text-xs font-mono text-cyber-text-secondary mb-2 uppercase tracking-wider">
+        <p className="text-center text-xs text-text-secondary mb-2 uppercase tracking-wider">
           Speed
         </p>
         <SpeedSelector />

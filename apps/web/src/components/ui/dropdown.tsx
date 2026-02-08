@@ -25,7 +25,7 @@ export function Dropdown({ trigger, children, className = "" }: DropdownProps) {
     <div ref={ref} className={`relative inline-block ${className}`}>
       <div onClick={() => setOpen(!open)}>{trigger}</div>
       {open && (
-        <div className="absolute right-0 mt-2 min-w-48 bg-cyber-surface border border-cyber-overlay rounded-lg py-1 shadow-lg z-50">
+        <div className="absolute right-0 mt-2 min-w-48 bg-surface border border-surface-elevated rounded-lg py-1 shadow-lg z-50">
           {children}
         </div>
       )}
@@ -37,7 +37,7 @@ export function DropdownItem({ children, onClick, className = "" }: { children: 
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left px-4 py-2 text-sm text-cyber-text hover:bg-cyber-overlay transition-colors ${className}`}
+      className={`w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-surface-elevated transition-colors ${className}`}
     >
       {children}
     </button>

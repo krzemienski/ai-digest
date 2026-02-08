@@ -1,21 +1,10 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { MiniPlayer } from "@/components/podcast/mini-player";
 import "./globals.css";
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "AI Digest",
@@ -29,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`dark ${jetbrainsMono.variable} ${inter.variable}`}>
-      <body className="min-h-screen bg-cyber-bg text-cyber-text font-sans antialiased flex flex-col">
+    <html lang="en" className={`dark ${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="min-h-screen bg-bg text-text-primary font-sans antialiased flex flex-col">
         <Header />
         <main className="flex-1 pb-16">{children}</main>
         <Footer />

@@ -86,9 +86,9 @@ export function CronEditor({ value, onChange }: CronEditorProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="0 8 * * *"
-        className="w-full h-10 px-3 bg-cyber-surface border border-cyber-overlay text-cyber-text font-mono text-sm placeholder:text-cyber-text-secondary/50 rounded focus:outline-none focus:border-cyber-cyan focus:shadow-neon-cyan transition-all"
+        className="w-full h-10 px-3 bg-surface border border-surface-elevated text-text-primary text-sm placeholder:text-text-secondary/50 rounded focus:outline-none focus:border-accent focus:transition-all"
       />
-      <p className="text-sm text-cyber-text-secondary font-mono">
+      <p className="text-sm text-text-secondary">
         {description}
       </p>
     </div>

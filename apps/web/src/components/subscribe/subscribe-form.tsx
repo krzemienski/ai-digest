@@ -57,21 +57,21 @@ export function SubscribeForm() {
           }
         }}
         placeholder="you@example.com"
-        className="bg-cyber-surface border border-cyber-overlay rounded px-3 py-2 text-cyber-text font-mono text-sm focus:outline-none focus:border-cyber-cyan flex-1"
+        className="bg-surface border border-surface-elevated rounded px-3 py-2 text-text-primary text-sm focus:outline-none focus:border-accent flex-1"
         disabled={status === "loading"}
       />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="bg-cyber-cyan text-cyber-bg font-mono font-bold px-6 py-2 rounded hover:opacity-90 transition-opacity disabled:opacity-50"
+        className="bg-accent text-bg font-bold px-6 py-2 rounded hover:opacity-90 transition-opacity disabled:opacity-50"
       >
         {status === "loading" ? "Subscribing..." : "Subscribe"}
       </button>
       {status === "success" && (
-        <p className="text-cyber-green text-sm font-mono self-center">{message}</p>
+        <p className="text-success text-sm self-center">{message}</p>
       )}
       {status === "error" && (
-        <p className="text-cyber-magenta text-sm font-mono self-center">{message}</p>
+        <p className="text-destructive text-sm self-center">{message}</p>
       )}
     </form>
   );

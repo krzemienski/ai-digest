@@ -64,8 +64,8 @@ export function PipelineHistory({ runs }: PipelineHistoryProps) {
 
   if (runs.length === 0) {
     return (
-      <div className="text-center py-12 border border-cyber-overlay rounded-lg">
-        <p className="font-mono text-cyber-text-secondary text-sm">
+      <div className="text-center py-12 border border-surface-elevated rounded-lg">
+        <p className="text-text-secondary text-sm">
           No pipeline runs yet.
         </p>
       </div>
@@ -76,20 +76,20 @@ export function PipelineHistory({ runs }: PipelineHistoryProps) {
     <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
       <table className="w-full border-collapse text-sm min-w-[560px]">
         <thead>
-          <tr className="border-b border-cyber-overlay">
-            <th className="text-left py-3 px-4 font-mono text-xs text-cyber-text-secondary uppercase tracking-wider">
+          <tr className="border-b border-surface-elevated">
+            <th className="text-left py-3 px-4 text-xs text-text-secondary uppercase tracking-wider">
               Date
             </th>
-            <th className="text-left py-3 px-4 font-mono text-xs text-cyber-text-secondary uppercase tracking-wider">
+            <th className="text-left py-3 px-4 text-xs text-text-secondary uppercase tracking-wider">
               Status
             </th>
-            <th className="text-left py-3 px-4 font-mono text-xs text-cyber-text-secondary uppercase tracking-wider">
+            <th className="text-left py-3 px-4 text-xs text-text-secondary uppercase tracking-wider">
               Duration
             </th>
-            <th className="text-left py-3 px-4 font-mono text-xs text-cyber-text-secondary uppercase tracking-wider">
+            <th className="text-left py-3 px-4 text-xs text-text-secondary uppercase tracking-wider">
               Items
             </th>
-            <th className="text-right py-3 px-4 font-mono text-xs text-cyber-text-secondary uppercase tracking-wider">
+            <th className="text-right py-3 px-4 text-xs text-text-secondary uppercase tracking-wider">
               Details
             </th>
           </tr>
@@ -103,55 +103,55 @@ export function PipelineHistory({ runs }: PipelineHistoryProps) {
               >
                 <button
                   type="button"
-                  className="w-full text-left border-b border-cyber-overlay/50 hover:bg-cyber-overlay/20 transition-colors cursor-pointer"
+                  className="w-full text-left border-b border-surface-elevated/50 hover:bg-surface-elevated/20 transition-colors cursor-pointer"
                   onClick={() => handleToggle(run.id)}
                   aria-expanded={expandedId === run.id}
                 >
                   <div className="flex items-center">
-                    <span className="py-3 px-4 text-cyber-text font-mono flex-1 min-w-[140px]">
+                    <span className="py-3 px-4 text-text-primary flex-1 min-w-[140px]">
                       {formatDate(run.startedAt)}
                     </span>
                     <span className="py-3 px-4 flex-1">
                       <PipelineStatus status={normalizeStatus(run.status)} />
                     </span>
-                    <span className="py-3 px-4 text-cyber-text-secondary font-mono flex-1">
+                    <span className="py-3 px-4 text-text-secondary flex-1">
                       {formatDuration(run.startedAt, run.completedAt)}
                     </span>
-                    <span className="py-3 px-4 text-cyber-text-secondary font-mono flex-1">
+                    <span className="py-3 px-4 text-text-secondary flex-1">
                       {run.itemsIngested != null ? String(run.itemsIngested) : "\u2014"}
                     </span>
-                    <span className="py-3 px-4 text-right text-cyber-text-secondary font-mono">
+                    <span className="py-3 px-4 text-right text-text-secondary">
                       {expandedId === run.id ? "\u25B2" : "\u25BC"}
                     </span>
                   </div>
                 </button>
                 {expandedId === run.id && run.stages && run.stages.length > 0 && (
-                  <div className="px-4 py-3 bg-cyber-overlay/10 border-b border-cyber-overlay/50">
+                  <div className="px-4 py-3 bg-surface-elevated/10 border-b border-surface-elevated/50">
                     <div className="space-y-2">
                       {run.stages.map((stage, idx) => (
                         <div
                           key={`${run.id}-stage-${String(idx)}`}
-                          className="flex items-center gap-3 font-mono text-xs"
+                          className="flex items-center gap-3 text-xs"
                         >
-                          <span className="text-cyber-text-secondary w-24">
+                          <span className="text-text-secondary w-24">
                             {stage.name}
                           </span>
                           <PipelineStatus
                             status={normalizeStatus(stage.status)}
                           />
-                          <span className="text-cyber-text-secondary">
+                          <span className="text-text-secondary">
                             {formatDuration(
                               stage.startedAt ?? run.startedAt,
                               stage.completedAt
                             )}
                           </span>
                           {stage.itemsProcessed != null && (
-                            <span className="text-cyber-text-secondary">
+                            <span className="text-text-secondary">
                               {String(stage.itemsProcessed)} items
                             </span>
                           )}
                           {stage.error && (
-                            <span className="text-cyber-magenta truncate max-w-[200px]">
+                            <span className="text-destructive truncate max-w-[200px]">
                               {stage.error}
                             </span>
                           )}

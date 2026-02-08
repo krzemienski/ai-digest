@@ -18,7 +18,7 @@ export function VoiceSelector({ label, value, onChange }: VoiceSelectorProps) {
 
   return (
     <div>
-      <label className="block font-mono text-sm text-cyber-text-secondary mb-1">
+      <label className="block text-sm text-text-secondary mb-1">
         {label}
       </label>
       <input
@@ -26,7 +26,7 @@ export function VoiceSelector({ label, value, onChange }: VoiceSelectorProps) {
         value={value}
         onChange={handleChange}
         placeholder="Enter ElevenLabs voice ID..."
-        className="w-full h-10 px-3 bg-cyber-surface border border-cyber-overlay text-cyber-text font-mono text-sm placeholder:text-cyber-text-secondary/50 rounded focus:outline-none focus:border-cyber-cyan focus:shadow-neon-cyan transition-all"
+        className="w-full h-10 px-3 bg-surface border border-surface-elevated text-text-primary text-sm placeholder:text-text-secondary/50 rounded focus:outline-none focus:border-accent focus:transition-all"
       />
     </div>
   );

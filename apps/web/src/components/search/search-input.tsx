@@ -58,7 +58,7 @@ export function SearchInput({ defaultValue = "" }: SearchInputProps) {
     <div className="relative w-full">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
         <svg
-          className="h-5 w-5 text-cyber-text-secondary"
+          className="h-5 w-5 text-text-secondary"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -77,12 +77,12 @@ export function SearchInput({ defaultValue = "" }: SearchInputProps) {
         value={value}
         onChange={handleChange}
         placeholder="Search articles, transcripts..."
-        className="w-full bg-cyber-surface border border-cyber-overlay rounded-lg py-3 pl-12 pr-12 text-cyber-text font-mono text-sm placeholder:text-cyber-text-secondary/50 focus:outline-none focus:border-cyber-cyan focus:ring-1 focus:ring-cyber-cyan transition-colors"
+        className="w-full bg-surface border border-surface-elevated rounded-lg py-3 pl-12 pr-12 text-text-primary text-sm placeholder:text-text-secondary/50 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
       />
       {value.length > 0 && (
         <button
           onClick={handleClear}
-          className="absolute inset-y-0 right-0 flex items-center pr-4 text-cyber-text-secondary hover:text-cyber-text transition-colors"
+          className="absolute inset-y-0 right-0 flex items-center pr-4 text-text-secondary hover:text-text-primary transition-colors"
           type="button"
           aria-label="Clear search"
         >

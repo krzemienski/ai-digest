@@ -7,13 +7,13 @@ export default async function PodcastsPage() {
 
   return (
     <Container className="py-8">
-      <h1 className="font-mono text-cyber-cyan text-2xl mb-8">
+      <h1 className="text-accent text-2xl mb-8">
         Podcast Episodes
       </h1>
 
       {episodes.length === 0 ? (
         <div className="text-center py-16">
-          <p className="font-sans text-cyber-text-secondary text-lg">
+          <p className="font-sans text-text-secondary text-lg">
             No episodes yet. Run the pipeline to generate your first podcast.
           </p>
         </div>

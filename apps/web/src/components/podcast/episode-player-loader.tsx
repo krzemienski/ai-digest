@@ -32,7 +32,7 @@ export function EpisodePlayerLoader({ episode, transcript }: EpisodePlayerLoader
       <PodcastPlayer />
       {hasSegments && (
         <div className="mt-8">
-          <h3 className="font-mono text-lg font-bold text-cyber-cyan mb-4">Transcript</h3>
+          <h3 className="text-lg font-bold text-accent mb-4">Transcript</h3>
           <TranscriptSearch value={searchQuery} onChange={setSearchQuery} />
           <TranscriptView segments={transcript} searchQuery={searchQuery} />
         </div>

@@ -216,9 +216,9 @@ export function ConfigForm() {
     return (
       <div className="space-y-6">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6 animate-pulse">
-            <div className="h-5 w-32 bg-cyber-overlay rounded mb-4" />
-            <div className="h-10 w-full bg-cyber-overlay rounded" />
+          <div key={i} className="bg-surface border border-surface-elevated rounded-lg p-6 animate-pulse">
+            <div className="h-5 w-32 bg-surface-elevated rounded mb-4" />
+            <div className="h-10 w-full bg-surface-elevated rounded" />
           </div>
         ))}
       </div>
@@ -228,14 +228,14 @@ export function ConfigForm() {
   return (
     <div className="space-y-8">
       {/* Topics Section */}
-      <section className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-        <h2 className="font-mono text-lg text-cyber-cyan mb-4">Topics</h2>
+      <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+        <h2 className="text-lg text-accent mb-4">Topics</h2>
         <div className="space-y-3">
           {topics.map((topic, index) => (
             <div key={index} className="flex items-start gap-3">
               <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+                  <label className="block text-xs text-text-secondary uppercase mb-1">
                     Name
                   </label>
                   <Input
@@ -245,7 +245,7 @@ export function ConfigForm() {
                   />
                 </div>
                 <div>
-                  <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+                  <label className="block text-xs text-text-secondary uppercase mb-1">
                     Keywords
                   </label>
                   <Input
@@ -255,7 +255,7 @@ export function ConfigForm() {
                   />
                 </div>
                 <div>
-                  <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+                  <label className="block text-xs text-text-secondary uppercase mb-1">
                     Weight
                   </label>
                   <Input
@@ -285,8 +285,8 @@ export function ConfigForm() {
       </section>
 
       {/* Scoring Weights Section */}
-      <section className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-        <h2 className="font-mono text-lg text-cyber-cyan mb-4">Scoring Weights</h2>
+      <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+        <h2 className="text-lg text-accent mb-4">Scoring Weights</h2>
         <div className="space-y-4">
           {(
             [
@@ -298,10 +298,10 @@ export function ConfigForm() {
           ).map(({ key, label }) => (
             <div key={key}>
               <div className="flex items-center justify-between mb-1">
-                <label className="font-mono text-xs text-cyber-text-secondary uppercase">
+                <label className="text-xs text-text-secondary uppercase">
                   {label}
                 </label>
-                <span className="font-mono text-sm text-cyber-cyan">
+                <span className="text-sm text-accent">
                   {scoring[key].toFixed(2)}
                 </span>
               </div>
@@ -312,7 +312,7 @@ export function ConfigForm() {
                 step={0.05}
                 value={scoring[key]}
                 onChange={(e) => handleScoringChange(key, parseFloat(e.target.value))}
-                className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-cyber-overlay accent-cyber-cyan touch-action-none"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-surface-elevated accent-accent touch-action-none"
                 style={{ minHeight: "44px", padding: "16px 0" }}
               />
             </div>
@@ -321,11 +321,11 @@ export function ConfigForm() {
       </section>
 
       {/* Synthesis Section */}
-      <section className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-        <h2 className="font-mono text-lg text-cyber-cyan mb-4">Synthesis</h2>
+      <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+        <h2 className="text-lg text-accent mb-4">Synthesis</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+            <label className="block text-xs text-text-secondary uppercase mb-1">
               Style
             </label>
             <select
@@ -336,7 +336,7 @@ export function ConfigForm() {
                   style: toSynthesisStyle(e.target.value),
                 }))
               }
-              className="w-full h-10 px-3 bg-cyber-bg border border-cyber-overlay rounded text-cyber-text font-mono text-sm focus:outline-none focus:border-cyber-cyan focus:shadow-neon-cyan transition-all"
+              className="w-full h-10 px-3 bg-bg border border-surface-elevated rounded text-text-primary text-sm focus:outline-none focus:border-accent focus:transition-all"
             >
               <option value="brief">Brief</option>
               <option value="detailed">Detailed</option>
@@ -344,7 +344,7 @@ export function ConfigForm() {
             </select>
           </div>
           <div>
-            <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+            <label className="block text-xs text-text-secondary uppercase mb-1">
               Max Items
             </label>
             <Input
@@ -364,10 +364,10 @@ export function ConfigForm() {
       </section>
 
       {/* Budget Section */}
-      <section className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6">
-        <h2 className="font-mono text-lg text-cyber-cyan mb-4">Budget</h2>
+      <section className="bg-surface border border-surface-elevated rounded-lg p-6">
+        <h2 className="text-lg text-accent mb-4">Budget</h2>
         <div>
-          <label className="block font-mono text-xs text-cyber-text-secondary uppercase mb-1">
+          <label className="block text-xs text-text-secondary uppercase mb-1">
             Max Budget (USD)
           </label>
           <Input
@@ -385,8 +385,8 @@ export function ConfigForm() {
       {/* Feedback */}
       {feedback !== null && (
         <p
-          className={`font-mono text-sm ${
-            feedback.type === "success" ? "text-cyber-green" : "text-cyber-magenta"
+          className={`text-sm ${
+            feedback.type === "success" ? "text-success" : "text-destructive"
           }`}
         >
           {feedback.message}

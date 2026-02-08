@@ -152,12 +152,12 @@ export default function AdminPipelinePage() {
 
   return (
     <div>
-      <h1 className="font-mono text-2xl text-cyber-cyan mb-6">Pipeline</h1>
+      <h1 className="text-2xl text-accent mb-6">Pipeline</h1>
 
       {/* Current Status Section */}
-      <div className="flex items-center gap-4 mb-8 p-4 border border-cyber-overlay rounded-lg">
+      <div className="flex items-center gap-4 mb-8 p-4 border border-surface-elevated rounded-lg">
         <div className="flex-1">
-          <p className="font-mono text-xs text-cyber-text-secondary uppercase mb-2">
+          <p className="text-xs text-text-secondary uppercase mb-2">
             Current Status
           </p>
           <PipelineStatus status={currentStatus} />
@@ -173,8 +173,8 @@ export default function AdminPipelinePage() {
 
       {/* Stage Timeline (visible when there are stages) */}
       {currentStages.length > 0 && (
-        <div className="mb-8 p-4 border border-cyber-overlay rounded-lg">
-          <p className="font-mono text-xs text-cyber-text-secondary uppercase mb-4">
+        <div className="mb-8 p-4 border border-surface-elevated rounded-lg">
+          <p className="text-xs text-text-secondary uppercase mb-4">
             Stage Progress
           </p>
           <StageTimeline stages={currentStages} />
@@ -183,7 +183,7 @@ export default function AdminPipelinePage() {
 
       {/* Run History */}
       <div>
-        <p className="font-mono text-xs text-cyber-text-secondary uppercase mb-4">
+        <p className="text-xs text-text-secondary uppercase mb-4">
           Run History
         </p>
         <PipelineHistory runs={runs} />

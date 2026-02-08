@@ -25,10 +25,10 @@ export function Dialog({ open, onClose, children, title }: DialogProps) {
     <dialog
       ref={dialogRef}
       onClose={onClose}
-      className="bg-cyber-surface border border-cyber-overlay rounded-lg p-6 backdrop:bg-black/70 text-cyber-text max-w-lg w-full"
+      className="bg-surface border border-surface-elevated rounded-lg p-6 backdrop:bg-black/70 text-text-primary max-w-lg w-full"
     >
       {title && (
-        <h2 className="font-mono text-lg text-cyber-cyan mb-4">{title}</h2>
+        <h2 className="text-lg text-accent mb-4">{title}</h2>
       )}
       {children}
     </dialog>

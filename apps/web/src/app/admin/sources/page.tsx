@@ -42,7 +42,7 @@ export default function AdminSourcesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-mono text-2xl text-cyber-cyan">Sources</h1>
+        <h1 className="text-2xl text-accent">Sources</h1>
         <Button variant="primary" onClick={handleAdd}>
           Add Source
         </Button>

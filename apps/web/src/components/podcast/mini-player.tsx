@@ -35,11 +35,11 @@ export function MiniPlayer() {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-cyber-surface border-t border-cyber-overlay pb-[env(safe-area-inset-bottom)]">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-surface-elevated pb-[env(safe-area-inset-bottom)]">
       {/* Thin progress bar at top */}
-      <div className="h-1 w-full bg-cyber-overlay">
+      <div className="h-1 w-full bg-surface-elevated">
         <div
-          className="h-full bg-cyber-cyan transition-[width] duration-200"
+          className="h-full bg-accent transition-[width] duration-200"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -57,7 +57,7 @@ export function MiniPlayer() {
               resume();
             }
           }}
-          className="flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-cyber-cyan text-cyber-bg hover:shadow-neon-cyan transition-shadow duration-200"
+          className="flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-accent text-bg hover:transition-shadow duration-200"
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? <MiniPauseIcon /> : <MiniPlayIcon />}
@@ -68,7 +68,7 @@ export function MiniPlayer() {
           href={`/podcasts/${currentEpisode.id}`}
           className="flex-1 min-w-0"
         >
-          <p className="font-mono text-sm text-cyber-text truncate">
+          <p className="text-sm text-text-primary truncate">
             {currentEpisode.title}
           </p>
         </Link>

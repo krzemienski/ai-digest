@@ -15,10 +15,10 @@ export default async function DigestDetailPage({
     return (
       <Container className="py-12">
         <div className="text-center">
-          <h2 className="font-mono text-xl text-cyber-text-secondary">
+          <h2 className="text-xl text-text-secondary">
             Digest not found
           </h2>
-          <p className="text-sm text-cyber-text-secondary/60 mt-2">
+          <p className="text-sm text-text-secondary/60 mt-2">
             The requested digest does not exist or has been removed.
           </p>
         </div>

@@ -22,9 +22,9 @@ export function ProgressBar() {
 
   return (
     <div className="w-full px-2">
-      <div className="relative w-full h-2 rounded-full bg-cyber-overlay overflow-hidden mb-1">
+      <div className="relative w-full h-2 rounded-full bg-surface-elevated overflow-hidden mb-1">
         <div
-          className="absolute inset-y-0 left-0 bg-cyber-cyan rounded-full transition-[width] duration-100"
+          className="absolute inset-y-0 left-0 bg-accent rounded-full transition-[width] duration-100"
           style={{ width: `${progressPercent}%` }}
         />
       </div>
@@ -39,7 +39,7 @@ export function ProgressBar() {
         style={{ WebkitAppearance: "none" }}
         aria-label="Seek audio position"
       />
-      <div className="flex justify-between text-xs font-mono text-cyber-text-secondary mt-0">
+      <div className="flex justify-between text-xs text-text-secondary mt-0">
         <span>{formatTime(currentTime)}</span>
         <span>-{formatTime(remaining)}</span>
       </div>

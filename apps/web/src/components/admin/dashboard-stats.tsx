@@ -19,8 +19,8 @@ interface StatCardProps {
 function StatCard({ label, value }: StatCardProps) {
   return (
     <Card>
-      <p className="text-xs text-cyber-text-secondary uppercase font-mono mb-1">{label}</p>
-      <p className="text-2xl font-bold text-cyber-cyan font-mono">{String(value)}</p>
+      <p className="text-xs text-text-secondary uppercase mb-1">{label}</p>
+      <p className="text-2xl font-bold text-accent">{String(value)}</p>
     </Card>
   );
 }
