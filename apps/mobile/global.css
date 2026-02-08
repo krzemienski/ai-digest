@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-cyber-bg: 10 10 15;
+  --color-cyber-surface: 18 18 26;
+  --color-cyber-overlay: 26 26 46;
+  --color-cyber-cyan: 0 255 255;
+  --color-cyber-magenta: 255 0 102;
+  --color-cyber-green: 0 255 136;
+  --color-cyber-purple: 139 92 246;
+  --color-cyber-blue: 51 136 255;
+  --color-cyber-amber: 255 170 0;
+  --color-cyber-text: 255 255 255;
+  --color-cyber-text-secondary: 160 160 176;
+}

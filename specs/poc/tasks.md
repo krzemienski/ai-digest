@@ -40,7 +40,7 @@ created: 2026-02-08
   - _Requirements: FR-2, FR-3_
   - _Design: Architecture, File Structure_
 
-- [ ] 1.2 Configure monorepo integration (pnpm workspace, turbo.json, metro symlinks)
+- [x] 1.2 Configure monorepo integration (pnpm workspace, turbo.json, metro symlinks)
   - **Do**:
     1. Verify `pnpm-workspace.yaml` already includes `apps/*` (it does)
     2. Update `turbo.json` to add mobile tasks in `tasks` section (build outputs `dist/**`)
@@ -55,7 +55,7 @@ created: 2026-02-08
   - _Requirements: FR-2_
   - _Design: Architecture, Existing Patterns_
 
-- [ ] 1.3 Implement design token system (CSS variables, Tailwind config, token constants)
+- [x] 1.3 Implement design token system (CSS variables, Tailwind config, token constants)
   - **Do**:
     1. Update `global.css` with all 11 CSS variable definitions from design.md (:root block with `--color-cyber-*`)
     2. Update `tailwind.config.js` with full theme: colors (cyber.*), fontFamily, fontSize scale, spacing, borderRadius, boxShadow (neon-*)
