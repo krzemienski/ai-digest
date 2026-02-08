@@ -125,7 +125,7 @@ created: 2026-02-08
   - _Requirements: NFR-2, AC-2.5, FR-2_
   - _Design: Component Primitives_
 
-- [ ] 2.3 Build Card, Input, Badge, Toggle, Icon, Divider primitives
+- [x] 2.3 Build Card, Input, Badge, Toggle, Icon, Divider primitives
   - **Do**:
     1. `Card.tsx`: Elevated surface (#12121A bg), 8px radius, optional `glow` prop (none/cyan/magenta), `onPress` for pressable variant, `Pressable` wrapper when onPress provided
     2. `Input.tsx`: Text input with cyber-surface bg, cyan glow on focus via `onFocus`/`onBlur` state, `label` prop, `error` prop (magenta text below), variants: text, email, password, search
