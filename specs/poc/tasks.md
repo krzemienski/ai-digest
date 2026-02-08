@@ -419,7 +419,7 @@ created: 2026-02-08
   - _Requirements: FR-22_
   - _Design: Auth Strategy_
 
-- [ ] 5.2 Implement Onboarding flow (3 screens + pagination)
+- [x] 5.2 Implement Onboarding flow (3 screens + pagination)
   - **Do**:
     1. Create `src/app/(onboarding)/_layout.tsx`: Stack layout
     2. `src/app/(onboarding)/welcome.tsx`: Hero graphic placeholder, tagline "Your AI-curated tech digest", "Get Started" primary CTA, "Skip" secondary. Pagination dots (1/3).
