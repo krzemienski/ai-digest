@@ -9,3 +9,4 @@ export { users } from "./users";
 export { sourceFetchLog } from "./source-fetch-log";
 export { podcastLogs } from "./podcast-logs";
 export { podcastConfigs } from "./podcast-configs";
+export { discoveryRuns } from "./discovery-runs";

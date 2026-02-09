@@ -1,6 +1,6 @@
 export interface Episode {
   id: string;
-  digestId: string;
+  digestId: string | null;
   title: string;
   audioUrl: string | null;
   durationSeconds: number | null;

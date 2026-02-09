@@ -14,7 +14,7 @@ interface EpisodeCardProps {
     durationSeconds: number | null;
     status: string;
     createdAt: string;
-    digestId: string;
+    digestId: string | null;
     audioFormat: string;
   };
 }

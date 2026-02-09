@@ -18,7 +18,7 @@ export async function fetchRss(
       title: item.title ?? "",
       summary: item.contentSnippet ?? item.content ?? "",
       content: item.content,
-      authors: item.creator ? [item.creator] : [],
+      authors: item.creator ? [typeof item.creator === "string" ? item.creator : String(item.creator)] : [],
       publishedAt: item.pubDate ? new Date(item.pubDate) : new Date(),
       metadata: {
         feedTitle: feed.title,

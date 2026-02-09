@@ -8,3 +8,4 @@ export type { SourceConfig } from "./source-config";
 export type { VoiceConfig, SpeakerVoice } from "./voice";
 export type { ApiResponse } from "./api";
 export type { PodcastGenerationConfig, LogEntry, ModelInfo, PodcastStage, LogSeverity, PodcastStyle, QualityScoreAttempt, CostEstimate } from "./podcast";
+export type { DiscoveryStatus, DiscoveryCandidate, DiscoveryRun } from "./discovery";

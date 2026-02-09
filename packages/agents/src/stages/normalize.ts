@@ -33,7 +33,7 @@ export async function runNormalization(
       title: raw.title,
       summary: raw.summary,
       content: raw.content ?? null,
-      authors: raw.authors,
+      authors: raw.authors.map((a) => (typeof a === "string" ? a : String(a))),
       publishedAt: raw.publishedAt,
       categories: [],
       metadata: raw.metadata,

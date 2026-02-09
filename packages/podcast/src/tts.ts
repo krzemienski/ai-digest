@@ -42,11 +42,12 @@ export async function generateSegmentAudio(
   segment: ScriptSegment,
   voiceId: string,
   voiceSettings: { stability: number; similarityBoost: number; speed: number; style: number },
-  previousRequestIds: string[]
+  previousRequestIds: string[],
+  apiKey?: string
 ): Promise<TTSResult> {
-  const apiKey = process.env.ELEVENLABS_API_KEY;
-  if (!apiKey) {
-    throw new Error("ELEVENLABS_API_KEY environment variable is required");
+  const resolvedKey = apiKey ?? process.env.ELEVENLABS_API_KEY;
+  if (!resolvedKey) {
+    throw new Error("ElevenLabs API key is required. Pass it explicitly or set ELEVENLABS_API_KEY env var.");
   }
 
   const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`;
@@ -54,7 +55,7 @@ export async function generateSegmentAudio(
   const response = await fetchWithRetry(url, {
     method: "POST",
     headers: {
-      "xi-api-key": apiKey,
+      "xi-api-key": resolvedKey,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({

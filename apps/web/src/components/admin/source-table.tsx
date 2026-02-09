@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SourceHealth } from "@/app/admin/sources/components/source-health";
 
 interface SourceData {
   readonly id: string;
@@ -13,6 +14,9 @@ interface SourceData {
   readonly enabled: boolean;
   readonly createdAt: string;
   readonly updatedAt: string;
+  readonly consecutiveErrors: number;
+  readonly lastFetchAt: string | null;
+  readonly lastFetchError: string | null;
 }
 
 interface SourceTableProps {
@@ -120,6 +124,9 @@ export function SourceTable({ onEdit }: SourceTableProps) {
             <th className="text-left py-3 px-4 text-xs text-text-secondary uppercase tracking-wider whitespace-nowrap">
               Name
             </th>
+            <th className="text-center py-3 px-4 text-xs text-text-secondary uppercase tracking-wider whitespace-nowrap">
+              Health
+            </th>
             <th className="text-left py-3 px-4 text-xs text-text-secondary uppercase tracking-wider whitespace-nowrap">
               Type
             </th>
@@ -136,6 +143,13 @@ export function SourceTable({ onEdit }: SourceTableProps) {
             <tr key={source.id} className="border-b border-surface-elevated/50 hover:bg-surface-elevated/20 transition-colors">
               <td className="py-3 px-4 text-text-primary">
                 {source.name}
+              </td>
+              <td className="py-3 px-4 text-center">
+                <SourceHealth
+                  consecutiveErrors={source.consecutiveErrors}
+                  lastFetchAt={source.lastFetchAt}
+                  lastFetchError={source.lastFetchError}
+                />
               </td>
               <td className="py-3 px-4">
                 <Badge color={getTypeColor(source.type)}>{source.type}</Badge>

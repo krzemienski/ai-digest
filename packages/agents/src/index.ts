@@ -30,3 +30,5 @@ export type { PodcastScriptOutput } from "./schemas/podcast-script.schema";
 export { QualityReviewSchema } from "./schemas/quality-review.schema";
 export type { QualityReviewOutput } from "./schemas/quality-review.schema";
 export { MODEL_REGISTRY, getModelById, getDefaultModelId } from "./models";
+export { runDiscoveryAgent, probeRssFeeds, validateSourceUrl } from "./discovery";
+export type { DiscoveryAgentConfig, DiscoveryResult } from "./discovery";

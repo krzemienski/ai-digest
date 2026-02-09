@@ -29,6 +29,9 @@ export type {
   PodcastStyle,
   QualityScoreAttempt,
   CostEstimate,
+  DiscoveryStatus,
+  DiscoveryCandidate,
+  DiscoveryRun,
 } from "./types";
 
 export { deterministicId, formatDigestDate, isWithinHours } from "./utils";

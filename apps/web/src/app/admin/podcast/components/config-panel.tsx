@@ -5,6 +5,7 @@ import { ModelSelector } from "./model-selector";
 import { VoiceConfigPanel, DEFAULT_SETTINGS } from "./voice-config-panel";
 import type { SpeakerConfig } from "./voice-config-panel";
 import { StyleSelector } from "./style-selector";
+import { TimeWindowPicker } from "./time-window-picker";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { PodcastStyle, CostEstimate } from "@ai-digest/shared";
@@ -51,7 +52,8 @@ interface SpendResponse {
 }
 
 export interface GenerationConfig {
-  readonly digestId: string;
+  readonly digestId: string | null;
+  readonly dateRange: { readonly start: string; readonly end: string } | null;
   readonly targetDurationMinutes: 5 | 10 | 15 | 20 | 25 | 30 | 45 | 60;
   readonly model: string;
   readonly style: PodcastStyle;
@@ -81,6 +83,10 @@ interface ConfigPanelProps {
 const DEFAULT_MODEL = "claude-haiku-4-5-20251001";
 
 export function ConfigPanel({ onGenerate, disabled, initialConfig }: ConfigPanelProps) {
+  // Content source state
+  const [contentSource, setContentSource] = useState<"digest" | "timeWindow">("timeWindow");
+  const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null);
+
   // Digest state
   const [digests, setDigests] = useState<readonly Digest[]>([]);
   const [selectedDigestId, setSelectedDigestId] = useState("");
@@ -134,7 +140,14 @@ export function ConfigPanel({ onGenerate, disabled, initialConfig }: ConfigPanel
   useEffect(() => {
     if (!initialConfig) return;
 
-    setSelectedDigestId(initialConfig.digestId);
+    if (initialConfig.dateRange) {
+      setContentSource("timeWindow");
+      setDateRange(initialConfig.dateRange);
+    } else if (initialConfig.digestId) {
+      setContentSource("digest");
+      setSelectedDigestId(initialConfig.digestId);
+    }
+
     setTargetDuration(initialConfig.targetDurationMinutes);
     setModel(initialConfig.model);
     setStyle(initialConfig.style);
@@ -222,13 +235,17 @@ export function ConfigPanel({ onGenerate, disabled, initialConfig }: ConfigPanel
   }, []);
 
   const handleGenerate = useCallback(async () => {
-    if (!selectedDigestId) return;
+    const hasValidSource =
+      (contentSource === "digest" && selectedDigestId) ||
+      (contentSource === "timeWindow" && dateRange);
+    if (!hasValidSource) return;
 
     setGenerating(true);
     setError(null);
 
     const config: GenerationConfig = {
-      digestId: selectedDigestId,
+      digestId: contentSource === "digest" ? selectedDigestId : null,
+      dateRange: contentSource === "timeWindow" ? dateRange : null,
       targetDurationMinutes: targetDuration,
       model,
       style,
@@ -262,9 +279,13 @@ export function ConfigPanel({ onGenerate, disabled, initialConfig }: ConfigPanel
       setError("Network error: could not start generation");
       setGenerating(false);
     }
-  }, [selectedDigestId, targetDuration, model, style, customStylePrompt, hostA, hostB, onGenerate]);
+  }, [contentSource, selectedDigestId, dateRange, targetDuration, model, style, customStylePrompt, hostA, hostB, onGenerate]);
 
-  const canGenerate = selectedDigestId && !generating && !disabled;
+  const canGenerate =
+    ((contentSource === "digest" && selectedDigestId) ||
+      (contentSource === "timeWindow" && dateRange)) &&
+    !generating &&
+    !disabled;
 
   return (
     <div className="space-y-6">
@@ -284,24 +305,55 @@ export function ConfigPanel({ onGenerate, disabled, initialConfig }: ConfigPanel
         </div>
       )}
 
-      {/* Digest Selector */}
+      {/* Content Source Toggle */}
       <div>
-        <label className="block text-xs text-text-secondary uppercase mb-1">
-          Select Digest
+        <label className="block text-xs text-text-secondary uppercase mb-2">
+          Content Source
         </label>
-        <select
-          value={selectedDigestId}
-          onChange={(e) => setSelectedDigestId(e.target.value)}
-          disabled={generating || disabled || digests.length === 0}
-          className="w-full h-10 px-3 bg-bg border border-surface-elevated rounded text-text-primary text-sm focus:outline-none focus:border-accent focus:transition-all disabled:opacity-50"
-        >
-          {digests.length === 0 && <option value="">No digests available</option>}
-          {digests.map((d) => (
-            <option key={d.id} value={d.id}>
-              {new Date(d.digestDate).toLocaleDateString()}
-            </option>
+        <div className="flex gap-2 mb-3">
+          {(["digest", "timeWindow"] as const).map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              disabled={generating || disabled}
+              onClick={() => setContentSource(mode)}
+              className={`h-10 px-3 rounded border transition-all text-sm ${
+                contentSource === mode
+                  ? "bg-accent text-bg border-accent font-medium"
+                  : "bg-bg text-text-primary border-surface-elevated hover:border-accent"
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              {mode === "digest" ? "From Digest" : "Time Window"}
+            </button>
           ))}
-        </select>
+        </div>
+
+        {/* Digest Selector */}
+        {contentSource === "digest" && (
+          <div>
+            <label className="block text-xs text-text-secondary uppercase mb-1">
+              Select Digest
+            </label>
+            <select
+              value={selectedDigestId}
+              onChange={(e) => setSelectedDigestId(e.target.value)}
+              disabled={generating || disabled || digests.length === 0}
+              className="w-full h-10 px-3 bg-bg border border-surface-elevated rounded text-text-primary text-sm focus:outline-none focus:border-accent focus:transition-all disabled:opacity-50"
+            >
+              {digests.length === 0 && <option value="">No digests available</option>}
+              {digests.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {new Date(d.digestDate).toLocaleDateString()}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Time Window Picker */}
+        {contentSource === "timeWindow" && (
+          <TimeWindowPicker onDateRangeChange={setDateRange} />
+        )}
       </div>
 
       {/* Duration Selector */}

@@ -7,7 +7,8 @@ export type LogSeverity = "info" | "warn" | "error";
 export type PodcastStyle = "professional" | "casual" | "technical" | "news_brief" | "custom";
 
 export interface PodcastGenerationConfig {
-  readonly digestId: string;
+  readonly digestId: string | null;
+  readonly dateRange: { readonly start: string; readonly end: string } | null;
   readonly targetDurationMinutes: 5 | 10 | 15 | 20 | 25 | 30 | 45 | 60;
   readonly model: string;
   readonly voiceConfig: VoiceConfig;

@@ -42,9 +42,16 @@ export default function PodcastDashboardPage() {
 
   // Handle replay from episode detail
   const handleReplay = useCallback((configSnapshot: Record<string, unknown>) => {
+    // Parse dateRange if present
+    const rawDateRange = configSnapshot.dateRange as { start: string; end: string } | null | undefined;
+    const parsedDateRange = rawDateRange && rawDateRange.start && rawDateRange.end
+      ? { start: rawDateRange.start, end: rawDateRange.end }
+      : null;
+
     // Parse config snapshot into GenerationConfig shape
     const config: GenerationConfig = {
-      digestId: (configSnapshot.digestId as string) || "",
+      digestId: (configSnapshot.digestId as string | null) ?? null,
+      dateRange: parsedDateRange,
       targetDurationMinutes: (configSnapshot.targetDurationMinutes as 5 | 10 | 15 | 20 | 25 | 30 | 45 | 60) || 10,
       model: (configSnapshot.model as string) || "claude-haiku-4-5-20251001",
       style: (configSnapshot.style as GenerationConfig["style"]) || "professional",

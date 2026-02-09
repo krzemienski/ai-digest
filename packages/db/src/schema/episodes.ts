@@ -4,7 +4,9 @@ import { digests } from "./digests";
 
 export const episodes = pgTable("episodes", {
   id: uuid("id").defaultRandom().primaryKey(),
-  digestId: uuid("digest_id").notNull().references(() => digests.id),
+  digestId: uuid("digest_id").references(() => digests.id),
+  dateRangeStart: timestamp("date_range_start"),
+  dateRangeEnd: timestamp("date_range_end"),
   title: text("title").notNull(),
   audioUrl: text("audio_url"),
   durationSeconds: integer("duration_seconds"),

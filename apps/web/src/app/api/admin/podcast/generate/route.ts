@@ -24,8 +24,14 @@ const voiceConfigSchema = z.object({
   targetDurationMinutes: z.number().default(10),
 });
 
+const dateRangeSchema = z.object({
+  start: z.string().datetime({ message: "start must be an ISO 8601 datetime string" }),
+  end: z.string().datetime({ message: "end must be an ISO 8601 datetime string" }),
+});
+
 const generateSchema = z.object({
-  digestId: z.string().uuid(),
+  digestId: z.string().uuid().optional(),
+  dateRange: dateRangeSchema.optional(),
   targetDurationMinutes: z.coerce.number().pipe(
     z.union([z.literal(5), z.literal(10), z.literal(15), z.literal(20), z.literal(25), z.literal(30), z.literal(45), z.literal(60)])
   ),
@@ -74,6 +80,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const { digestId, dateRange } = parsed.data;
+
+    // XOR validation: exactly one of digestId or dateRange must be provided
+    if (digestId && dateRange) {
+      return NextResponse.json(
+        { success: false, error: "Provide either digestId or dateRange, not both" },
+        { status: 400 }
+      );
+    }
+    if (!digestId && !dateRange) {
+      return NextResponse.json(
+        { success: false, error: "Either digestId or dateRange is required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate date range ordering when provided
+    if (dateRange) {
+      const startDate = new Date(dateRange.start);
+      const endDate = new Date(dateRange.end);
+      if (startDate >= endDate) {
+        return NextResponse.json(
+          { success: false, error: "dateRange.start must be before dateRange.end" },
+          { status: 400 }
+        );
+      }
+    }
+
     // Validate model if provided
     if (parsed.data.model) {
       const modelInfo = getModelById(parsed.data.model);
@@ -86,21 +120,40 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Verify digest exists
-    const digest = await db.query.digests.findFirst({
-      where: eq(digests.id, parsed.data.digestId),
-    });
-    if (!digest) {
-      return NextResponse.json(
-        { success: false, error: "Digest not found" },
-        { status: 404 }
-      );
+    let episodeTitle: string;
+    let episodeDigestId: string | null = null;
+    let episodeDateRangeStart: Date | null = null;
+    let episodeDateRangeEnd: Date | null = null;
+
+    if (digestId) {
+      // Digest-based generation: verify digest exists
+      const digest = await db.query.digests.findFirst({
+        where: eq(digests.id, digestId as string),
+      });
+      if (!digest) {
+        return NextResponse.json(
+          { success: false, error: "Digest not found" },
+          { status: 404 }
+        );
+      }
+      episodeTitle = `AI Digest Podcast — ${digest.digestDate}`;
+      episodeDigestId = digestId;
+    } else {
+      // Time-window-based generation
+      const startDate = new Date(dateRange!.start);
+      const endDate = new Date(dateRange!.end);
+      const fmt = (d: Date) => d.toISOString().slice(0, 10);
+      episodeTitle = `AI Digest Podcast — ${fmt(startDate)} to ${fmt(endDate)}`;
+      episodeDateRangeStart = startDate;
+      episodeDateRangeEnd = endDate;
     }
 
     // Create episode record
     const episode = await queries.createEpisode(db, {
-      digestId: parsed.data.digestId,
-      title: `AI Digest Podcast — ${digest.digestDate}`,
+      digestId: episodeDigestId,
+      dateRangeStart: episodeDateRangeStart,
+      dateRangeEnd: episodeDateRangeEnd,
+      title: episodeTitle,
       status: "generating",
       targetDurationMinutes: parsed.data.targetDurationMinutes,
       model: parsed.data.model,
@@ -114,12 +167,13 @@ export async function POST(request: NextRequest) {
     const queue = getPodcastQueue();
     const job = await queue.add("podcast", {
       episodeId: episode.id,
-      digestId: parsed.data.digestId,
+      digestId: episodeDigestId,
       targetDurationMinutes: parsed.data.targetDurationMinutes,
       model: parsed.data.model,
       voiceConfig: parsed.data.voiceConfig,
       style: parsed.data.style,
       customStylePrompt: parsed.data.customStylePrompt,
+      dateRange: dateRange ?? undefined,
     });
 
     return NextResponse.json({

@@ -2,7 +2,7 @@ import { Job } from "bullmq";
 import IORedis from "ioredis";
 import Anthropic from "@anthropic-ai/sdk";
 import { db, queries } from "@ai-digest/db";
-import { episodes, transcripts, normalizedItems, eq, and, isNull, gte, desc } from "@ai-digest/db";
+import { episodes, transcripts, normalizedItems, eq, and, isNull, gte, lte, desc } from "@ai-digest/db";
 import type { VoiceConfig, TranscriptSegment, PodcastGenerationConfig, QualityScoreAttempt, PodcastStyle } from "@ai-digest/shared";
 import { formatDigestDate } from "@ai-digest/shared";
 import {
@@ -24,16 +24,18 @@ import {
   type ScriptSegment,
 } from "@ai-digest/podcast";
 import { createLogEmitter, type LogEmitter } from "../lib/log-emitter";
+import { resolveApiKey } from "../lib/api-keys";
 import { generateScriptWithAgent, type AgentStoryItem } from "./podcast-script-agent";
 
 export interface PodcastJobData {
   episodeId: string;
-  digestId: string;
+  digestId?: string | null;
   targetDurationMinutes: number;
   model?: string;
   voiceConfig?: VoiceConfig;
   style?: string;
   customStylePrompt?: string;
+  dateRange?: { start: string; end: string };
 }
 
 type PodcastStage = "content_select" | "script_gen" | "quality_review" | "tts" | "assembly" | "upload";
@@ -73,6 +75,21 @@ const REDIS_URL = process.env.REDIS_URL ?? "redis://localhost:6379";
 // Dedicated Redis connection for log publishing (separate from BullMQ connection)
 const publisherRedis = new IORedis(REDIS_URL);
 
+/** Format a date range as "Feb 1-7, 2026" or "Jan 28 - Feb 3, 2026" for display in prompts */
+function formatDateRange(start: Date, end: Date): string {
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const sMonth = months[start.getUTCMonth()] as string;
+  const eMonth = months[end.getUTCMonth()] as string;
+  const sDay = start.getUTCDate();
+  const eDay = end.getUTCDate();
+  const eYear = end.getUTCFullYear();
+
+  if (sMonth === eMonth && start.getUTCFullYear() === end.getUTCFullYear()) {
+    return `${sMonth} ${sDay}-${eDay}, ${eYear}`;
+  }
+  return `${sMonth} ${sDay} - ${eMonth} ${eDay}, ${eYear}`;
+}
+
 async function updateStage(
   episodeId: string,
   stage: PodcastStage,
@@ -109,7 +126,7 @@ function computeCost(
 }
 
 export async function processPodcastJob(job: Job<PodcastJobData>): Promise<void> {
-  const { episodeId, digestId, targetDurationMinutes } = job.data;
+  const { episodeId, digestId, targetDurationMinutes, dateRange } = job.data;
   const modelId = job.data.model ?? getDefaultModelId();
   const voiceConfig: VoiceConfig = {
     ...(job.data.voiceConfig ?? DEFAULT_VOICE_CONFIG),
@@ -118,14 +135,17 @@ export async function processPodcastJob(job: Job<PodcastJobData>): Promise<void>
   const style = (job.data.style ?? "professional") as PodcastStyle;
   const customStylePrompt = job.data.customStylePrompt ?? null;
 
-  const dateStr = formatDigestDate(new Date());
+  const dateStr = dateRange
+    ? formatDateRange(new Date(dateRange.start), new Date(dateRange.end))
+    : formatDigestDate(new Date());
   const storyCount = STORY_COUNT_MAP[targetDurationMinutes] ?? 5;
   const budget = new BudgetTracker(5);
   const log = createLogEmitter(publisherRedis, episodeId);
 
   // Build config snapshot for replay
   const configSnapshot: PodcastGenerationConfig = {
-    digestId,
+    digestId: digestId ?? null,
+    dateRange: dateRange ? { start: dateRange.start, end: dateRange.end } : null,
     targetDurationMinutes: targetDurationMinutes as 5 | 10 | 15 | 20 | 25 | 30 | 45 | 60,
     model: modelId,
     voiceConfig,
@@ -150,14 +170,25 @@ export async function processPodcastJob(job: Job<PodcastJobData>): Promise<void>
     const contentStartTime = Date.now();
     await updateStage(episodeId, "content_select", "running", log);
 
-    const topItems = await db.query.normalizedItems.findMany({
-      where: and(
-        isNull(normalizedItems.duplicateOf),
-        gte(normalizedItems.compositeScore, 0.3)
-      ),
-      orderBy: [desc(normalizedItems.compositeScore)],
-      limit: storyCount,
-    });
+    const topItems = dateRange
+      ? await db.query.normalizedItems.findMany({
+          where: and(
+            isNull(normalizedItems.duplicateOf),
+            gte(normalizedItems.compositeScore, 0.3),
+            gte(normalizedItems.publishedAt, new Date(dateRange.start)),
+            lte(normalizedItems.publishedAt, new Date(dateRange.end))
+          ),
+          orderBy: [desc(normalizedItems.compositeScore)],
+          limit: storyCount,
+        })
+      : await db.query.normalizedItems.findMany({
+          where: and(
+            isNull(normalizedItems.duplicateOf),
+            gte(normalizedItems.compositeScore, 0.3)
+          ),
+          orderBy: [desc(normalizedItems.compositeScore)],
+          limit: storyCount,
+        });
 
     if (topItems.length === 0) {
       await log.emit("content_select", "error", "No scored items found for podcast content");
@@ -396,6 +427,9 @@ export async function processPodcastJob(job: Job<PodcastJobData>): Promise<void>
     const ttsStartTime = Date.now();
     await updateStage(episodeId, "tts", "running", log);
 
+    // Resolve ElevenLabs API key: DB first, then env fallback
+    const elevenLabsKey = await resolveApiKey("elevenlabs");
+
     await log.emit("tts", "info", `Starting TTS for ${segments.length} segments`);
 
     const ttsResults: Array<{ order: number; speaker: string; audioBuffer: Buffer; requestId: string; durationMs: number }> = [];
@@ -425,7 +459,8 @@ export async function processPodcastJob(job: Job<PodcastJobData>): Promise<void>
           segment,
           speakerVoice.voiceId,
           speakerVoice.settings,
-          previousIds
+          previousIds,
+          elevenLabsKey
         );
 
         ttsResults.push(result);

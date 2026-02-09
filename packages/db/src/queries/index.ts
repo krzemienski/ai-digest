@@ -8,3 +8,5 @@ export * from "./search";
 export * from "./sources";
 export * from "./podcast-logs";
 export * from "./podcast-configs";
+export * from "./normalized-items";
+export * from "./discovery";

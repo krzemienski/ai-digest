@@ -3,6 +3,7 @@ import IORedis from "ioredis";
 import { db, queries } from "@ai-digest/db";
 import { processPipeline } from "./processors/pipeline";
 import { processPodcastJob } from "./processors/podcast";
+import { processDiscoveryJob } from "./processors/discovery";
 
 const REDIS_URL = process.env.REDIS_URL ?? "redis://localhost:6379";
 const DEFAULT_CRON_PATTERN = "0 6 * * *";
@@ -44,6 +45,21 @@ podcastWorker.on("completed", (job) => {
 
 podcastWorker.on("failed", (job, error) => {
   console.error(`[Worker] Podcast job ${job?.id} failed:`, error.message);
+});
+
+// Discovery queue & worker
+const discoveryQueue = new Queue("discovery", { connection });
+const discoveryWorker = new Worker("discovery", processDiscoveryJob, {
+  connection,
+  concurrency: 1,
+});
+
+discoveryWorker.on("completed", (job) => {
+  console.log(`[Worker] Discovery job ${job.id} completed`);
+});
+
+discoveryWorker.on("failed", (job, error) => {
+  console.error(`[Worker] Discovery job ${job?.id} failed:`, error.message);
 });
 
 // --- Cron scheduling ---
@@ -126,8 +142,10 @@ process.on("SIGINT", async () => {
   clearInterval(schedulePoller);
   await pipelineWorker.close();
   await podcastWorker.close();
+  await discoveryWorker.close();
   await pipelineQueue.close();
   await podcastQueue.close();
+  await discoveryQueue.close();
   connection.disconnect();
   process.exit(0);
 });
@@ -137,13 +155,15 @@ process.on("SIGTERM", async () => {
   clearInterval(schedulePoller);
   await pipelineWorker.close();
   await podcastWorker.close();
+  await discoveryWorker.close();
   await pipelineQueue.close();
   await podcastQueue.close();
+  await discoveryQueue.close();
   connection.disconnect();
   process.exit(0);
 });
 
 console.log("[Worker] Connected to Redis at", REDIS_URL);
-console.log("[Worker] Pipeline and podcast processors registered");
+console.log("[Worker] Pipeline, podcast, and discovery processors registered");
 
-export { pipelineQueue, podcastQueue };
+export { pipelineQueue, podcastQueue, discoveryQueue };
