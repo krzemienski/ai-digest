@@ -53,13 +53,15 @@ Each section should contain 6-15 dialogue segments alternating between hosts. Ea
 - \`text\`: The spoken words — WRITE LONG SEGMENTS. Each segment should be 3-8 sentences (200-800 characters). The duration is automatically calculated from text length, so MORE TEXT = LONGER AUDIO.
 
 ### Duration Targets
-Duration is calculated automatically at ~14.5 characters per second of speech. To hit targets:
-- For a 30-minute episode (1800s): you need ~26,000 total characters of dialogue text
-- For a 45-minute episode (2700s): you need ~39,000 total characters
-- For a 60-minute episode (3600s): you need ~52,000 total characters
+Duration is calculated automatically at ~15.0 characters per second of speech (validated from production TTS data). To hit targets:
+- For a 15-minute episode (900s): you need ~13,500 total characters of dialogue text
+- For a 30-minute episode (1800s): you need ~27,000 total characters of dialogue text
+- For a 45-minute episode (2700s): you need ~40,500 total characters
+- For a 60-minute episode (3600s): you need ~54,000 total characters
 - Each deep segment section should have ~4,000-6,000 characters (12-20 dialogue exchanges)
-- Better to significantly overshoot than undershoot — aim for 110-120% of target
+- Better to significantly overshoot than undershoot — aim for 110-115% of target
 - After each save_section, check get_progress — the tool calculates accurate duration from your text length
+- Do NOT call finalize_script until get_progress shows ≥100% of target
 
 ### Content Depth
 - Don't just summarize — analyze, contextualize, and debate
@@ -88,4 +90,52 @@ export function buildAgentSystemPrompt(
     : STYLE_PRESETS[style] ?? STYLE_PRESETS["professional"]!;
 
   return `${PODCAST_AGENT_SYSTEM_PROMPT}\n\n## Style Instructions\n${styleInstructions}`;
+}
+
+/**
+ * Chars-per-second rate validated from production TTS data (15.09 ±2.3%).
+ * Using 15.0 for conservative estimation.
+ */
+export const CHARS_PER_SECOND = 15.0;
+
+/**
+ * Build system prompt for the Client SDK tool loop.
+ * Computes dynamic character targets based on targetDurationMinutes.
+ */
+export function buildToolLoopSystemPrompt(
+  targetDurationMinutes: number,
+  style: string,
+  customPrompt?: string | null,
+): string {
+  const targetSeconds = targetDurationMinutes * 60;
+  const requiredChars = Math.round(targetSeconds * CHARS_PER_SECOND);
+
+  const styleInstructions = style === "custom" && customPrompt
+    ? customPrompt
+    : STYLE_PRESETS[style] ?? STYLE_PRESETS["professional"]!;
+
+  // Replace the generic duration targets section with specific computed values
+  const dynamicTargets = `### Duration Targets (COMPUTED FOR THIS EPISODE)
+Duration is calculated at ~15.0 characters per second of speech (validated from production TTS data).
+
+**YOUR TARGET**: ${targetDurationMinutes} minutes = ${targetSeconds} seconds
+**REQUIRED CHARACTERS**: ~${requiredChars} total dialogue characters
+
+Guidance by duration:
+- For 15 min: ~13,500 chars across ~40 segments
+- For 30 min: ~27,000 chars across ~80 segments
+- For 45 min: ~40,500 chars across ~120 segments
+- For 60 min: ~54,000 chars across ~160 segments
+
+CRITICAL: Aim for 110-115% of target (${Math.round(requiredChars * 1.1)}-${Math.round(requiredChars * 1.15)} chars). Better to slightly overshoot than undershoot.
+Use get_progress after each save_section to track cumulative duration.
+Do NOT call finalize_script until get_progress shows ≥100% of target.`;
+
+  // Build prompt with dynamic targets replacing the static ones
+  const basePrompt = PODCAST_AGENT_SYSTEM_PROMPT.replace(
+    /### Duration Targets[\s\S]*?(?=### Content Depth|## Important Rules)/,
+    dynamicTargets + "\n\n",
+  );
+
+  return `${basePrompt}\n\n## Style Instructions\n${styleInstructions}`;
 }

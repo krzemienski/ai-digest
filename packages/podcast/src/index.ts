@@ -1,5 +1,7 @@
 export { parseScript, estimateTotalDuration, validateSegments } from "./script-parser";
 export type { ScriptSegment } from "./script-parser";
+export { generateScriptWithTools } from "./script-generator";
+export type { ScriptGeneratorOptions, ScriptGeneratorResult } from "./script-generator";
 export { generateSegmentAudio, generateAllSegments } from "./tts";
 export type { TTSResult } from "./tts";
 export { assembleEpisode } from "./assembler";

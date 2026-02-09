@@ -24,6 +24,8 @@ export type {
 export {
   PODCAST_AGENT_SYSTEM_PROMPT,
   buildAgentSystemPrompt,
+  buildToolLoopSystemPrompt,
+  CHARS_PER_SECOND,
 } from "./prompts/podcast-agent";
 export { PodcastScriptSchema } from "./schemas/podcast-script.schema";
 export type { PodcastScriptOutput } from "./schemas/podcast-script.schema";

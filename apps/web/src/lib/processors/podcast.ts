@@ -3,28 +3,27 @@ import { db, queries, episodes, transcripts, normalizedItems, eq, and, isNull, g
 import type { VoiceConfig, TranscriptSegment, PodcastGenerationConfig, QualityScoreAttempt, PodcastStyle } from "@ai-digest/shared";
 import { formatDigestDate } from "@ai-digest/shared";
 import {
-  PODCAST_SCRIPT_SYSTEM_PROMPT,
-  buildPodcastScriptPrompt,
-  buildStyledSystemPrompt,
   getModelById,
   getDefaultModelId,
   BudgetTracker,
   type PodcastTopicItem,
 } from "@ai-digest/agents";
-// Type-only imports are erased at compile time — no runtime module loading
-import type { ScriptSegment } from "@ai-digest/podcast";
+// Type-only import — erased at compile time, no runtime module loading
+import type { ScriptGeneratorResult } from "@ai-digest/podcast/script-generator";
 
 // Import podcast modules selectively to avoid the ffmpeg-dependent full assembler.
 // The barrel index re-exports assembler.ts which imports fluent-ffmpeg at load time,
 // crashing on Vercel where ffmpeg isn't available. We import sub-modules directly.
 async function getPodcastModules() {
-  const [scriptParser, tts, assemblerLite, upload] = await Promise.all([
+  const [scriptGenerator, scriptParser, tts, assemblerLite, upload] = await Promise.all([
+    import("@ai-digest/podcast/script-generator"),
     import("@ai-digest/podcast/script-parser"),
     import("@ai-digest/podcast/tts"),
     import("@ai-digest/podcast/assembler-lite"),
     import("@ai-digest/podcast/r2-upload"),
   ]);
   return {
+    generateScriptWithTools: scriptGenerator.generateScriptWithTools,
     parseScript: scriptParser.parseScript,
     validateSegments: scriptParser.validateSegments,
     generateSegmentAudio: tts.generateSegmentAudio,
@@ -130,7 +129,7 @@ function computeCost(
 }
 
 export async function processPodcastInline(data: PodcastJobData): Promise<void> {
-  const { parseScript, validateSegments, generateSegmentAudio, assembleEpisode, uploadToS3, buildEpisodeKey } = await getPodcastModules();
+  const { generateScriptWithTools, validateSegments, generateSegmentAudio, assembleEpisode, uploadToS3, buildEpisodeKey } = await getPodcastModules();
   const { episodeId, digestId, targetDurationMinutes, dateRange } = data;
   const modelId = data.model ?? getDefaultModelId();
   const voiceConfig: VoiceConfig = {
@@ -215,46 +214,35 @@ export async function processPodcastInline(data: PodcastJobData): Promise<void> 
 
     await updateStage(episodeId, "content_select", "done", log);
 
-    // Stage 2: Script Generation
-    // Agent SDK disabled on Vercel — always use classic single-call mode
+    // Stage 2: Script Generation (Tool Loop — iterative, duration-accurate)
     const scriptStartTime = Date.now();
     await updateStage(episodeId, "script_gen", "running", log);
 
-    const client = new Anthropic();
-    const baseSystemPrompt = PODCAST_SCRIPT_SYSTEM_PROMPT;
-    const systemPrompt = buildStyledSystemPrompt(baseSystemPrompt, style, customStylePrompt);
-
-    const scriptPrompt = buildPodcastScriptPrompt({
-      digestDate: dateStr,
-      synthesis: `Top ${podcastItems.length} AI stories for ${dateStr}`,
-      items: podcastItems,
+    await log.emit("script_gen", "info", "Starting tool loop script generation", {
+      mode: "tool_loop",
+      model: modelId,
       targetDurationMinutes,
+      targetCharacters: Math.round(targetDurationMinutes * 60 * 15),
     });
 
-    await log.emit("script_gen", "info", "Sending script generation request", {
-      mode: "classic",
+    const scriptResult: ScriptGeneratorResult = await generateScriptWithTools({
+      stories: podcastItems,
+      targetDurationMinutes,
       model: modelId,
-      systemPromptLength: systemPrompt.length,
-      userPromptLength: scriptPrompt.length,
+      style,
+      customStylePrompt,
+      digestDate: dateStr,
+      maxTurns: 40,
+      maxBudgetUsd: 5,
+      onProgress: (stage, message, meta) => {
+        log.emit(stage as PodcastStage, "info", message, meta);
+      },
     });
 
-    const scriptResponse = await client.messages.create({
-      model: modelId,
-      max_tokens: 16384,
-      system: systemPrompt,
-      messages: [{ role: "user", content: scriptPrompt }],
-    });
-
-    const textBlock = scriptResponse.content.find(b => b.type === "text");
-    if (!textBlock || textBlock.type !== "text") {
-      await log.emit("script_gen", "error", "No text response from script generation");
-      throw new Error("No text response from script generation");
-    }
-
-    const scriptCost = computeCost(scriptResponse.usage.input_tokens, scriptResponse.usage.output_tokens, modelId);
+    const segments = scriptResult.segments;
+    const scriptCost = scriptResult.cost.estimatedCostUsd;
     budget.addCost(scriptCost);
 
-    const segments: ScriptSegment[] = parseScript(textBlock.text);
     const validation = validateSegments(segments);
     if (!validation.valid) {
       await log.emit("script_gen", "warn", "Script validation warnings", { errors: validation.errors });
@@ -263,13 +251,21 @@ export async function processPodcastInline(data: PodcastJobData): Promise<void> 
     const preview = segments.slice(0, 3).map(s => `${s.speaker}: ${s.text.slice(0, 100)}...`).join("\n");
     await queries.updateEpisodeStatus(db, episodeId, "generating", {
       scriptPreview: preview,
-      promptsUsed: { systemPrompt, userPrompt: scriptPrompt },
+      promptsUsed: {
+        systemPrompt: scriptResult.systemPrompt,
+        userPrompt: scriptResult.userPrompt,
+      },
     });
 
-    await log.emit("script_gen", "info", `Script generated: ${segments.length} segments`, {
+    await log.emit("script_gen", "info", `Script generated: ${segments.length} segments via tool loop`, {
       segmentCount: segments.length,
-      inputTokens: scriptResponse.usage.input_tokens,
-      outputTokens: scriptResponse.usage.output_tokens,
+      totalCharacters: scriptResult.totalCharacters,
+      totalDurationSeconds: scriptResult.totalDuration,
+      percentOfTarget: Math.round((scriptResult.totalDuration / (targetDurationMinutes * 60)) * 100),
+      inputTokens: scriptResult.cost.inputTokens,
+      outputTokens: scriptResult.cost.outputTokens,
+      cacheReadTokens: scriptResult.cost.cacheReadTokens,
+      turns: scriptResult.turns,
       cost: scriptCost,
       elapsedMs: Date.now() - scriptStartTime,
     });
@@ -277,6 +273,7 @@ export async function processPodcastInline(data: PodcastJobData): Promise<void> 
     await updateStage(episodeId, "script_gen", "done", log);
 
     // Stage 3: Quality Review
+    const client = new Anthropic();
     const reviewStartTime = Date.now();
     await updateStage(episodeId, "quality_review", "running", log);
 
