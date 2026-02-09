@@ -17,6 +17,13 @@ export async function middleware(request: NextRequest) {
 
   // Admin API routes
   if (pathname.startsWith("/api/admin")) {
+    // API key bypass: let route handler validate
+    const adminApiKey = process.env.ADMIN_API_KEY;
+    const providedKey = request.headers.get("x-admin-api-key");
+    if (adminApiKey && providedKey && providedKey === adminApiKey) {
+      return response;
+    }
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Authentication required" },
