@@ -2,6 +2,8 @@ import { db, queries } from "@ai-digest/db";
 import { Container } from "@/components/layout/container";
 import { EpisodeCard } from "@/components/podcast/episode-card";
 
+export const dynamic = "force-dynamic";
+
 export default async function PodcastsPage() {
   const episodes = await queries.getEpisodes(db, { limit: 50 });
 

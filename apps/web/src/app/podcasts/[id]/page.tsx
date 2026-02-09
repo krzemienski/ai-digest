@@ -3,6 +3,8 @@ import { Container } from "@/components/layout/container";
 import { EpisodePlayerLoader } from "@/components/podcast/episode-player-loader";
 import type { Episode, TranscriptSegment } from "@ai-digest/shared";
 
+export const dynamic = "force-dynamic";
+
 export default async function EpisodePage({
   params,
 }: {

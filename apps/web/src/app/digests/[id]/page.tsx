@@ -2,6 +2,8 @@ import { db, queries } from "@ai-digest/db";
 import { Container } from "@/components/layout/container";
 import { DigestDetail } from "@/components/digest/digest-detail";
 
+export const dynamic = "force-dynamic";
+
 export default async function DigestDetailPage({
   params,
 }: {

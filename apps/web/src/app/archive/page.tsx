@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { SubscribeForm } from "@/components/subscribe/subscribe-form";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function ArchivePage() {
   const digests = await queries.getDigests(db, { limit: 50 });
 

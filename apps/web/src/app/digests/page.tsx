@@ -2,6 +2,8 @@ import { db, queries } from "@ai-digest/db";
 import { Container } from "@/components/layout/container";
 import { DigestFeed } from "@/components/digest/digest-feed";
 
+export const dynamic = "force-dynamic";
+
 export default async function DigestsPage() {
   const latestDigest = await queries.getLatestDigest(db);
 
