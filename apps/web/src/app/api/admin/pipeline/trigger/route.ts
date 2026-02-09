@@ -3,7 +3,7 @@ import { after } from "next/server";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { processPipeline } from "@/lib/processors/pipeline";
 
-export const maxDuration = 300;
+export const maxDuration = 800;
 
 export async function POST(request: NextRequest) {
   const authError = await requireAdminFromRequest(request);
