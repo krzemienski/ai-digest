@@ -13,14 +13,32 @@ import { ScoreResultSchema } from "../schemas/score.schema";
 
 const BATCH_SIZE = 25;
 
+/** Result metrics from scoring stage. */
 interface ScoreResult {
+  /** Number of items successfully scored */
   scored: number;
+  /** Total cost in USD */
   costUsd: number;
+  /** Model used for scoring */
   modelUsed: string;
+  /** Input tokens consumed */
   tokensInput: number;
+  /** Output tokens generated */
   tokensOutput: number;
 }
 
+/**
+ * Score categorized items on relevance, novelty, and impact using LLM batch processing.
+ *
+ * Processes unscored items in batches of 25 using Claude Haiku with structured output.
+ * Calculates composite scores using configurable weights for each dimension.
+ *
+ * @param db - Database connection
+ * @param pipelineRunId - ID of the current pipeline run
+ * @param scoringConfig - Scoring weights and thresholds
+ * @param budget - Budget tracker for cost enforcement
+ * @returns Scoring metrics including item count and token usage
+ */
 export async function runScore(
   db: Database,
   pipelineRunId: string,

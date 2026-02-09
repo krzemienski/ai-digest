@@ -12,16 +12,37 @@ import {
 } from "../prompts/synthesize";
 import { SynthesizeResultSchema } from "../schemas/synthesize.schema";
 
+/** Result of executive summary generation. */
 interface SynthesizeResult {
+  /** Generated executive summary text */
   synthesis: string;
+  /** Most prominent topic categories */
   topTopics: string[];
+  /** Number of items synthesized */
   itemCount: number;
+  /** Total cost in USD */
   costUsd: number;
+  /** Model used for synthesis */
   modelUsed: string;
+  /** Input tokens consumed */
   tokensInput: number;
+  /** Output tokens generated */
   tokensOutput: number;
 }
 
+/**
+ * Generate executive summary of top-ranked stories using LLM synthesis.
+ *
+ * Selects highest-scoring non-duplicate items above the minimum threshold and generates
+ * a coherent narrative summary. Style can be customized (e.g., concise, detailed, technical).
+ *
+ * @param db - Database connection
+ * @param pipelineRunId - ID of the current pipeline run
+ * @param synthesisConfig - Synthesis style and max items
+ * @param scoringConfig - Minimum score threshold
+ * @param budget - Budget tracker for cost enforcement
+ * @returns Synthesis result with summary text and metadata
+ */
 export async function runSynthesize(
   db: Database,
   pipelineRunId: string,

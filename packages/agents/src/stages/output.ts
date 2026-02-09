@@ -3,12 +3,30 @@ import { normalizedItems, digests, digestItems, eq, and, isNull, gte, desc } fro
 import type { ScoringConfig, SynthesisConfig, SynthesisStyle, DigestMetadata } from "@ai-digest/shared";
 import { formatDigestDate } from "@ai-digest/shared";
 
+/** Result of digest output stage. */
 interface OutputResult {
+  /** Created digest record ID */
   digestId: string;
+  /** Number of items included in digest */
   itemCount: number;
+  /** Topic categories represented */
   topTopics: string[];
 }
 
+/**
+ * Create digest record and link top-scored items for delivery.
+ *
+ * Assembles the final digest by grouping items into topic sections, creating metadata
+ * with source breakdowns, and linking items to the digest with rank and section info.
+ *
+ * @param db - Database connection
+ * @param pipelineRunId - ID of the current pipeline run
+ * @param synthesis - Executive summary text from synthesize stage
+ * @param synthesisStyle - Style preset used for synthesis
+ * @param scoringConfig - Minimum score threshold
+ * @param synthesisConfig - Max items to include
+ * @returns Digest ID and summary metadata
+ */
 export async function runOutput(
   db: Database,
   pipelineRunId: string,

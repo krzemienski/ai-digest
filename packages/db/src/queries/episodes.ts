@@ -2,6 +2,13 @@ import { desc, eq, and, gte, lt, sql } from "drizzle-orm";
 import type { Database } from "../client";
 import { episodes, transcripts, podcastLogs } from "../schema";
 
+/**
+ * Get a paginated list of podcast episodes ordered by creation date (newest first).
+ *
+ * @param db - Database connection
+ * @param opts - Pagination options (limit defaults to 20, offset defaults to 0)
+ * @returns Array of episode records
+ */
 export async function getEpisodes(db: Database, opts: { limit?: number; offset?: number } = {}) {
   const { limit = 20, offset = 0 } = opts;
   return db.query.episodes.findMany({
@@ -17,6 +24,13 @@ export async function getEpisodeById(db: Database, id: string) {
   });
 }
 
+/**
+ * Create a new podcast episode record.
+ *
+ * @param db - Database connection
+ * @param data - Episode data to insert
+ * @returns Created episode record
+ */
 export async function createEpisode(db: Database, data: typeof episodes.$inferInsert) {
   const rows = await db.insert(episodes).values(data).returning();
   return rows[0]!;
@@ -27,6 +41,13 @@ export async function updateEpisodeStatus(db: Database, id: string, status: stri
   return rows[0]!;
 }
 
+/**
+ * Get an episode with its transcript joined.
+ *
+ * @param db - Database connection
+ * @param id - Episode ID
+ * @returns Episode with transcript or null if episode not found
+ */
 export async function getEpisodeWithTranscript(db: Database, id: string) {
   const episode = await db.query.episodes.findFirst({
     where: eq(episodes.id, id),

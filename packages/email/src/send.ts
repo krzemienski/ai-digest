@@ -17,12 +17,28 @@ function getResend(): Resend {
 const FROM_ADDRESS =
   process.env.EMAIL_FROM ?? "AI Digest <digest@ai-digest.dev>";
 
+/** Input data for digest newsletter delivery. */
 interface DigestNewsletterInput {
+  /** Digest date in formatted string (e.g., "January 15, 2024") */
   digestDate: string;
+  /** Executive summary text */
   synthesis: string;
+  /** Topic sections with ranked items */
   sections: DigestEmailSection[];
 }
 
+/**
+ * Send digest newsletter to all subscribers via Resend.
+ *
+ * Includes automatic retry logic (up to 3 attempts with exponential backoff).
+ * Adds unsubscribe headers for compliance with email best practices.
+ *
+ * @param digest - Digest content including date, summary, and sections
+ * @param subscriberEmails - List of recipient email addresses
+ * @param unsubscribeBaseUrl - Base URL for unsubscribe links
+ * @returns Count of successful sends and failures
+ * @throws {Error} When RESEND_API_KEY is not configured
+ */
 export async function sendDigestNewsletter(
   digest: DigestNewsletterInput,
   subscriberEmails: string[],
@@ -76,6 +92,13 @@ export async function sendDigestNewsletter(
   return { sent, failed };
 }
 
+/**
+ * Send welcome email to a new subscriber.
+ *
+ * @param email - Recipient email address
+ * @param unsubscribeBaseUrl - Base URL for unsubscribe links
+ * @throws {Error} When RESEND_API_KEY is not configured or send fails
+ */
 export async function sendWelcomeEmail(
   email: string,
   unsubscribeBaseUrl: string

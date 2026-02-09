@@ -10,14 +10,31 @@ import {
 } from "../prompts/dedup";
 import { DedupResultSchema } from "../schemas/dedup.schema";
 
+/** Result metrics from deduplication stage. */
 interface DedupResult {
+  /** Number of duplicate pairs found and marked */
   duplicatesFound: number;
+  /** Total cost in USD */
   costUsd: number;
+  /** Model used for deduplication */
   modelUsed: string;
+  /** Input tokens consumed */
   tokensInput: number;
+  /** Output tokens generated */
   tokensOutput: number;
 }
 
+/**
+ * Detect and mark semantic duplicates using LLM-based clustering within topic groups.
+ *
+ * Groups items by primary topic category, then uses Claude Haiku to identify duplicate
+ * pairs with confidence scores. Only marks duplicates with ≥70% confidence.
+ *
+ * @param db - Database connection
+ * @param pipelineRunId - ID of the current pipeline run
+ * @param budget - Budget tracker for cost enforcement
+ * @returns Deduplication metrics including duplicate count and token usage
+ */
 export async function runDedup(
   db: Database,
   pipelineRunId: string,

@@ -1,10 +1,25 @@
+/** A single dialogue segment in a podcast script. */
 export interface ScriptSegment {
+  /** Sequence number for ordering */
   order: number;
+  /** Speaker identifier (e.g., "Host A", "Host B") */
   speaker: string;
+  /** Dialogue text to be spoken */
   text: string;
+  /** Estimated duration in seconds */
   estimatedDuration: number;
 }
 
+/**
+ * Parse and normalize a podcast script from Claude's JSON output.
+ *
+ * Handles various output formats including wrapped JSON code blocks and trailing text.
+ * Validates required fields and auto-fills missing order/duration estimates.
+ *
+ * @param rawScript - Raw script output from LLM (may include markdown code blocks)
+ * @returns Normalized and sorted array of script segments
+ * @throws {Error} When JSON parsing fails
+ */
 export function parseScript(rawScript: string): ScriptSegment[] {
   // Parse JSON output from Claude — may be wrapped in ```json blocks
   // and may have trailing explanatory text after the JSON
@@ -40,6 +55,12 @@ export function parseScript(rawScript: string): ScriptSegment[] {
   return sorted;
 }
 
+/**
+ * Calculate total estimated duration of a script.
+ *
+ * @param segments - Array of script segments
+ * @returns Total duration in seconds
+ */
 export function estimateTotalDuration(segments: ScriptSegment[]): number {
   let total = 0;
   for (const seg of segments) {
@@ -48,6 +69,14 @@ export function estimateTotalDuration(segments: ScriptSegment[]): number {
   return total;
 }
 
+/**
+ * Validate script segments for required fields and basic quality checks.
+ *
+ * Checks for non-empty segments, at least 2 speakers, and valid durations.
+ *
+ * @param segments - Array of script segments to validate
+ * @returns Validation result with error messages if invalid
+ */
 export function validateSegments(segments: ScriptSegment[]): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 

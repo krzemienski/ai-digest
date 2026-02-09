@@ -1,11 +1,15 @@
 import type { VoiceConfig } from "./voice";
 
+/** Podcast generation pipeline stages. */
 export type PodcastStage = "content_select" | "script_gen" | "quality_review" | "tts" | "assembly" | "upload";
 
+/** Log message severity levels. */
 export type LogSeverity = "info" | "warn" | "error";
 
+/** Podcast dialogue style presets. */
 export type PodcastStyle = "professional" | "casual" | "technical" | "news_brief" | "custom";
 
+/** Configuration for podcast episode generation. */
 export interface PodcastGenerationConfig {
   readonly digestId: string | null;
   readonly dateRange: { readonly start: string; readonly end: string } | null;

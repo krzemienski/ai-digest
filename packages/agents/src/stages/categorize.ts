@@ -13,14 +13,32 @@ import { CategorizeResultSchema } from "../schemas/categorize.schema";
 
 const BATCH_SIZE = 25;
 
+/** Result metrics from topic categorization stage. */
 interface CategorizeResult {
+  /** Number of items successfully categorized */
   categorized: number;
+  /** Total cost in USD */
   costUsd: number;
+  /** Model used for categorization */
   modelUsed: string;
+  /** Input tokens consumed */
   tokensInput: number;
+  /** Output tokens generated */
   tokensOutput: number;
 }
 
+/**
+ * Classify normalized items into topic categories using LLM batch processing.
+ *
+ * Processes uncategorized items in batches of 25 using Claude Haiku with structured
+ * output. Uses prompt caching to reduce costs on repeated topic definitions.
+ *
+ * @param db - Database connection
+ * @param pipelineRunId - ID of the current pipeline run
+ * @param topics - Topic definitions for classification
+ * @param budget - Budget tracker for cost enforcement
+ * @returns Categorization metrics including item count and token usage
+ */
 export async function runCategorize(
   db: Database,
   pipelineRunId: string,

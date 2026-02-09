@@ -1,10 +1,23 @@
 import type { CostEstimate } from "@ai-digest/shared";
 import { getModelById, getDefaultModelId } from "./models";
 
+/**
+ * Track API costs during pipeline execution with budget enforcement.
+ *
+ * @example
+ * ```typescript
+ * const budget = new BudgetTracker(5.0)
+ * budget.addCost(0.35)
+ * if (budget.isOverBudget) {
+ *   console.log("Budget exceeded")
+ * }
+ * ```
+ */
 export class BudgetTracker {
   private spent = 0;
   private readonly maxBudget: number;
 
+  /** @param maxBudgetUsd - Maximum allowed spend in USD */
   constructor(maxBudgetUsd: number) {
     this.maxBudget = maxBudgetUsd;
   }
@@ -47,6 +60,16 @@ const STORY_COUNT_MAP: Readonly<Record<number, number>> = {
 
 const ELEVENLABS_COST_PER_1K_CHARS = 0.30;
 
+/**
+ * Estimate total cost for podcast episode generation including LLM and TTS.
+ *
+ * Calculates token usage based on target duration and story count, accounting for
+ * different generation modes (single-call vs multi-turn agent loop).
+ *
+ * @param modelId - Anthropic model ID for script generation
+ * @param targetDurationMinutes - Target episode duration (5, 10, 15, 20, 25, 30, 45, or 60)
+ * @returns Detailed cost breakdown for Anthropic API and ElevenLabs TTS
+ */
 export function estimateGenerationCost(modelId: string, targetDurationMinutes: number): CostEstimate {
   const model = getModelById(modelId) ?? getModelById(getDefaultModelId())!;
   const storyCount = STORY_COUNT_MAP[targetDurationMinutes] ?? 5;

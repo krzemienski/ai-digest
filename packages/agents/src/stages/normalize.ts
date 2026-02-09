@@ -3,6 +3,17 @@ import { normalizedItems, eq } from "@ai-digest/db";
 import { deterministicId } from "@ai-digest/shared";
 import type { RawFetchResult } from "../fetchers/types";
 
+/**
+ * Normalize and deduplicate raw fetch results into standardized database records.
+ *
+ * Creates deterministic IDs from source+sourceId to detect and skip duplicates.
+ * Standardizes field formats and initializes empty categories array for later classification.
+ *
+ * @param db - Database connection
+ * @param rawItems - Raw fetch results from ingestion stage
+ * @param pipelineRunId - ID of the current pipeline run for tracking
+ * @returns Count of inserted items and skipped duplicates
+ */
 export async function runNormalization(
   db: Database,
   rawItems: readonly RawFetchResult[],

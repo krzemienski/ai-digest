@@ -12,23 +12,39 @@ import type { ScriptSegment } from "./script-parser";
 // Types
 // ---------------------------------------------------------------------------
 
+/** Configuration options for podcast script generation using the tool loop approach. */
 export interface ScriptGeneratorOptions {
+  /** Top-scored stories to include in the podcast episode */
   stories: PodcastTopicItem[];
+  /** Target duration in minutes (e.g., 5, 15, 30) */
   targetDurationMinutes: number;
+  /** Anthropic model ID to use (e.g., "claude-3-5-sonnet-20241022") */
   model: string;
+  /** Podcast style preset (e.g., "conversational", "professional") */
   style: string;
+  /** Optional custom style instructions to override the preset */
   customStylePrompt?: string | null;
+  /** Anthropic API key (falls back to ANTHROPIC_API_KEY env var) */
   apiKey?: string;
+  /** Digest date in YYYY-MM-DD format */
   digestDate: string;
+  /** Optional progress callback for tracking generation stages */
   onProgress?: (stage: string, message: string, meta?: Record<string, unknown>) => void;
+  /** Maximum conversation turns before stopping (default: 40) */
   maxTurns?: number;
+  /** Maximum budget in USD before stopping (default: 5.0) */
   maxBudgetUsd?: number;
 }
 
+/** Result of podcast script generation including segments, metrics, and cost tracking. */
 export interface ScriptGeneratorResult {
+  /** Ordered array of dialogue segments ready for TTS */
   segments: ScriptSegment[];
+  /** Total estimated duration in seconds */
   totalDuration: number;
+  /** Total character count across all segments */
   totalCharacters: number;
+  /** Detailed API cost breakdown */
   cost: {
     inputTokens: number;
     outputTokens: number;
@@ -36,8 +52,11 @@ export interface ScriptGeneratorResult {
     cacheCreationTokens: number;
     estimatedCostUsd: number;
   };
+  /** Number of conversation turns used */
   turns: number;
+  /** System prompt used for generation */
   systemPrompt: string;
+  /** User prompt used for generation */
   userPrompt: string;
 }
 
@@ -292,6 +311,33 @@ function computeApiCost(
 // Main: generateScriptWithTools
 // ---------------------------------------------------------------------------
 
+/**
+ * Generate a podcast script using Anthropic's tool loop approach for precise duration targeting.
+ *
+ * This function uses a multi-turn conversation with tool use to iteratively build the script:
+ * 1. Agent calls get_stories to see available topics
+ * 2. Agent calls save_section to write dialogue segments
+ * 3. Agent calls get_progress to check duration vs target
+ * 4. Agent calls finalize_script when duration target is met
+ *
+ * Achieves 96-103% duration accuracy by using character-based estimation (15 chars/sec for ElevenLabs TTS).
+ *
+ * @param options - Configuration including stories, target duration, model, and style
+ * @returns Complete script with segments, duration estimates, and cost breakdown
+ * @throws {Error} When API key is missing or budget is exceeded
+ *
+ * @example
+ * ```typescript
+ * const result = await generateScriptWithTools({
+ *   stories: topStories,
+ *   targetDurationMinutes: 15,
+ *   model: "claude-3-5-sonnet-20241022",
+ *   style: "conversational",
+ *   digestDate: "2024-01-15"
+ * })
+ * console.log(`Generated ${result.segments.length} segments in ${result.turns} turns`)
+ * ```
+ */
 export async function generateScriptWithTools(
   options: ScriptGeneratorOptions,
 ): Promise<ScriptGeneratorResult> {

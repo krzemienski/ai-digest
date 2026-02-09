@@ -1,11 +1,17 @@
 import type { VoiceConfig, SpeakerVoice } from "@ai-digest/shared";
 import type { ScriptSegment } from "./script-parser";
 
+/** Result of a single TTS segment generation containing audio data and metadata. */
 export interface TTSResult {
+  /** Segment order number for sequencing */
   order: number;
+  /** Speaker identifier (e.g., "Host A", "Host B") */
   speaker: string;
+  /** MP3 audio data */
   audioBuffer: Buffer;
+  /** ElevenLabs request ID for continuity tracking */
   requestId: string;
+  /** Estimated duration in milliseconds */
   durationMs: number;
 }
 
@@ -38,6 +44,20 @@ async function fetchWithRetry(
   throw new Error("TTS retries exhausted");
 }
 
+/**
+ * Generate audio for a single script segment using ElevenLabs TTS API.
+ *
+ * Uses eleven_multilingual_v2 model with MP3 output at 44.1kHz/128kbps.
+ * Includes automatic retry logic for rate limits and server errors.
+ *
+ * @param segment - Script segment containing speaker and text
+ * @param voiceId - ElevenLabs voice ID
+ * @param voiceSettings - Voice tuning parameters (stability, similarity, speed, style)
+ * @param previousRequestIds - Recent request IDs for cross-segment voice continuity
+ * @param apiKey - ElevenLabs API key (falls back to ELEVENLABS_API_KEY env var)
+ * @returns Audio buffer and metadata including estimated duration
+ * @throws {Error} When API key is missing or TTS request fails after retries
+ */
 export async function generateSegmentAudio(
   segment: ScriptSegment,
   voiceId: string,
@@ -85,6 +105,18 @@ export async function generateSegmentAudio(
   };
 }
 
+/**
+ * Generate TTS audio for all script segments sequentially to maintain voice continuity.
+ *
+ * Processes segments in order, tracking request IDs per speaker to maintain natural
+ * prosody across the conversation. Automatically maps display names ("Host A") to
+ * voice configurations.
+ *
+ * @param segments - Ordered array of script segments to convert to audio
+ * @param voiceConfig - Voice configuration mapping speakers to ElevenLabs voices
+ * @returns Array of TTS results in segment order
+ * @throws {Error} When TTS generation fails for any segment
+ */
 export async function generateAllSegments(
   segments: ScriptSegment[],
   voiceConfig: VoiceConfig

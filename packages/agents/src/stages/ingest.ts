@@ -13,6 +13,15 @@ import type { SourceConfig } from "@ai-digest/shared";
 // ArXiv needs rate limiting — run it sequentially
 const RATE_LIMITED_SOURCES = new Set(["arxiv"]);
 
+/**
+ * Fetch stories from all enabled sources and return raw results.
+ *
+ * Runs fetchers in parallel except for rate-limited sources (ArXiv) which are run
+ * sequentially. Supports RSS, GitHub, ArXiv, Hacker News, Hugging Face, Reddit, and Product Hunt.
+ *
+ * @param db - Database connection for reading enabled sources
+ * @returns Array of raw fetch results from all sources
+ */
 export async function runIngestion(db: Database): Promise<RawFetchResult[]> {
   const enabledSources = await db.query.sources.findMany({
     where: eq(sources.enabled, true),

@@ -2,6 +2,13 @@ import { desc, eq, asc } from "drizzle-orm";
 import type { Database } from "../client";
 import { digests, digestItems, normalizedItems } from "../schema";
 
+/**
+ * Get a paginated list of digests ordered by creation date (newest first).
+ *
+ * @param db - Database connection
+ * @param opts - Pagination options (limit defaults to 20, offset defaults to 0)
+ * @returns Array of digest records
+ */
 export async function getDigests(db: Database, opts: { limit?: number; offset?: number } = {}) {
   const { limit = 20, offset = 0 } = opts;
   return db.query.digests.findMany({
@@ -11,12 +18,25 @@ export async function getDigests(db: Database, opts: { limit?: number; offset?: 
   });
 }
 
+/**
+ * Get a digest by ID.
+ *
+ * @param db - Database connection
+ * @param id - Digest ID
+ * @returns Digest record or undefined if not found
+ */
 export async function getDigestById(db: Database, id: string) {
   return db.query.digests.findFirst({
     where: eq(digests.id, id),
   });
 }
 
+/**
+ * Get the most recent digest by digest date.
+ *
+ * @param db - Database connection
+ * @returns Latest digest record or undefined if none exist
+ */
 export async function getLatestDigest(db: Database) {
   return db.query.digests.findFirst({
     orderBy: [desc(digests.digestDate)],
@@ -32,6 +52,15 @@ export async function addDigestItems(db: Database, items: (typeof digestItems.$i
   return db.insert(digestItems).values(items).returning();
 }
 
+/**
+ * Get a digest with all its linked items joined from normalized_items table.
+ *
+ * Returns the digest with an items array sorted by rank, including full item details.
+ *
+ * @param db - Database connection
+ * @param digestId - Digest ID
+ * @returns Digest with items array or null if digest not found
+ */
 export async function getDigestWithItems(db: Database, digestId: string) {
   const digest = await db.query.digests.findFirst({
     where: eq(digests.id, digestId),

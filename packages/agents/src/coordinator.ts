@@ -10,29 +10,63 @@ import { runDedup } from "./stages/dedup";
 import { runSynthesize } from "./stages/synthesize";
 import { runOutput } from "./stages/output";
 
+/** Result of a complete pipeline execution. */
 export interface PipelineResult {
+  /** Pipeline run record with final status */
   run: PipelineRun;
+  /** Created digest ID if successful */
   digestId: string | null;
+  /** Created episode ID if podcast was generated */
   episodeId: string | null;
+  /** Error message if pipeline failed */
   error: string | null;
 }
 
+/** Metrics tracked for a single pipeline stage. */
 export interface StageTrackingData {
+  /** Number of items processed in this stage */
   itemsProcessed: number;
+  /** LLM model used (if applicable) */
   modelUsed?: string;
+  /** Input tokens consumed (if applicable) */
   tokensInput?: number;
+  /** Output tokens generated (if applicable) */
   tokensOutput?: number;
+  /** Estimated cost in USD (if applicable) */
   costUsd?: number;
 }
 
+/** Callbacks for tracking pipeline stage progress. */
 export interface StageCallback {
   onStageStart: (stageName: string) => Promise<void>;
   onStageComplete: (stageName: string, data: StageTrackingData) => Promise<void>;
   onStageFail: (stageName: string, error: unknown) => Promise<void>;
 }
 
+/** Factory function that creates stage callbacks for a specific pipeline run. */
 export type StageCallbackFactory = (pipelineRunId: string) => StageCallback;
 
+/**
+ * Run the complete AI digest pipeline from ingestion to output.
+ *
+ * Executes 7 sequential stages:
+ * 1. Ingest - Fetch stories from all configured sources
+ * 2. Normalize - Deduplicate and standardize raw items
+ * 3. Categorize - Assign topics using LLM classification
+ * 4. Score - Rank items by novelty, impact, and relevance
+ * 5. Dedup - Detect semantic duplicates using embeddings
+ * 6. Synthesize - Generate executive summary of top stories
+ * 7. Output - Create digest record and prepare for delivery
+ *
+ * Tracks token usage and cost across all LLM operations with budget enforcement.
+ *
+ * @param db - Database connection (Drizzle ORM)
+ * @param config - Digest configuration including sources, topics, scoring weights
+ * @param triggerType - How pipeline was initiated ("scheduled" or "manual")
+ * @param callbackFactory - Optional factory for stage progress callbacks
+ * @returns Pipeline result with digest ID and cost metrics
+ * @throws {Error} Pipeline errors are caught and recorded in the result
+ */
 export async function runPipeline(
   db: Database,
   config: DigestConfig,
