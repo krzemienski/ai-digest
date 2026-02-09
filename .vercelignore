@@ -1,0 +1,7 @@
+node_modules
+.git
+apps/mobile
+.omc
+*.png
+dump.rdb
+.playwright-mcp

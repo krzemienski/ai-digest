@@ -3,7 +3,24 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "env": [
+        "DATABASE_URL",
+        "REDIS_URL",
+        "SESSION_SECRET",
+        "ADMIN_API_KEY",
+        "ANTHROPIC_API_KEY",
+        "ELEVENLABS_API_KEY",
+        "S3_ACCESS_KEY_ID",
+        "S3_SECRET_ACCESS_KEY",
+        "S3_BUCKET_NAME",
+        "S3_REGION",
+        "S3_PUBLIC_URL",
+        "API_KEY_ENCRYPTION_SECRET",
+        "RESEND_API_KEY",
+        "RESEND_AUDIENCE_ID",
+        "NODE_ENV"
+      ]
     },
     "dev": {
       "cache": false,
