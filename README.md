@@ -26,6 +26,7 @@ Built as a **Turborepo monorepo** with **pnpm workspaces**. Each package is inde
 | Package | Purpose |
 |---------|---------|
 | `@ai-digest/web` | Next.js 15 App Router — pages, API routes, middleware, auth |
+| `@ai-digest/mobile` | Expo (React Native) iOS/Android app with cyberpunk UI |
 | `@ai-digest/worker` | BullMQ workers for `pipeline` and `podcast` job queues |
 | `@ai-digest/shared` | Shared TypeScript types (pipeline, episode, source, subscriber, digest) |
 | `@ai-digest/db` | Drizzle ORM — 10 tables, query functions, migrations |
@@ -52,6 +53,15 @@ Built as a **Turborepo monorepo** with **pnpm workspaces**. Each package is inde
 | Build | Turborepo |
 
 ## Features
+
+### Public Podcast Site
+
+Deployed at **[ai-digest-ivory.vercel.app](https://ai-digest-ivory.vercel.app)** with:
+
+- Public landing page with hero audio player
+- Episode library with embedded player
+- OpenGraph image generation for rich iMessage/social previews
+- Flat black professional design (no authentication required)
 
 ### Content Aggregation
 
@@ -95,11 +105,17 @@ A separate 6-sub-stage pipeline generates podcast episodes from digests:
 Content Selection → Script Generation → Quality Review → TTS → Assembly → S3 Upload
 ```
 
+- **Iterative tool loop**: Script generation uses Anthropic's tool loop (4 tools: get_stories, save_section, get_progress, finalize_script) for 96-103% duration accuracy vs. 68-71% with single-call approach
 - **Configurable duration**: 5–20 minutes (drives word count and story selection)
+- **Podcast sources**: Configurable story selection from specific sources and time windows
+- **Voice customization**: ElevenLabs voice selection with preview playback
+- **Transparency pipeline**: Real-time streaming view of script generation sub-steps
+- **Cost estimation**: Pre-generation cost/duration estimates
 - **Quality review loop**: Up to 3 attempts with a 7/10 quality threshold
 - **ElevenLabs TTS**: Uses raw `fetch` (not SDK) to capture `request-id` response headers for cross-segment voice continuity
 - **ffmpeg assembly**: Concatenates segments with 300–500ms silence gaps, applies EBU R128 loudness normalization (-16 LUFS), injects ID3 metadata
 - **S3 upload**: Uploads final MP3 with content-type metadata
+- **Serverless compatible**: Runs inline on Vercel (no BullMQ/Redis required for podcast generation)
 
 ### Newsletter
 
@@ -108,6 +124,18 @@ Content Selection → Script Generation → Quality Review → TTS → Assembly 
 - One-click unsubscribe via signed tokens
 - Subscriber management (add, remove, list)
 
+### Mobile Application
+
+Native iOS/Android app built with **Expo (React Native)** and **NativeWind v4**:
+
+- **Cyberpunk UI**: Full design system with glitch effects, neon borders, scanlines
+- **Tab navigation**: Home feed, newsletters, podcasts, search, profile
+- **Audio player**: Mini player with waveform seek and full player modal
+- **Onboarding flow**: Welcome, topic selection, notification setup
+- **Admin tools**: Mobile-optimized pipeline monitoring and source management
+- **Offline support**: Local state management with Zustand
+- **Push notifications**: Topic-based notification preferences
+
 ### Web Application
 
 **16 pages** across consumer and admin areas:
@@ -115,11 +143,11 @@ Content Selection → Script Generation → Quality Review → TTS → Assembly 
 #### Consumer Pages
 | Page | Route | Description |
 |------|-------|-------------|
-| Home | `/` | Landing page |
-| Digests | `/digests` | Latest AI digest feed |
+| **Public Home** | `/` | Public landing page with hero audio player |
+| **Public Podcasts** | `/podcasts` | Public episode library (no auth required) |
+| **Public Podcast Detail** | `/podcasts/[id]` | Public episode page with OpenGraph images |
+| Digests | `/digests` | Latest AI digest feed (authenticated) |
 | Digest Detail | `/digests/[id]` | Full digest with categorized items |
-| Podcasts | `/podcasts` | Episode library with audio player |
-| Podcast Detail | `/podcasts/[id]` | Episode page with embedded player |
 | Search | `/search` | Full-text search across all content |
 | Archive | `/archive` | Historical digest archive |
 | Login | `/login` | Authentication |
@@ -129,16 +157,16 @@ Content Selection → Script Generation → Quality Review → TTS → Assembly 
 | Page | Route | Description |
 |------|-------|-------------|
 | Dashboard | `/admin` | Stats overview, pipeline history, source health |
-| Sources | `/admin/sources` | CRUD for content sources |
+| Sources | `/admin/sources` | CRUD for content sources, discover sources agent, bulk import/export |
 | Pipeline | `/admin/pipeline` | Trigger runs, view stage progress |
-| Podcast | `/admin/podcast` | Generate episodes, preview scripts |
+| Podcast | `/admin/podcast` | Generate episodes, voice config, transparency view, cost estimates |
 | Subscribers | `/admin/subscribers` | Manage email subscribers |
 | Schedule | `/admin/schedule` | Configure cron schedule |
-| Config | `/admin/config` | System configuration |
+| Config | `/admin/config` | System configuration, API key management |
 
 ### API Endpoints
 
-**28 API routes** organized by domain:
+**40+ API routes** organized by domain:
 
 #### Public
 | Method | Endpoint | Description |
@@ -160,7 +188,7 @@ Content Selection → Script Generation → Quality Review → TTS → Assembly 
 | POST | `/api/auth/logout` | Destroy session |
 | GET | `/api/auth/me` | Get current session |
 
-#### Admin (requires admin session)
+#### Admin (requires admin session or API key)
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/admin/stats` | Dashboard statistics |
@@ -168,24 +196,37 @@ Content Selection → Script Generation → Quality Review → TTS → Assembly 
 | GET/POST | `/api/admin/sources` | List/create sources |
 | PUT/DELETE | `/api/admin/sources/[id]` | Update/delete source |
 | POST | `/api/admin/sources/validate` | Validate source URL |
+| POST | `/api/admin/sources/discover` | AI-powered source discovery agent |
+| POST | `/api/admin/sources/discover/add` | Add discovered source |
+| POST | `/api/admin/sources/bulk` | Bulk import sources |
+| GET | `/api/admin/sources/export` | Export sources as JSON |
 | POST | `/api/admin/pipeline/trigger` | Start pipeline run |
 | GET | `/api/admin/pipeline/status` | Pipeline run status |
 | GET | `/api/admin/pipeline/runs` | Pipeline run history |
 | POST | `/api/admin/podcast/generate` | Generate podcast episode |
 | GET | `/api/admin/podcast/status` | Podcast generation status |
-| POST | `/api/admin/podcast/preview` | Preview podcast script |
+| GET | `/api/admin/podcast/stream` | Real-time script generation stream |
+| GET | `/api/admin/podcast/cost-estimate` | Estimate cost/duration pre-generation |
+| GET | `/api/admin/podcast/voices` | List available ElevenLabs voices |
+| POST | `/api/admin/podcast/voice-preview` | Preview voice sample |
+| GET | `/api/admin/podcast/history` | Podcast generation history |
+| GET | `/api/admin/podcast/spend` | Cumulative TTS spend tracking |
+| GET | `/api/admin/podcast/item-count` | Story count by time window |
+| GET | `/api/admin/podcast/episode/[id]` | Episode details |
 | GET | `/api/admin/subscribers` | List subscribers |
 | DELETE | `/api/admin/subscribers/[id]` | Remove subscriber |
 | GET | `/api/admin/newsletter/[digestId]/html` | Render newsletter HTML |
 | GET/PUT | `/api/admin/config` | System config |
 | GET/PUT | `/api/admin/config/[key]` | Individual config key |
+| GET/POST | `/api/admin/config/api-keys` | API key management |
+| POST | `/api/admin/config/api-keys/test` | Test API key validity |
 
 ### Authentication
 
-- **iron-session**: Encrypted HTTP-only cookies (`ai-digest-session`)
-- **bcrypt**: Password hashing with cost factor 10
+- **Supabase Auth**: Email/password authentication with secure session management
 - **First-user promotion**: The first registered user is automatically promoted to admin role
 - **Role-based access**: `user` and `admin` roles
+- **Admin API keys**: Programmatic access via `x-admin-api-key` header for automation
 - **Middleware**: Protects `/admin/*` routes, redirects unauthenticated users to `/login`
 
 ### Design System
@@ -228,8 +269,8 @@ Typography: Geist Sans (headings), Inter (body), Geist Mono (code, timestamps, s
 
 - **Node.js** 20+
 - **pnpm** 8.6+
-- **PostgreSQL** (local instance)
-- **Redis** (for BullMQ job queues)
+- **PostgreSQL** (local instance or Supabase)
+- **Redis** (for BullMQ job queues) — optional for Vercel deployment
 - **ffmpeg** (for podcast audio assembly)
 
 ### Setup
@@ -253,9 +294,11 @@ cp .env.example .env.local
 ```env
 # Required
 ANTHROPIC_API_KEY=sk-ant-...        # Claude API access
-DATABASE_URL=postgresql://localhost:5432/ai_digest_dev
-REDIS_URL=redis://localhost:6379
-SESSION_SECRET=<min-32-char-secret>  # iron-session encryption key
+NEXT_PUBLIC_SUPABASE_URL=...        # Supabase project URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...   # Supabase anonymous key
+SUPABASE_SERVICE_ROLE_KEY=...       # Supabase service role key
+DATABASE_URL=postgresql://...        # PostgreSQL connection string
+REDIS_URL=redis://localhost:6379    # Optional for local dev
 
 # Podcast generation
 ELEVENLABS_API_KEY=...               # ElevenLabs TTS
@@ -305,6 +348,22 @@ cd apps/worker && npx tsx src/index.ts
 
 Visit `http://localhost:3000/register` and create an account.
 
+### Mobile App Setup
+
+```bash
+# Install mobile dependencies
+pnpm --filter mobile install
+
+# Start Expo development server
+pnpm --filter mobile start
+
+# Run on iOS simulator
+pnpm --filter mobile ios
+
+# Run on Android emulator
+pnpm --filter mobile android
+```
+
 ### Running the Pipeline
 
 1. Log in to the admin dashboard at `/admin`
@@ -313,6 +372,54 @@ Visit `http://localhost:3000/register` and create an account.
 4. Once complete, generate a podcast episode at `/admin/podcast`
 
 The pipeline also runs automatically on a configurable cron schedule (default: `0 6 * * *` — daily at 6 AM).
+
+## Deployment
+
+### Vercel (Web + API)
+
+The project is deployed at **[ai-digest-ivory.vercel.app](https://ai-digest-ivory.vercel.app)**:
+
+- **Branch**: Deploys from `main` (not `master`)
+- **Framework**: Next.js 15 with Turborepo build cache
+- **Serverless mode**: Pipeline and podcast generation run inline (no BullMQ/Redis)
+- **Database**: Supabase PostgreSQL
+- **Storage**: AWS S3 for podcast audio files
+- **Max duration**: 800s on Vercel Pro plan
+
+### Mobile App
+
+- **iOS**: Build with Expo EAS Build
+- **Android**: Build with Expo EAS Build
+- **OTA updates**: Expo Updates for instant deployments
+
+## Troubleshooting
+
+### Common Issues
+
+**Pipeline fails with timeout:**
+- Check Vercel function duration limits (800s on Pro plan)
+- Reduce number of sources or items per digest
+- Use shorter time windows for podcast generation
+
+**Podcast duration mismatch:**
+- The iterative tool loop achieves 96-103% accuracy
+- If using single-call mode, expect 68-71% accuracy
+- Check `CHARS_PER_SECOND = 15.0` constant in script generator
+
+**Worker not processing jobs:**
+- Kill zombie processes: `pkill -f "tsx.*src/index"`
+- Ensure `.env.local` is sourced manually (Next.js auto-loads, tsx does not)
+- Check Redis connection and BullMQ queue health
+
+**TypeScript errors after dependency updates:**
+- Run `pnpm build` from root to rebuild all packages
+- Check `pnpm-workspace.yaml` includes all packages
+- Verify workspace protocol versions: `workspace:*`
+
+**Mobile app NativeWind styles not working:**
+- Ensure `tailwind.config.js` is in mobile app root
+- Check NativeWind v4 setup in `metro.config.js`
+- Restart Expo dev server after config changes
 
 ## Development
 
@@ -332,6 +439,14 @@ The pipeline also runs automatically on a configurable cron schedule (default: `
 - **Zod validation** on all API inputs
 - **Drizzle ORM** for type-safe database queries
 - **Turborepo** caching for incremental builds
+- **pnpm workspaces** for monorepo dependency management
+- **Workspace protocol** (`workspace:*`) for internal package references
+
+## Additional Documentation
+
+- **API Reference**: See `docs/API.md` for detailed endpoint documentation
+- **Package READMEs**: Each package has its own README with specific setup instructions
+- **Spec Documents**: See `specs/` directory for feature specifications and requirements
 
 ## License
 
