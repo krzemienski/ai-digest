@@ -14,8 +14,15 @@ export const metadata: Metadata = {
     title: "AI Digest — AI News You Can Listen To",
     description:
       "Weekly AI-curated podcast covering the latest in artificial intelligence. Listen free.",
+    siteName: "AI Digest",
     type: "website",
     url: "https://ai-digest-ivory.vercel.app",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Digest — AI News You Can Listen To",
+    description:
+      "Weekly AI-curated podcast covering the latest in artificial intelligence. Listen free.",
   },
 };
 

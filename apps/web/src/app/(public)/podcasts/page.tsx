@@ -12,8 +12,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "All Episodes | AI Digest",
     description: "Browse all AI Digest podcast episodes",
+    siteName: "AI Digest",
     type: "website",
     url: "https://ai-digest-ivory.vercel.app/podcasts",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "All Episodes | AI Digest",
+    description: "Browse all AI Digest podcast episodes",
   },
 };
 

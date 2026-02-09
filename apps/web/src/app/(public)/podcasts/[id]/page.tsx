@@ -25,8 +25,22 @@ export async function generateMetadata({
     openGraph: {
       title: episode.title,
       description: `Listen to ${episode.title} — AI Digest Podcast`,
+      siteName: "AI Digest",
       type: "website",
       url: `https://ai-digest-ivory.vercel.app/podcasts/${id}`,
+      audio: episode.audioUrl
+        ? [
+            {
+              url: episode.audioUrl,
+              type: "audio/mpeg",
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: episode.title,
+      description: `Listen to ${episode.title} — AI Digest Podcast`,
     },
   };
 }
