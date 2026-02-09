@@ -11,15 +11,24 @@ import {
   BudgetTracker,
   type PodcastTopicItem,
 } from "@ai-digest/agents";
-import {
-  parseScript,
-  validateSegments,
-  generateSegmentAudio,
-  assembleEpisode,
-  uploadToS3,
-  buildEpisodeKey,
-  type ScriptSegment,
-} from "@ai-digest/podcast";
+// Type-only imports are erased at compile time — no runtime module loading
+import type { ScriptSegment } from "@ai-digest/podcast";
+
+// Lazy runtime import: @ai-digest/podcast barrel re-exports assembler which
+// imports fluent-ffmpeg + @ffmpeg-installer/ffmpeg at module load time.
+// Those fail during Next.js build "Collecting page data" because the ffmpeg
+// binary isn't found. Dynamic import() defers loading to runtime.
+async function getPodcastModules() {
+  const podcast = await import("@ai-digest/podcast");
+  return {
+    parseScript: podcast.parseScript,
+    validateSegments: podcast.validateSegments,
+    generateSegmentAudio: podcast.generateSegmentAudio,
+    assembleEpisode: podcast.assembleEpisode,
+    uploadToS3: podcast.uploadToS3,
+    buildEpisodeKey: podcast.buildEpisodeKey,
+  };
+}
 import { createLogEmitter, type LogEmitter } from "./log-emitter";
 import { resolveApiKey } from "./api-keys";
 
@@ -117,6 +126,7 @@ function computeCost(
 }
 
 export async function processPodcastInline(data: PodcastJobData): Promise<void> {
+  const { parseScript, validateSegments, generateSegmentAudio, assembleEpisode, uploadToS3, buildEpisodeKey } = await getPodcastModules();
   const { episodeId, digestId, targetDurationMinutes, dateRange } = data;
   const modelId = data.model ?? getDefaultModelId();
   const voiceConfig: VoiceConfig = {

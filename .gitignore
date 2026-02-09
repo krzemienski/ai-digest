@@ -27,3 +27,4 @@ dist/
 # Lock files for parallel execution
 .tasks.lock
 .git-commit.lock
+.vercel
