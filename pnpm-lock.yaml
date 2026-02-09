@@ -162,9 +162,15 @@ importers:
       '@ai-digest/email':
         specifier: workspace:*
         version: link:../../packages/email
+      '@ai-digest/podcast':
+        specifier: workspace:*
+        version: link:../../packages/podcast
       '@ai-digest/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@anthropic-ai/sdk':
+        specifier: ^0.74.0
+        version: 0.74.0(zod@4.3.6)
       '@supabase/ssr':
         specifier: ^0.8.0
         version: 0.8.0(@supabase/supabase-js@2.95.3)
@@ -177,18 +183,12 @@ importers:
       autoprefixer:
         specifier: ^10.0.0
         version: 10.0.0(postcss@8.4.31)
-      bullmq:
-        specifier: ^5.0.0
-        version: 5.0.0
       drizzle-orm:
         specifier: ^0.38.0
         version: 0.38.0(@types/react@19.0.0)(react@19.0.0)
       geist:
         specifier: ^1.7.0
         version: 1.7.0(next@15.5.12)
-      ioredis:
-        specifier: ^5.4.0
-        version: 5.4.0
       next:
         specifier: ^15.5.12
         version: 15.5.12(react-dom@19.0.0)(react@19.0.0)

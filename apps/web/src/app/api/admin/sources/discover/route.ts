@@ -1,30 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { z } from "zod";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { db, queries } from "@ai-digest/db";
-import { Queue } from "bullmq";
+import { processDiscovery } from "@/lib/processors/discovery";
+
+export const maxDuration = 300;
 
 const discoverSchema = z.object({
   topics: z.array(z.string()).optional(),
   sourceTypes: z.array(z.string()).optional(),
   maxSources: z.number().int().min(1).max(50).optional(),
 });
-
-let discoveryQueue: Queue | null = null;
-function getDiscoveryQueue(): Queue {
-  if (!discoveryQueue) {
-    const redisUrl = process.env.REDIS_URL ?? "redis://localhost:6379";
-    const url = new URL(redisUrl);
-    discoveryQueue = new Queue("discovery", {
-      connection: {
-        host: url.hostname,
-        port: Number(url.port) || 6379,
-        password: url.password || undefined,
-      },
-    });
-  }
-  return discoveryQueue;
-}
 
 export async function POST(request: NextRequest) {
   const authError = await requireAdminFromRequest(request);
@@ -46,8 +33,13 @@ export async function POST(request: NextRequest) {
       maxSources: parsed.data.maxSources,
     });
 
-    const queue = getDiscoveryQueue();
-    await queue.add("discovery", { runId: run.id });
+    after(async () => {
+      try {
+        await processDiscovery({ runId: run.id });
+      } catch (error) {
+        console.error("[Discovery] Background execution failed:", error);
+      }
+    });
 
     return NextResponse.json(
       { success: true, data: { runId: run.id, status: "pending" as const } },

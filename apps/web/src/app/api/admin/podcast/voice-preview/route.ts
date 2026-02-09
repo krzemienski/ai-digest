@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import IORedis from "ioredis";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
 
-const REDIS_URL = process.env.REDIS_URL ?? "redis://localhost:6379";
-const RATE_LIMIT_KEY = "elevenlabs:voice-preview:rate";
-const MAX_REQUESTS_PER_MINUTE = 10;
 const DEFAULT_PREVIEW_TEXT =
   "Welcome to AI Digest, your daily briefing on artificial intelligence news and breakthroughs.";
 
@@ -26,26 +22,10 @@ export async function POST(request: NextRequest) {
   const authError = await requireAdminFromRequest(request);
   if (authError) return authError;
 
-  const redis = new IORedis(REDIS_URL);
-
   try {
-    // Rate limiting
-    const count = await redis.incr(RATE_LIMIT_KEY);
-    if (count === 1) {
-      await redis.expire(RATE_LIMIT_KEY, 60);
-    }
-    if (count > MAX_REQUESTS_PER_MINUTE) {
-      await redis.quit();
-      return NextResponse.json(
-        { success: false, error: "Rate limit exceeded. Max 10 previews per minute." },
-        { status: 429 }
-      );
-    }
-
     const body = (await request.json()) as unknown;
     const parsed = previewSchema.safeParse(body);
     if (!parsed.success) {
-      await redis.quit();
       return NextResponse.json(
         { success: false, error: "Invalid request", details: parsed.error.flatten() },
         { status: 400 }
@@ -54,7 +34,6 @@ export async function POST(request: NextRequest) {
 
     const apiKey = process.env.ELEVENLABS_API_KEY;
     if (!apiKey) {
-      await redis.quit();
       return NextResponse.json(
         { success: false, error: "ELEVENLABS_API_KEY not configured" },
         { status: 500 }
@@ -81,8 +60,6 @@ export async function POST(request: NextRequest) {
       }),
     });
 
-    await redis.quit();
-
     if (!response.ok) {
       const errorText = await response.text().catch(() => "unknown");
       return NextResponse.json(
@@ -100,7 +77,6 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (err: unknown) {
-    await redis.quit().catch(() => {});
     const message = err instanceof Error ? err.message : String(err);
     return NextResponse.json(
       { success: false, error: message },

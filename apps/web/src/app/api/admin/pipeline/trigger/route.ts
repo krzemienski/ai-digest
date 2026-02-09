@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
-import { getQueueClient } from "@/lib/queue";
+import { processPipeline } from "@/lib/processors/pipeline";
+
+export const maxDuration = 300;
 
 export async function POST(request: NextRequest) {
   const authError = await requireAdminFromRequest(request);
@@ -8,12 +11,22 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json().catch(() => ({})) as Record<string, unknown>;
-    const queue = getQueueClient();
-    const job = await queue.add("pipeline", { ...body, triggerType: "manual" });
+
+    after(async () => {
+      try {
+        await processPipeline({
+          triggerType: "manual",
+          enablePodcast: body.enablePodcast !== false,
+          enableNewsletter: body.enableNewsletter !== false,
+        });
+      } catch (error) {
+        console.error("[Pipeline] Background execution failed:", error);
+      }
+    });
 
     return NextResponse.json({
       success: true,
-      data: { jobId: job.id },
+      data: { status: "started" },
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);

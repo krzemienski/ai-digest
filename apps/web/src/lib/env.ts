@@ -4,7 +4,6 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     DATABASE_URL: z.string(),
-    REDIS_URL: z.string().url().optional(),
     ADMIN_API_KEY: z.string().min(16).optional(),
     ANTHROPIC_API_KEY: z.string().optional(),
     ELEVENLABS_API_KEY: z.string().optional(),
@@ -23,7 +22,6 @@ export const env = createEnv({
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
-    REDIS_URL: process.env.REDIS_URL,
     ADMIN_API_KEY: process.env.ADMIN_API_KEY,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY,

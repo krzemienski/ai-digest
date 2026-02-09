@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { z } from "zod";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { db, queries, digests, eq } from "@ai-digest/db";
 import { getModelById, MODEL_REGISTRY } from "@ai-digest/agents";
-import { Queue } from "bullmq";
+import { processPodcastInline } from "@/lib/processors/podcast";
+
+export const maxDuration = 900;
 
 const voiceSettingsSchema = z.object({
   stability: z.number().min(0).max(1),
@@ -40,22 +43,6 @@ const generateSchema = z.object({
   style: z.string().optional(),
   customStylePrompt: z.string().max(2000).optional(),
 });
-
-let podcastQueue: Queue | null = null;
-function getPodcastQueue(): Queue {
-  if (!podcastQueue) {
-    const redisUrl = process.env.REDIS_URL ?? "redis://localhost:6379";
-    const url = new URL(redisUrl);
-    podcastQueue = new Queue("podcast", {
-      connection: {
-        host: url.hostname,
-        port: Number(url.port) || 6379,
-        password: url.password || undefined,
-      },
-    });
-  }
-  return podcastQueue;
-}
 
 const INITIAL_STAGES = {
   content_select: "pending",
@@ -163,22 +150,27 @@ export async function POST(request: NextRequest) {
       podcastStages: INITIAL_STAGES,
     });
 
-    // Add BullMQ job with full config
-    const queue = getPodcastQueue();
-    const job = await queue.add("podcast", {
-      episodeId: episode.id,
-      digestId: episodeDigestId,
-      targetDurationMinutes: parsed.data.targetDurationMinutes,
-      model: parsed.data.model,
-      voiceConfig: parsed.data.voiceConfig,
-      style: parsed.data.style,
-      customStylePrompt: parsed.data.customStylePrompt,
-      dateRange: dateRange ?? undefined,
+    // Run podcast generation inline via after()
+    after(async () => {
+      try {
+        await processPodcastInline({
+          episodeId: episode.id,
+          digestId: episodeDigestId,
+          targetDurationMinutes: parsed.data.targetDurationMinutes,
+          model: parsed.data.model,
+          voiceConfig: parsed.data.voiceConfig,
+          style: parsed.data.style,
+          customStylePrompt: parsed.data.customStylePrompt,
+          dateRange: dateRange ?? undefined,
+        });
+      } catch (error) {
+        console.error("[Podcast] Background generation failed:", error);
+      }
     });
 
     return NextResponse.json({
       success: true,
-      data: { episodeId: episode.id, jobId: job.id },
+      data: { episodeId: episode.id },
     }, { status: 201 });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);

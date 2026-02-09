@@ -30,30 +30,6 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  // Redis
-  try {
-    const redisUrl = process.env.REDIS_URL ?? "redis://localhost:6379";
-    const url = new URL(redisUrl);
-    const { Queue } = await import("bullmq");
-    const testQueue = new Queue("health-check", {
-      connection: {
-        host: url.hostname,
-        port: Number(url.port) || 6379,
-        password: url.password || undefined,
-      },
-    });
-    const client = await testQueue.client;
-    await (client as { ping: () => Promise<string> }).ping();
-    await testQueue.close();
-    services.push({ service: "redis", status: "healthy", message: "Connected" });
-  } catch {
-    services.push({
-      service: "redis",
-      status: "down",
-      message: "Connection failed",
-    });
-  }
-
   // Anthropic
   if (process.env.ANTHROPIC_API_KEY) {
     services.push({
