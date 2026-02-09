@@ -114,3 +114,17 @@ export async function getMonthlyCostTotal(
     month,
   };
 }
+
+export async function getReadyEpisodes(
+  db: Database,
+  options: { limit?: number; offset?: number } = {}
+) {
+  const { limit = 20, offset = 0 } = options;
+  return db
+    .select()
+    .from(episodes)
+    .where(eq(episodes.status, "ready"))
+    .orderBy(desc(episodes.createdAt))
+    .limit(limit)
+    .offset(offset);
+}

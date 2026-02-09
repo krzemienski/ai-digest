@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
 import { MiniPlayer } from "@/components/podcast/mini-player";
 import "./globals.css";
 
@@ -19,10 +17,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`dark ${GeistSans.variable} ${GeistMono.variable}`}>
-      <body className="min-h-screen bg-bg text-text-primary font-sans antialiased flex flex-col">
-        <Header />
-        <main className="flex-1 pb-16">{children}</main>
-        <Footer />
+      <body className="min-h-screen font-sans antialiased">
+        {children}
         <MiniPlayer />
       </body>
     </html>
