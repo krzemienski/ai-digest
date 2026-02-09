@@ -4,11 +4,23 @@ import { createSupabaseServerClient } from "./supabase/server";
 /**
  * Require admin session for API routes.
  * Returns null if authorized, NextResponse error if not.
- * The request parameter is accepted for backward compatibility but unused.
+ * Supports two auth methods:
+ *   1. Supabase session cookie (browser-based)
+ *   2. x-admin-api-key header (programmatic access)
  */
 export async function requireAdminFromRequest(
-  _request?: NextRequest
+  request?: NextRequest
 ): Promise<NextResponse | null> {
+  // API key auth: enables programmatic access (curl, cron, external services)
+  const adminApiKey = process.env.ADMIN_API_KEY;
+  if (adminApiKey && request) {
+    const providedKey = request.headers.get("x-admin-api-key");
+    if (providedKey === adminApiKey) {
+      return null;
+    }
+  }
+
+  // Supabase cookie auth: browser-based sessions
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
