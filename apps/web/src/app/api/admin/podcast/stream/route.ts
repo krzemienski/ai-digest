@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { db, queries, episodes, eq } from "@ai-digest/db";
 
-export const maxDuration = 900;
+export const maxDuration = 800;
 
 export async function GET(request: NextRequest) {
   const authError = await requireAdminFromRequest(request);

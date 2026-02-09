@@ -6,7 +6,7 @@ import { db, queries, digests, eq } from "@ai-digest/db";
 import { getModelById, MODEL_REGISTRY } from "@ai-digest/agents";
 import { processPodcastInline } from "@/lib/processors/podcast";
 
-export const maxDuration = 900;
+export const maxDuration = 800;
 
 const voiceSettingsSchema = z.object({
   stability: z.number().min(0).max(1),
