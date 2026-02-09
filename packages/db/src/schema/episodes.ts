@@ -1,5 +1,5 @@
-import { pgTable, uuid, text, integer, timestamp, jsonb } from "drizzle-orm/pg-core";
-import type { VoiceConfig, TranscriptSegment } from "@ai-digest/shared";
+import { pgTable, uuid, text, integer, timestamp, jsonb, real } from "drizzle-orm/pg-core";
+import type { VoiceConfig, TranscriptSegment, PodcastGenerationConfig, QualityScoreAttempt } from "@ai-digest/shared";
 import { digests } from "./digests";
 
 export const episodes = pgTable("episodes", {
@@ -14,6 +14,14 @@ export const episodes = pgTable("episodes", {
   targetDurationMinutes: integer("target_duration_minutes").default(10),
   podcastStages: jsonb("podcast_stages"),
   scriptPreview: text("script_preview"),
+  // New columns for transparency dashboard
+  model: text("model"),
+  style: text("style"),
+  customStylePrompt: text("custom_style_prompt"),
+  costUsd: real("cost_usd"),
+  configSnapshot: jsonb("config_snapshot").$type<PodcastGenerationConfig>(),
+  promptsUsed: jsonb("prompts_used").$type<Record<string, unknown>>(),
+  qualityScores: jsonb("quality_scores").$type<QualityScoreAttempt[]>(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

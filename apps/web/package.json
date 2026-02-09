@@ -9,6 +9,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@ai-digest/agents": "workspace:*",
     "@ai-digest/db": "workspace:*",
     "@ai-digest/email": "workspace:*",
     "@ai-digest/shared": "workspace:*",
@@ -16,6 +17,7 @@
     "autoprefixer": "^10.0.0",
     "bcryptjs": "^2.4.3",
     "bullmq": "^5.0.0",
+    "ioredis": "^5.4.0",
     "drizzle-orm": "^0.38.0",
     "geist": "^1.7.0",
     "iron-session": "^8.0.0",

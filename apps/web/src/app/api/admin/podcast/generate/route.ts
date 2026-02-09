@@ -2,11 +2,37 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { db, queries, digests, eq } from "@ai-digest/db";
+import { getModelById, MODEL_REGISTRY } from "@ai-digest/agents";
 import { Queue } from "bullmq";
+
+const voiceSettingsSchema = z.object({
+  stability: z.number().min(0).max(1),
+  similarityBoost: z.number().min(0).max(1),
+  speed: z.number().min(0.5).max(2),
+  style: z.number().min(0).max(1),
+});
+
+const speakerVoiceSchema = z.object({
+  role: z.string(),
+  voiceId: z.string(),
+  settings: voiceSettingsSchema,
+});
+
+const voiceConfigSchema = z.object({
+  speakers: z.array(speakerVoiceSchema).min(1).max(4),
+  audioFormat: z.string().default("mp3_44100_128"),
+  targetDurationMinutes: z.number().default(10),
+});
 
 const generateSchema = z.object({
   digestId: z.string().uuid(),
-  targetDurationMinutes: z.coerce.number().pipe(z.union([z.literal(5), z.literal(10), z.literal(15), z.literal(20)])),
+  targetDurationMinutes: z.coerce.number().pipe(
+    z.union([z.literal(5), z.literal(10), z.literal(15), z.literal(20), z.literal(25), z.literal(30), z.literal(45), z.literal(60)])
+  ),
+  model: z.string().optional(),
+  voiceConfig: voiceConfigSchema.optional(),
+  style: z.string().optional(),
+  customStylePrompt: z.string().max(2000).optional(),
 });
 
 let podcastQueue: Queue | null = null;
@@ -48,6 +74,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate model if provided
+    if (parsed.data.model) {
+      const modelInfo = getModelById(parsed.data.model);
+      if (!modelInfo) {
+        const validModels = MODEL_REGISTRY.map(m => m.id).join(", ");
+        return NextResponse.json(
+          { success: false, error: `Unknown model: ${parsed.data.model}. Valid models: ${validModels}` },
+          { status: 400 }
+        );
+      }
+    }
+
     // Verify digest exists
     const digest = await db.query.digests.findFirst({
       where: eq(digests.id, parsed.data.digestId),
@@ -65,15 +103,23 @@ export async function POST(request: NextRequest) {
       title: `AI Digest Podcast — ${digest.digestDate}`,
       status: "generating",
       targetDurationMinutes: parsed.data.targetDurationMinutes,
+      model: parsed.data.model,
+      style: parsed.data.style,
+      customStylePrompt: parsed.data.customStylePrompt,
+      voiceConfig: parsed.data.voiceConfig,
       podcastStages: INITIAL_STAGES,
     });
 
-    // Add BullMQ job
+    // Add BullMQ job with full config
     const queue = getPodcastQueue();
     const job = await queue.add("podcast", {
       episodeId: episode.id,
       digestId: parsed.data.digestId,
       targetDurationMinutes: parsed.data.targetDurationMinutes,
+      model: parsed.data.model,
+      voiceConfig: parsed.data.voiceConfig,
+      style: parsed.data.style,
+      customStylePrompt: parsed.data.customStylePrompt,
     });
 
     return NextResponse.json({

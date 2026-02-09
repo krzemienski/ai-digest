@@ -7,3 +7,5 @@ export { pipelineRuns, pipelineStages } from "./pipeline";
 export { config } from "./config";
 export { users } from "./users";
 export { sourceFetchLog } from "./source-fetch-log";
+export { podcastLogs } from "./podcast-logs";
+export { podcastConfigs } from "./podcast-configs";

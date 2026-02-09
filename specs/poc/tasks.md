@@ -680,7 +680,7 @@ created: 2026-02-08
   - _Requirements: All P0/P1 FRs_
   - _Design: Testing Strategy, Evidence Capture Checklist_
 
-- [ ] 8.2 Validate API integration with Bearer tokens (cURL proof)
+- [x] 8.2 Validate API integration with Bearer tokens (cURL proof)
   - **Do**:
     1. Start web server
     2. Login via cURL with X-Client-Type: mobile, capture JWT token

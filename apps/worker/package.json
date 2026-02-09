@@ -7,15 +7,17 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "bullmq": "^5.0.0",
-    "ioredis": "^5.4.0",
-    "drizzle-orm": "^0.38.0",
-    "@anthropic-ai/sdk": "^0.74.0",
     "@ai-digest/agents": "workspace:*",
     "@ai-digest/db": "workspace:*",
+    "@ai-digest/email": "workspace:*",
     "@ai-digest/podcast": "workspace:*",
     "@ai-digest/shared": "workspace:*",
-    "@ai-digest/email": "workspace:*"
+    "@anthropic-ai/claude-agent-sdk": "^0.2.37",
+    "@anthropic-ai/sdk": "^0.74.0",
+    "bullmq": "^5.0.0",
+    "drizzle-orm": "^0.38.0",
+    "ioredis": "^5.4.0",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "tsx": "^4.0.0"

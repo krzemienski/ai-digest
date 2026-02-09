@@ -7,3 +7,4 @@ export type { Subscriber } from "./subscriber";
 export type { SourceConfig } from "./source-config";
 export type { VoiceConfig, SpeakerVoice } from "./voice";
 export type { ApiResponse } from "./api";
+export type { PodcastGenerationConfig, LogEntry, ModelInfo, PodcastStage, LogSeverity, PodcastStyle, QualityScoreAttempt, CostEstimate } from "./podcast";

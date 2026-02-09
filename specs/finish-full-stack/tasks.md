@@ -613,7 +613,7 @@ created: 2026-02-08T00:00:00-05:00
   - **Commit**: none (validation only)
   - _Requirements: All P0 ACs_
 
-- [ ] 9.3 Create PR and verify CI
+- [x] 9.3 Create PR and verify CI
   - **Do**:
     1. Verify on feature branch: `git branch --show-current` (must NOT be main/master)
     2. If on default branch, STOP and alert user
@@ -628,12 +628,12 @@ created: 2026-02-08T00:00:00-05:00
 
 ## Phase 10: PR Lifecycle
 
-- [ ] 10.1 Monitor CI and fix failures
+- [x] 10.1 Monitor CI and fix failures
   - **Do**: Watch CI with `gh pr checks`, fix any failures, push fixes
   - **Verify**: `gh pr checks`
   - **Done when**: All CI checks green
 
-- [ ] 10.2 Address review comments
+- [x] 10.2 Address review comments
   - **Do**: Read PR comments via `gh pr view --comments`, implement fixes, push
   - **Verify**: `gh pr checks` after each push
   - **Done when**: All comments addressed, CI green, PR approved

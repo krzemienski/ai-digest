@@ -6,3 +6,5 @@ export * from "./pipeline";
 export * from "./config";
 export * from "./search";
 export * from "./sources";
+export * from "./podcast-logs";
+export * from "./podcast-configs";

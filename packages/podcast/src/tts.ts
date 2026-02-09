@@ -92,9 +92,13 @@ export async function generateAllSegments(
   const requestIdsBySpeaker: Record<string, string[]> = {};
 
   // Map speakers to voice config by role
+  // Also map display names ("Host A") to roles ("host_a") for LLM-generated scripts
   const speakerVoiceMap: Record<string, SpeakerVoice> = {};
   for (const voice of voiceConfig.speakers) {
     speakerVoiceMap[voice.role] = voice;
+    // Normalize: "host_a" → also match "Host A" (display name from prompt)
+    const displayName = voice.role.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    speakerVoiceMap[displayName] = voice;
   }
 
   // Process segments sequentially for cross-segment continuity

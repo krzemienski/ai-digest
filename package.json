@@ -17,6 +17,11 @@
     "turbo": "^2.4.0",
     "typescript": "^5.7.0"
   },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "^19.0.0"
+    }
+  },
   "packageManager": "pnpm@8.6.0",
   "engines": {
     "node": ">=20"

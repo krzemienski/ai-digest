@@ -90,3 +90,22 @@ export const PODCAST_SCRIPT_JSON_SCHEMA = {
   },
   required: ["segments"],
 };
+
+export const STYLE_PRESETS: Readonly<Record<string, string>> = {
+  professional: "Maintain a polished, authoritative tone. Use industry terminology precisely. Structure discussions with clear thesis statements and supporting evidence.",
+  casual: "Keep the conversation relaxed and approachable. Use everyday language, occasional humor, and relatable analogies. Feel free to express genuine reactions and personal opinions.",
+  technical: "Dive deep into technical details. Discuss implementation specifics, trade-offs, and architectural decisions. Assume the audience has an engineering background.",
+  news_brief: "Be concise and punchy. Lead with the most impactful news. Keep segments short (30-60 seconds each). Focus on facts over analysis. Deliver maximum information density.",
+};
+
+export function buildStyledSystemPrompt(
+  basePrompt: string,
+  style: string,
+  customPrompt?: string | null,
+): string {
+  const styleInstructions = style === "custom" && customPrompt
+    ? customPrompt
+    : STYLE_PRESETS[style] ?? STYLE_PRESETS["professional"]!;
+
+  return `${basePrompt}\n\n## Style Instructions\n${styleInstructions}`;
+}
