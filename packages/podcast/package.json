@@ -5,7 +5,12 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./script-parser": "./src/script-parser.ts",
+    "./tts": "./src/tts.ts",
+    "./assembler": "./src/assembler.ts",
+    "./assembler-lite": "./src/assembler-lite.ts",
+    "./r2-upload": "./src/r2-upload.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit"

@@ -7,7 +7,21 @@ export interface ScriptSegment {
 
 export function parseScript(rawScript: string): ScriptSegment[] {
   // Parse JSON output from Claude — may be wrapped in ```json blocks
-  const cleaned = rawScript.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+  // and may have trailing explanatory text after the JSON
+  let cleaned = rawScript.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+
+  // Extract JSON object/array: find the first { or [ and its matching close
+  const jsonStart = cleaned.search(/[\[{]/);
+  if (jsonStart > 0) {
+    cleaned = cleaned.slice(jsonStart);
+  }
+  const opener = cleaned[0];
+  const closer = opener === "[" ? "]" : "}";
+  const lastClose = cleaned.lastIndexOf(closer);
+  if (lastClose > 0) {
+    cleaned = cleaned.slice(0, lastClose + 1);
+  }
+
   const parsed = JSON.parse(cleaned) as { segments: ScriptSegment[] } | ScriptSegment[];
 
   const segments = Array.isArray(parsed) ? parsed : parsed.segments;

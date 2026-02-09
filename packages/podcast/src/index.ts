@@ -3,5 +3,6 @@ export type { ScriptSegment } from "./script-parser";
 export { generateSegmentAudio, generateAllSegments } from "./tts";
 export type { TTSResult } from "./tts";
 export { assembleEpisode } from "./assembler";
+export { assembleEpisodeLite } from "./assembler-lite";
 export type { AssembleResult } from "./assembler";
 export { uploadToS3, uploadToR2, buildEpisodeKey } from "./r2-upload";

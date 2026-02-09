@@ -14,19 +14,23 @@ import {
 // Type-only imports are erased at compile time — no runtime module loading
 import type { ScriptSegment } from "@ai-digest/podcast";
 
-// Lazy runtime import: @ai-digest/podcast barrel re-exports assembler which
-// imports fluent-ffmpeg + @ffmpeg-installer/ffmpeg at module load time.
-// Those fail during Next.js build "Collecting page data" because the ffmpeg
-// binary isn't found. Dynamic import() defers loading to runtime.
+// Import podcast modules selectively to avoid the ffmpeg-dependent full assembler.
+// The barrel index re-exports assembler.ts which imports fluent-ffmpeg at load time,
+// crashing on Vercel where ffmpeg isn't available. We import sub-modules directly.
 async function getPodcastModules() {
-  const podcast = await import("@ai-digest/podcast");
+  const [scriptParser, tts, assemblerLite, upload] = await Promise.all([
+    import("@ai-digest/podcast/script-parser"),
+    import("@ai-digest/podcast/tts"),
+    import("@ai-digest/podcast/assembler-lite"),
+    import("@ai-digest/podcast/r2-upload"),
+  ]);
   return {
-    parseScript: podcast.parseScript,
-    validateSegments: podcast.validateSegments,
-    generateSegmentAudio: podcast.generateSegmentAudio,
-    assembleEpisode: podcast.assembleEpisode,
-    uploadToS3: podcast.uploadToS3,
-    buildEpisodeKey: podcast.buildEpisodeKey,
+    parseScript: scriptParser.parseScript,
+    validateSegments: scriptParser.validateSegments,
+    generateSegmentAudio: tts.generateSegmentAudio,
+    assembleEpisode: assemblerLite.assembleEpisodeLite,
+    uploadToS3: upload.uploadToS3,
+    buildEpisodeKey: upload.buildEpisodeKey,
   };
 }
 import { createLogEmitter, type LogEmitter } from "./log-emitter";

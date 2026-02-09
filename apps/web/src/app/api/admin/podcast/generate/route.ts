@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { after } from "next/server";
 import { z } from "zod";
 import { requireAdminFromRequest } from "@/lib/admin-auth";
 import { db, queries, digests, eq } from "@ai-digest/db";
@@ -150,28 +149,31 @@ export async function POST(request: NextRequest) {
       podcastStages: INITIAL_STAGES,
     });
 
-    // Run podcast generation inline via after()
-    after(async () => {
-      try {
-        await processPodcastInline({
-          episodeId: episode.id,
-          digestId: episodeDigestId,
-          targetDurationMinutes: parsed.data.targetDurationMinutes,
-          model: parsed.data.model,
-          voiceConfig: parsed.data.voiceConfig,
-          style: parsed.data.style,
-          customStylePrompt: parsed.data.customStylePrompt,
-          dateRange: dateRange ?? undefined,
-        });
-      } catch (error) {
-        console.error("[Podcast] Background generation failed:", error);
-      }
-    });
+    // Run podcast generation synchronously within the 800s serverless timeout.
+    // Podcast generation typically takes 5-10 minutes, fitting within the limit.
+    try {
+      await processPodcastInline({
+        episodeId: episode.id,
+        digestId: episodeDigestId,
+        targetDurationMinutes: parsed.data.targetDurationMinutes,
+        model: parsed.data.model,
+        voiceConfig: parsed.data.voiceConfig,
+        style: parsed.data.style,
+        customStylePrompt: parsed.data.customStylePrompt,
+        dateRange: dateRange ?? undefined,
+      });
 
-    return NextResponse.json({
-      success: true,
-      data: { episodeId: episode.id },
-    }, { status: 201 });
+      return NextResponse.json({
+        success: true,
+        data: { episodeId: episode.id, status: "ready" },
+      }, { status: 201 });
+    } catch (genError) {
+      console.error("[Podcast] Generation failed:", genError);
+      return NextResponse.json({
+        success: true,
+        data: { episodeId: episode.id, status: "failed", error: genError instanceof Error ? genError.message : String(genError) },
+      }, { status: 201 });
+    }
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     return NextResponse.json(
