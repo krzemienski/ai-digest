@@ -28,3 +28,13 @@ dist/
 .tasks.lock
 .git-commit.lock
 .vercel
+
+# Tooling state
+.omc/
+.playwright-mcp/
+
+# Database dumps
+dump.rdb
+
+# Ralph spec state
+**/.ralph-state.json
