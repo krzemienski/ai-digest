@@ -28,9 +28,10 @@ function SidebarNav({ onNavigate }: { readonly onNavigate?: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogout = () => {
-    document.cookie = "admin-token=; path=/; max-age=0";
-    router.push("/admin/login");
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/login");
+    router.refresh();
   };
 
   return (

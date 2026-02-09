@@ -13,15 +13,14 @@
     "@ai-digest/db": "workspace:*",
     "@ai-digest/email": "workspace:*",
     "@ai-digest/shared": "workspace:*",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.95.3",
     "@t3-oss/env-nextjs": "^0.11.0",
     "autoprefixer": "^10.0.0",
-    "bcryptjs": "^2.4.3",
     "bullmq": "^5.0.0",
-    "ioredis": "^5.4.0",
     "drizzle-orm": "^0.38.0",
     "geist": "^1.7.0",
-    "iron-session": "^8.0.0",
-    "jose": "^6.1.3",
+    "ioredis": "^5.4.0",
     "next": "^15.5.12",
     "postcss": "^8.0.0",
     "react": "^19.0.0",
@@ -31,7 +30,6 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "typescript": "^5.7.0"

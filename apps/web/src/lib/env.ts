@@ -3,9 +3,8 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    DATABASE_URL: z.string().url(),
+    DATABASE_URL: z.string(),
     REDIS_URL: z.string().url().optional(),
-    SESSION_SECRET: z.string().min(32),
     ADMIN_API_KEY: z.string().min(16).optional(),
     ANTHROPIC_API_KEY: z.string().optional(),
     ELEVENLABS_API_KEY: z.string().optional(),
@@ -18,12 +17,16 @@ export const env = createEnv({
     R2_PUBLIC_URL: z.string().url().optional(),
     UNSUBSCRIBE_SECRET: z.string().min(16).optional(),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: z.string().min(1),
+  },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     REDIS_URL: process.env.REDIS_URL,
-    SESSION_SECRET: process.env.SESSION_SECRET,
     ADMIN_API_KEY: process.env.ADMIN_API_KEY,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
     ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
     RESEND_API_KEY: process.env.RESEND_API_KEY,

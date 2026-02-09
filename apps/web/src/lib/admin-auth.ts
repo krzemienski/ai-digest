@@ -1,48 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "./session";
-import { verifyMobileToken } from "./mobile-auth";
+import { createSupabaseServerClient } from "./supabase/server";
 
 /**
  * Require admin session for API routes.
  * Returns null if authorized, NextResponse error if not.
- * Checks Bearer token first (mobile clients), falls back to iron-session (web clients).
+ * The request parameter is accepted for backward compatibility but unused.
  */
 export async function requireAdminFromRequest(
-  request?: NextRequest
+  _request?: NextRequest
 ): Promise<NextResponse | null> {
-  // Check Bearer token first (mobile clients)
-  if (request) {
-    const authHeader = request.headers.get("Authorization");
-    if (authHeader?.startsWith("Bearer ")) {
-      const token = authHeader.slice(7);
-      const payload = await verifyMobileToken(token);
-      if (!payload) {
-        return NextResponse.json(
-          { success: false, error: "Invalid or expired token" },
-          { status: 401 }
-        );
-      }
-      if (payload.role !== "admin") {
-        return NextResponse.json(
-          { success: false, error: "Admin access required" },
-          { status: 403 }
-        );
-      }
-      return null;
-    }
-  }
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // Fall back to iron-session (web clients)
-  const session = await getSession();
-
-  if (!session.isLoggedIn) {
+  if (!user) {
     return NextResponse.json(
       { success: false, error: "Authentication required" },
       { status: 401 }
     );
   }
 
-  if (session.role !== "admin") {
+  if (user.app_metadata?.role !== "admin") {
     return NextResponse.json(
       { success: false, error: "Admin access required" },
       { status: 403 }

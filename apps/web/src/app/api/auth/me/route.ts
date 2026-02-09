@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
-import { getUserFromRequest } from "@/lib/auth-from-request";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const user = await getUserFromRequest(request);
+    const supabase = await createSupabaseServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
@@ -16,15 +19,14 @@ export async function GET(request: Request) {
       {
         success: true,
         data: {
-          userId: user.userId,
+          userId: user.id,
           email: user.email,
-          role: user.role,
+          role: user.app_metadata?.role ?? "user",
         },
       },
       { status: 200 }
     );
-  } catch (error) {
-    console.error("Auth check error:", error);
+  } catch {
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }

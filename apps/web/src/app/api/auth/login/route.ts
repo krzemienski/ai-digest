@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
-import { db } from "@ai-digest/db";
-import { users } from "@ai-digest/db";
-import { eq } from "@ai-digest/db";
-import { getSession } from "@/lib/session";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -17,58 +13,26 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validated = loginSchema.parse(body);
 
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, validated.email))
-      .limit(1);
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: validated.email,
+      password: validated.password,
+    });
 
-    if (!user) {
+    if (error) {
       return NextResponse.json(
         { success: false, error: "Invalid email or password" },
         { status: 401 }
       );
-    }
-
-    const valid = await bcrypt.compare(validated.password, user.passwordHash);
-    if (!valid) {
-      return NextResponse.json(
-        { success: false, error: "Invalid email or password" },
-        { status: 401 }
-      );
-    }
-
-    const session = await getSession();
-    session.userId = user.id as string;
-    session.email = user.email;
-    session.role = user.role as "user" | "admin";
-    session.isLoggedIn = true;
-    await session.save();
-
-    await db
-      .update(users)
-      .set({ lastLoginAt: new Date() })
-      .where(eq(users.id, user.id));
-
-    const isMobile = request.headers.get("X-Client-Type") === "mobile";
-    let token: string | undefined;
-    if (isMobile) {
-      const { signMobileToken } = await import("@/lib/mobile-auth");
-      token = await signMobileToken({
-        userId: user.id as string,
-        email: user.email,
-        role: user.role as "user" | "admin",
-      });
     }
 
     return NextResponse.json(
       {
         success: true,
         data: {
-          id: user.id,
-          email: user.email,
-          role: user.role,
-          ...(token ? { token } : {}),
+          id: data.user.id,
+          email: data.user.email,
+          role: data.user.app_metadata?.role ?? "user",
         },
       },
       { status: 200 }

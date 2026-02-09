@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
-import { db } from "@ai-digest/db";
-import { users } from "@ai-digest/db";
-import { eq } from "@ai-digest/db";
-import { getSession } from "@/lib/session";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const registerSchema = z
   .object({
@@ -26,58 +22,39 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validated = registerSchema.parse(body);
 
-    const [existingUser] = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, validated.email))
-      .limit(1);
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase.auth.signUp({
+      email: validated.email,
+      password: validated.password,
+    });
 
-    if (existingUser) {
+    if (error) {
+      if (error.message.includes("already registered")) {
+        return NextResponse.json(
+          { success: false, error: "Email already registered" },
+          { status: 409 }
+        );
+      }
       return NextResponse.json(
-        { success: false, error: "Email already registered" },
-        { status: 409 }
+        { success: false, error: error.message },
+        { status: 400 }
       );
     }
 
-    const passwordHash = await bcrypt.hash(validated.password, 10);
-
-    const existingUsers = await db.select({ id: users.id }).from(users).limit(1);
-    const role = existingUsers.length === 0 ? "admin" : "user";
-
-    const [newUser] = await db
-      .insert(users)
-      .values({
-        email: validated.email,
-        passwordHash,
-        role,
-      })
-      .returning({
-        id: users.id,
-        email: users.email,
-        role: users.role,
-      });
-
-    if (!newUser) {
+    if (!data.user) {
       return NextResponse.json(
         { success: false, error: "Failed to create user" },
         { status: 500 }
       );
     }
 
-    const session = await getSession();
-    session.userId = newUser.id as string;
-    session.email = newUser.email;
-    session.role = newUser.role as "user" | "admin";
-    session.isLoggedIn = true;
-    await session.save();
-
     return NextResponse.json(
       {
         success: true,
         data: {
-          id: newUser.id,
-          email: newUser.email,
-          role: newUser.role,
+          id: data.user.id,
+          email: data.user.email,
+          role: data.user.app_metadata?.role ?? "user",
         },
       },
       { status: 201 }

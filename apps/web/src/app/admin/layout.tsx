@@ -1,15 +1,18 @@
 import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/layout/sidebar";
-import { getSession } from "@/lib/session";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await getSession();
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session.isLoggedIn) {
+  if (!user) {
     redirect("/login");
   }
 
-  if (session.role !== "admin") {
+  if (user.app_metadata?.role !== "admin") {
     redirect("/");
   }
 

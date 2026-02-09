@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createSupabaseMiddlewareClient } from "@/lib/supabase/middleware";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Public routes — no auth needed
+  // Public routes - no auth needed
   if (
     pathname === "/login" ||
     pathname === "/register" ||
@@ -12,28 +13,37 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Admin pages: check for session cookie presence (actual validation in route handlers)
-  const sessionCookie = request.cookies.get("ai-digest-session");
+  const { user, response } = await createSupabaseMiddlewareClient(request);
 
+  // Admin API routes
   if (pathname.startsWith("/api/admin")) {
-    const authHeader = request.headers.get("Authorization");
-    if (!sessionCookie && !authHeader?.startsWith("Bearer ")) {
+    if (!user) {
       return NextResponse.json(
         { success: false, error: "Authentication required" },
         { status: 401 }
       );
     }
-    return NextResponse.next();
+    if (user.app_metadata?.role !== "admin") {
+      return NextResponse.json(
+        { success: false, error: "Admin access required" },
+        { status: 403 }
+      );
+    }
+    return response;
   }
 
+  // Admin pages
   if (pathname.startsWith("/admin")) {
-    if (!sessionCookie) {
+    if (!user) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
-    return NextResponse.next();
+    if (user.app_metadata?.role !== "admin") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    return response;
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
