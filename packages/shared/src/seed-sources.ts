@@ -140,6 +140,12 @@ export const SEED_SOURCES: SeedSource[] = [
     enabled: true,
   },
   {
+    name: "AI Weekly",
+    type: "rss",
+    config: { rss: { url: "https://aiweekly.co/feed" } },
+    enabled: true,
+  },
+  {
     name: "BAIR Blog",
     type: "rss",
     config: { rss: { url: "https://bair.berkeley.edu/blog/feed.xml" } },
